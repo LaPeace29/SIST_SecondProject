@@ -1,25 +1,24 @@
--- 1π¯.
+Ôªø-- 1Î≤à.
 SELECT student_id, count(*) count_
     FROM student
-    WHERE student_name = '¡∂¿Œº∫' AND student_pw = '1234'
+    WHERE student_name = 'Ï°∞Ïù∏ÏÑ±' AND student_pw = '1234'
     GROUP BY student_id;
-    
 
 -- 2.
-SELECT oc.open_course_id, c.course_name, TO_CHAR(oc.open_course_start_date, 'YYYY-MM-DD') start_date, TO_CHAR(oc.open_course_end_date, 'YYYY-MM-DD') end_date
+SELECT oc.open_course_id, c.course_name, oc.open_course_start_date start_date, oc.open_course_end_date end_date
     FROM course c, open_course oc, student_history sh
     WHERE c.course_id = oc.course_id
         AND oc.open_course_id = sh.open_course_id
         AND student_id = 'ST00031';
     
 -- 3.
-SELECT sh.student_id, c.course_name, TO_CHAR(oc.open_course_start_date, 'YYYY-MM-DD') start_date, TO_CHAR(oc.open_course_end_date, 'YYYY-MM-DD') end_date, cr.class_room_name,
+SELECT sh.student_id, c.course_name, oc.open_course_start_date start_date, oc.open_course_end_date end_date, cr.class_room_name,
     NVL2((SELECT student_id
             FROM process_complete
             WHERE student_id = 'ST00031'
-                AND open_course_id = 'OC0001'), '¡ﬂµµ≈ª∂Ù', CASE
-                                                        WHEN TO_CHAR(oc.open_course_end_date, 'YYYY-MM-DD') < TO_CHAR(sysdate, 'YYYY-MM-DD') THEN 'ºˆ∑·'
-                                                        ELSE 'ºˆ∑·øπ¡§'
+                AND open_course_id = 'OC0001'), 'Ï§ëÎèÑÌÉàÎùΩ', CASE
+                                                        WHEN TO_CHAR(oc.open_course_end_date, 'YYYY-MM-DD') < TO_CHAR(sysdate, 'YYYY-MM-DD') THEN 'ÏàòÎ£å'
+                                                        ELSE 'ÏàòÎ£åÏòàÏ†ï'
                                                         END) ifComplete, NVL((SELECT dropout_date
                                                                         FROM process_complete
                                                                         WHERE student_id = 'ST00031'
@@ -58,9 +57,9 @@ SELECT student_name, student_phone
 -- 7.
 SELECT sh.student_id, c.course_name, TO_CHAR(oc.open_course_start_date, 'YYYY-MM-DD') start_date, TO_CHAR(oc.open_course_end_date, 'YYYY-MM-DD') end_date, cr.class_room_name,
         CASE
-            WHEN pc.student_id = 'ST00031' AND pc.open_course_id = oc.open_course_id THEN '¡ﬂµµ≈ª∂Ù'
-            WHEN TO_CHAR(oc.open_course_end_date, 'YYYY-MM-DD') < TO_CHAR(sysdate, 'YYYY-MM-DD') THEN 'ºˆ∑·'
-            ELSE 'ºˆ∑·øπ¡§'
+            WHEN pc.student_id = 'ST00031' AND pc.open_course_id = oc.open_course_id THEN 'Ï§ëÎèÑÌÉàÎùΩ'
+            WHEN TO_CHAR(oc.open_course_end_date, 'YYYY-MM-DD') < TO_CHAR(sysdate, 'YYYY-MM-DD') THEN 'ÏàòÎ£å'
+            ELSE 'ÏàòÎ£åÏòàÏ†ï'
         END ifComplete, 
         CASE
             WHEN pc.student_id = 'ST00031' AND pc.open_course_id = oc.open_course_id THEN pc.dropout_date
