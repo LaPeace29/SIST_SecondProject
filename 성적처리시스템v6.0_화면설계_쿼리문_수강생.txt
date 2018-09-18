@@ -183,33 +183,32 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17
 CREATE VIEW specific_cur_sub_view1
 AS
 SELECT course_name, subject_name, subject_start_date, subject_end_date
-    , instructor_name, attendance_point, write_point, skill_point, subjectbook_id
-    , attendance_score, write_score, skill_score, exam_date, exam_file, student_id
+    , instructor_name, subjectbook_id, exam_date, exam_file, exam_id, os.open_subject_id
     FROM open_subject os, open_course oc, course c
-        ,student_score ss, exam e, instructor i, subject_point sp, subject s
+        ,exam e, instructor i,subject s
     WHERE i.instructor_id = os.instructor_id
     AND os.open_subject_id = e.open_subject_id
-    AND e.exam_id = sp.exam_id
-    AND e.exam_id = ss.exam_id
     AND os.open_course_id = oc.open_course_id
     AND oc.course_id = c.course_id
     AND s.subject_id = os.subject_id;
- 
- 
+
+
 CREATE VIEW specific_cur_sub_view2
 AS
 SELECT course_name, subject_name, subject_start_date, subject_end_date
-    , subjectbook_name, instructor_name, attendance_point, write_point, skill_point
-    , attendance_score, write_score, skill_score, exam_date, exam_file, student_id
-    FROM specific_cur_sub_view1 v, subjectbook sb
-    WHERE v.subjectbook_id = sb.subjectbook_id(+);
-    
-    
+    , subjectbook_name, instructor_name, exam_date, exam_file, open_subject_id
+    , attendance_point, write_point, skill_point, student_id, attendance_score, write_score, skill_score
+    FROM specific_cur_sub_view1 v, subjectbook sb, subject_point sp, student_score ss
+    WHERE v.subjectbook_id = sb.subjectbook_id(+)
+    AND v.exam_id = sp.exam_id(+)
+    AND v.exam_id = ss.exam_id(+);
+
 SELECT course_name, subject_name, subject_start_date, subject_end_date
     , subjectbook_name, instructor_name, attendance_point, write_point, skill_point
     , attendance_score, write_score, skill_score, exam_date, exam_file
     FROM specific_cur_sub_view2
-    WHERE student_id = '수강생ID';
+    WHERE open_subject_id = '과목번호'
+    AND student_id = '수강생ID';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (수강생 : 조인성) > 1. 성적 조회 > Java & Python 기반 응용 SW 개발자 양성 과정
