@@ -1,0 +1,395 @@
+﻿-- 교재 정보 테이블
+CREATE TABLE SUBJECTBOOK (
+   subjectbook_id        VARCHAR2(6)   NOT NULL, -- 교재_ID
+   subjectbook_name      NVARCHAR2(20) NULL,     -- 교재명
+   subjectbook_publisher NVARCHAR2(20) NULL      -- 출판사명
+);
+
+-- 교재 정보 테이블
+ALTER TABLE  SUBJECTBOOK
+   ADD
+      CONSTRAINT  PK_SUBJECTBOOK    -- 교재 정보 테이블 기본키
+      PRIMARY KEY (
+          subjectbook_id  -- 교재_ID
+      );
+
+-- 개설 과목 정보 테이블
+CREATE TABLE  OPEN_SUBJECT    (
+    open_subject_id     VARCHAR2(6) NOT NULL, -- 개설 과목 정보_ID
+    subjectbook_id      VARCHAR2(6) NULL,     -- 교재_ID
+    subject_id          VARCHAR2(6) NULL,     -- 과목_ID
+    instructor_id       VARCHAR2(6) NULL,     -- 강사_ID
+    open_course_id      VARCHAR2(6) NULL,     -- 개설 과정_ID
+    subject_start_date  DATE        NULL,     -- 과목시작일
+    subject_end_date    DATE        NULL      -- 과목종료일
+);
+
+-- 개설 과목 정보 테이블
+ALTER TABLE  OPEN_SUBJECT   
+   ADD
+      CONSTRAINT  PK_OPEN_SUBJECT    -- 개설 과목 정보 테이블 기본키
+      PRIMARY KEY (
+          open_subject_id  -- 개설 과목 정보_ID
+      );
+
+-- 과목 정보 테이블
+CREATE TABLE  SUBJECT    (
+    subject_id    VARCHAR2(6)   NOT NULL, -- 과목_ID
+    subject_name  NVARCHAR2(20) NULL      -- 과목명
+);
+
+-- 과목 정보 테이블
+ALTER TABLE  SUBJECT   
+   ADD
+      CONSTRAINT  PK_SUBJECT    -- 과목 정보 테이블 기본키
+      PRIMARY KEY (
+          subject_id  -- 과목_ID
+      );
+
+-- 과목별 배점 정보 테이블
+CREATE TABLE  SUBJECT_POINT    (
+    subject_point_id  VARCHAR2(6) NOT NULL, -- 과목별 배점 정보_ID
+    exam_id           VARCHAR2(8) NULL,     -- 시험_ID
+    attendance_point  NUMBER      NULL,     -- 출결배점
+    write_point       NUMBER      NULL,     -- 필기배점
+    skill_point       NUMBER      NULL      -- 실기배점
+);
+
+-- 과목별 배점 정보 테이블
+ALTER TABLE  SUBJECT_POINT   
+   ADD
+      CONSTRAINT  PK_SUBJECT_POINT    -- 과목별 배점 정보 테이블 기본키
+      PRIMARY KEY (
+          subject_point_id  -- 과목별 배점 정보_ID
+      );
+
+-- 시험 테이블
+CREATE TABLE  EXAM    (
+    exam_id          VARCHAR2(8)  NOT NULL, -- 시험_ID
+    exam_date        DATE         NULL,     -- 시험 날짜
+    exam_file        VARCHAR2(50) NULL,     -- 시험 문제 파일
+    open_subject_id  VARCHAR2(6)  NULL      -- 개설 과목 정보_ID
+);
+
+-- 시험 테이블
+ALTER TABLE  EXAM   
+   ADD
+      CONSTRAINT  PK_EXAM    -- 시험 테이블 기본키
+      PRIMARY KEY (
+          exam_id  -- 시험_ID
+      );
+
+-- 강사 정보 테이블
+CREATE TABLE  INSTRUCTOR    (
+    instructor_id     VARCHAR2(6)   NOT NULL, -- 강사_ID
+    instructor_name   NVARCHAR2(10) NULL,     -- 강사 이름
+    instructor_phone  VARCHAR2(13)  NULL,     -- 강사 전화번호
+    instructor_regDate  DATE        NULL,     -- 강사 등록일
+    instructor_pw     VARCHAR2(20)  NULL      -- 강사 패스워드
+);
+
+-- 강사 정보 테이블
+ALTER TABLE  INSTRUCTOR   
+   ADD
+      CONSTRAINT  PK_INSTRUCTOR    -- 강사 정보 테이블 기본키
+      PRIMARY KEY (
+          instructor_id  -- 강사_ID
+      );
+
+-- 강의 가능 과목 테이블               
+CREATE TABLE  INSTRUCTOR_POSSIBLE    (
+    instructor_id  VARCHAR2(6) NOT NULL, -- 강사_ID
+    subject_id     VARCHAR2(6) NOT NULL  -- 과목_ID
+);
+
+-- 강의 가능 과목 테이블               
+ALTER TABLE  INSTRUCTOR_POSSIBLE   
+   ADD
+      CONSTRAINT  PK_INSTRUCTOR_POSSIBLE    -- 강의 가능 과목 테이블                기본키
+      PRIMARY KEY (
+          instructor_id , -- 강사_ID
+          subject_id      -- 과목_ID
+      );
+
+-- 강의실 테이블
+CREATE TABLE  CLASS_ROOM    (
+    class_room_id    VARCHAR2(4)   NOT NULL, -- 강의실_ID
+    class_room_name  NVARCHAR2(10) NULL,     -- 강의실명
+    max_number       NUMBER        NULL      -- 최대 정원
+);
+
+-- 강의실 테이블
+ALTER TABLE  CLASS_ROOM   
+   ADD
+      CONSTRAINT  PK_CLASS_ROOM    -- 강의실 테이블 기본키
+      PRIMARY KEY (
+          class_room_id  -- 강의실_ID
+      );
+
+-- 개설 과정 정보 테이블
+CREATE TABLE  OPEN_COURSE    (
+    open_course_id          VARCHAR2(6) NOT NULL, -- 개설 과정_ID
+    class_room_id           VARCHAR2(4) NULL,     -- 강의실_ID
+    course_id               VARCHAR2(6) NULL,     -- 과정_ID
+    open_course_start_date  DATE        NULL,     -- 개설 과정 시작일
+    open_course_end_date    DATE        NULL      -- 개설 과정 종료일
+);
+
+-- 개설 과정 정보 테이블
+ALTER TABLE  OPEN_COURSE   
+   ADD
+      CONSTRAINT  PK_OPEN_COURSE    -- 개설 과정 정보 테이블 기본키
+      PRIMARY KEY (
+          open_course_id  -- 개설 과정_ID
+      );
+
+-- 과정 정보 테이블
+CREATE TABLE  COURSE    (
+    course_id    VARCHAR2(6)   NOT NULL, -- 과정_ID
+    course_name  NVARCHAR2(50) NULL      -- 과정명
+);
+
+-- 과정 정보 테이블
+ALTER TABLE  COURSE   
+   ADD
+      CONSTRAINT  PK_COURSE    -- 과정 정보 테이블 기본키
+      PRIMARY KEY (
+          course_id  -- 과정_ID
+      );
+
+-- 수강생 성적 정보 테이블
+CREATE TABLE  STUDENT_SCORE    (
+    student_score_id  VARCHAR2(7) NOT NULL, -- 수강생 성적 정보_ID
+    attendance_score  NUMBER      NULL,     -- 출결점수
+    write_score       NUMBER      NULL,     -- 필기점수
+    skill_score       NUMBER      NULL,     -- 실기점수
+    exam_id           VARCHAR2(8) NULL,     -- 시험_ID
+    student_id        VARCHAR2(7) NULL      -- 수강생_ID
+);
+
+-- 수강생 성적 정보 테이블
+ALTER TABLE  STUDENT_SCORE   
+   ADD
+      CONSTRAINT  PK_STUDENT_SCORE   -- 수강생 성적 정보 테이블 기본키
+      PRIMARY KEY (
+          student_score_id  -- 수강생 성적 정보_ID
+      );
+
+-- 수강생 테이블
+CREATE TABLE  STUDENT   (
+    student_id       VARCHAR2(7)   NOT NULL, -- 수강생_ID
+    student_name     NVARCHAR2(10) NULL,     -- 수강생 이름
+    student_phone    VARCHAR2(13)  NULL,     -- 수강생 전화번호
+    student_regDate  DATE          NULL,     -- 수강생 등록일
+    student_pw       VARCHAR2(20)  NULL      -- 수강생 패스워드
+);
+
+-- 수강생 테이블
+ALTER TABLE  STUDENT   
+   ADD
+      CONSTRAINT  PK_STUDENT    -- 수강생 테이블 기본키
+      PRIMARY KEY (
+          student_id  -- 수강생_ID
+      );
+
+-- 수강 히스토리 테이블
+CREATE TABLE  STUDENT_HISTORY    (
+    open_course_id  VARCHAR2(6) NOT NULL, -- 개설 과정_ID
+    student_id      VARCHAR2(7) NOT NULL  -- 수강생_ID
+);
+
+-- 수강 히스토리 테이블
+ALTER TABLE  STUDENT_HISTORY   
+   ADD
+      CONSTRAINT  PK_STUDENT_HISTORY    -- 수강 히스토리 테이블 기본키
+      PRIMARY KEY (
+          open_course_id , -- 개설 과정_ID
+          student_id       -- 수강생_ID
+      );
+
+-- 수료 여부 테이블
+CREATE TABLE  PROCESS_COMPLETE    (
+    open_course_id  VARCHAR2(6) NOT NULL, -- 개설 과정_ID
+    student_id      VARCHAR2(7) NOT NULL, -- 수강생_ID
+    dropout_date    DATE        NULL      -- 중도 탈락 일자
+);
+
+-- 수료 여부 테이블
+ALTER TABLE  PROCESS_COMPLETE   
+   ADD
+      CONSTRAINT  PK_PROCESS_COMPLETE    -- 수료 여부 테이블 기본키
+      PRIMARY KEY (
+          open_course_id , -- 개설 과정_ID
+          student_id       -- 수강생_ID
+      );
+
+-- 개설 과목 정보 테이블
+ALTER TABLE  OPEN_SUBJECT   
+   ADD
+      CONSTRAINT  FK_subjectbook_OPEN_SUBJECT    -- 교재 정보 테이블 -> 개설 과목 정보 테이블
+      FOREIGN KEY (
+          subjectbook_id  -- 교재_ID
+      )
+      REFERENCES  SUBJECTBOOK    ( -- 교재 정보 테이블
+          subjectbook_id  -- 교재_ID
+      );
+
+-- 개설 과목 정보 테이블
+ALTER TABLE  OPEN_SUBJECT   
+   ADD
+      CONSTRAINT  FK_SUBJECT_OPEN_SUBJECT  -- 과목 정보 테이블 -> 개설 과목 정보 테이블
+      FOREIGN KEY (
+          subject_id  -- 과목_ID
+      )
+      REFERENCES  SUBJECT    ( -- 과목 정보 테이블
+          subject_id  -- 과목_ID
+      );
+
+-- 개설 과목 정보 테이블
+ALTER TABLE  OPEN_SUBJECT   
+   ADD
+      CONSTRAINT  FK_INSTRUCTOR_OPEN_SUBJECT    -- 강사 정보 테이블 -> 개설 과목 정보 테이블
+      FOREIGN KEY (
+          instructor_id  -- 강사_ID
+      )
+      REFERENCES  INSTRUCTOR    ( -- 강사 정보 테이블
+          instructor_id  -- 강사_ID
+      );
+
+-- 개설 과목 정보 테이블
+ALTER TABLE  OPEN_SUBJECT   
+   ADD
+      CONSTRAINT  FK_OPEN_COURSE_OPEN_SUBJECT    -- 개설 과정 정보 테이블 -> 개설 과목 정보 테이블
+      FOREIGN KEY (
+          open_course_id  -- 개설 과정_ID
+      )
+      REFERENCES  OPEN_COURSE    ( -- 개설 과정 정보 테이블
+          open_course_id  -- 개설 과정_ID
+      );
+
+-- 과목별 배점 정보 테이블
+ALTER TABLE  SUBJECT_POINT   
+   ADD
+      CONSTRAINT  FK_EXAM_SUBJECT_POINT  -- 시험 테이블 -> 과목별 배점 정보 테이블
+      FOREIGN KEY (
+          exam_id  -- 시험_ID
+      )
+      REFERENCES  EXAM    ( -- 시험 테이블
+          exam_id  -- 시험_ID
+      );
+
+-- 시험 테이블
+ALTER TABLE  EXAM      
+   ADD
+      CONSTRAINT  FK_OPEN_SUBJECT_EXAM     -- 개설 과목 정보 테이블 -> 시험 테이블
+      FOREIGN KEY (
+          open_subject_id  -- 개설 과목 정보_ID
+      )
+      REFERENCES  OPEN_SUBJECT    ( -- 개설 과목 정보 테이블
+          open_subject_id  -- 개설 과목 정보_ID
+      );
+
+-- 강의 가능 과목 테이블               
+ALTER TABLE  INSTRUCTOR_POSSIBLE   
+   ADD
+      CONSTRAINT  FK_SUBJECT_INSTRUCTOR_POSSIBLE      -- 과목 정보 테이블 -> 강의 가능 과목 테이블               
+      FOREIGN KEY (
+          subject_id  -- 과목_ID
+      )
+      REFERENCES  SUBJECT    ( -- 과목 정보 테이블
+          subject_id  -- 과목_ID
+      );
+
+-- 강의 가능 과목 테이블               
+ALTER TABLE  INSTRUCTOR_POSSIBLE   
+   ADD
+      CONSTRAINT  FK_INSTRUCTOR_INS_POSSIBLE   -- 강사 정보 테이블 -> 강의 가능 과목 테이블               
+      FOREIGN KEY (
+          instructor_id  -- 강사_ID
+      )
+      REFERENCES  INSTRUCTOR    ( -- 강사 정보 테이블
+          instructor_id  -- 강사_ID
+      );
+
+-- 개설 과정 정보 테이블
+ALTER TABLE  OPEN_COURSE   
+   ADD
+      CONSTRAINT  FK_CLASS_ROOM_OPEN_COURSE  -- 강의실 테이블 -> 개설 과정 정보 테이블
+      FOREIGN KEY (
+          class_room_id  -- 강의실_ID
+      )
+      REFERENCES  CLASS_ROOM    ( -- 강의실 테이블
+          class_room_id  -- 강의실_ID
+      );
+
+-- 개설 과정 정보 테이블
+ALTER TABLE  OPEN_COURSE   
+   ADD
+      CONSTRAINT  FK_COURSE_OPEN_COURSE   -- 과정 정보 테이블 -> 개설 과정 정보 테이블
+      FOREIGN KEY (
+          course_id  -- 과정_ID
+      )
+      REFERENCES  COURSE    ( -- 과정 정보 테이블
+          course_id  -- 과정_ID
+      );
+
+
+-- 수강생 성적 정보 테이블
+ALTER TABLE  STUDENT_SCORE   
+   ADD
+      CONSTRAINT  FK_EXAM_STUDENT_SCORE  -- 시험 테이블 -> 수강생 성적 정보 테이블
+      FOREIGN KEY (
+          exam_id  -- 시험_ID
+      )
+      REFERENCES  EXAM    ( -- 시험 테이블
+          exam_id  -- 시험_ID
+      );
+
+
+-- 수강생 성적 정보 테이블
+ALTER TABLE  STUDENT_SCORE   
+   ADD
+      CONSTRAINT  FK_STUDENT_STUDENT_SCORE  -- 수강생 테이블 -> 수강생 성적 정보 테이블
+      FOREIGN KEY (
+          student_id  -- 수강생_ID
+      )
+      REFERENCES  STUDENT    ( -- 수강생 테이블
+          student_id  -- 수강생_ID
+      );
+
+
+-- 수강 히스토리 테이블
+ALTER TABLE  STUDENT_HISTORY
+   ADD
+      CONSTRAINT  FK_OPEN_COURSE_STUDENT_HISTORY   -- 개설 과정 정보 테이블 -> 수강 히스토리 테이블
+      FOREIGN KEY (
+          open_course_id  -- 개설 과정_ID
+      )
+      REFERENCES  OPEN_COURSE    ( -- 개설 과정 정보 테이블
+          open_course_id  -- 개설 과정_ID
+      );
+
+-- 수강 히스토리 테이블
+ALTER TABLE  STUDENT_HISTORY
+   ADD
+      CONSTRAINT  FK_STUDENT_STUDENT_HISTORY  -- 수강생 테이블 -> 수강 히스토리 테이블
+      FOREIGN KEY (
+          student_id  -- 수강생_ID
+      )
+      REFERENCES  STUDENT  ( -- 수강생 테이블
+          student_id  -- 수강생_ID
+      );
+
+
+-- 수료 여부 테이블
+ALTER TABLE  PROCESS_COMPLETE
+   ADD
+      CONSTRAINT  FK_STUDENT_HIS_PROCESS_COM         -- 수강 히스토리 테이블 -> 수료 여부 테이블
+      FOREIGN KEY (
+          open_course_id , -- 개설 과정_ID
+          student_id       -- 수강생_ID
+      )
+      REFERENCES  STUDENT_HISTORY  ( -- 수강 히스토리 테이블
+          open_course_id , -- 개설 과정_ID
+          student_id       -- 수강생_ID
+      );
