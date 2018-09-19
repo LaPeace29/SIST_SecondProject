@@ -26,6 +26,10 @@ SELECT COUNT(*) AS COUNT
 /*
 -- 1번
 -- 위에 같은 번호 있으니 참고
+SELECT COUNT(*) AS COUNT
+   FROM instructor
+   WHERE UPPER(instructor_id)=UPPER('강사ID') AND instructor_pw;
+
 */
 
 강사 '이상원'님이 로그인되었습니다.
@@ -72,16 +76,35 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, comp
 수강생 등록 인원 : 3명
 /*
 -- 3번
-SELECT course_name, open_course_start_date
-, open_course_end_date, class_room_name
-, subject_name, subject_start_date, subject_end_date,subjectbook_name
+CREATE OR REPLACE VIEW course_registration_view1
+AS
+SELECT course_name, open_course_start_date, open_subject_id
+, open_course_end_date, class_room_name, subject_name
+, subject_start_date, subject_end_date, subjectbook_id, oc.open_course_id
     FROM course c, open_course oc, class_room cr
-    , open_subject os,  subject s , subjectbook sb
+        , open_subject os, subject s
     WHERE c.course_id = oc.course_id
     AND cr.class_room_id = oc.class_room_id
     AND oc.open_course_id = os.open_course_id
-    AND s.subject_id = os.subject_id
-    AND os.subjectbook_id = sb.subjectbook_id(+) 
+    AND s.subject_id = os.subject_id;
+    
+    
+
+CREATE OR REPLACE VIEW course_registration_view2
+AS
+SELECT course_name, open_course_start_date, open_subject_id
+, open_course_end_date, class_room_name, open_course_id
+, subject_name, subject_start_date, subject_end_date, subjectbook_name
+    FROM course_registration_view1 crv, subjectbook sb
+    WHERE crv.subjectbook_id = sb.subjectbook_id(+);
+    
+
+SELECT course_name, open_course_start_date
+, open_course_end_date, class_room_name
+, subject_name, subject_start_date, subject_end_date, subjectbook_name
+, (SELECT COUNT(*) FROM student_history sh WHERE crv.open_course_id = sh.open_course_id) count
+    FROM course_registration_view2 crv
+    WHERE open_subject_id = '과목ID';
 */
 
   ** 수강생 정보 **
@@ -90,15 +113,10 @@ ST00001 / 홍길동 / 010-2356-4528 / 2017-12-20 / 수료 / 2018-05-06
 ST00002 / 이순신 / 010-4758-6532 / 2017-12-26 / 수료 / 2018-05-06
 ST00031 / 조인성 / 010-1234-1234 / 2018-01-02 / 중도탈락 / 2018-03-02
 /*
--- 4번
-SELECT student_id, student_name, student_phone, student_regDate
-, CASE
-  WHEN SYSDATE <open_course_start_date AND drop_date is null THEN '수료예정'
-  WHEN SYSDATE >open_course_end_date AND drop_date is null THEN '수료완료'
-  WHEN drop_date IS NOT NULL THEN '중도탈락'
-  else '진행중'
-  END completion
-FROM student_info_view1;
+-- 4번(10번쿼리문에서 따옴)
+SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date
+    FROM student_info_view3
+    WHERE open_subject_id = 'OS0034';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (강사 : 이상원) 
@@ -117,6 +135,33 @@ OS0034 / HTML / 2018-01-02 ~ 2018-03-02 / 강의 종료
 OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 /*
 -- 5번. 배점 입력전 개설과목번호, 과목명, 과목기간, 비고를 출력
+CREATE OR REPLACE VIEW score_print_view1
+AS
+SELECT os.open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_id
+    ,CASE
+  WHEN SYSDATE < subject_start_date THEN '강의 예정'
+  WHEN SYSDATE > subject_end_date THEN '강의 종료'
+  else '강의중'
+  END lecture_progress, exam_id
+    FROM open_subject os, subject s, exam e
+    WHERE os.subject_id = s.subject_id
+    AND os.open_subject_id = e.open_subject_id;
+
+CREATE OR REPLACE VIEW score_print_view2
+AS
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lecture_progress, instructor_id
+    ,CASE
+    WHEN attendance_point IS NULL OR write_point IS NULL OR skill_point IS NULL THEN '배점 입력 전'
+    else '배점 입력 완료'
+    END score_status
+    FROM score_print_view1 spv, subject_point sp
+    WHERE spv.exam_id = sp.exam_id(+);
+
+
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lecture_progress
+        FROM score_print_view2
+        WHERE instructor_id = 'INS007'
+        AND score_status IN ('배점 입력 전');
 */
 강의 과목 번호 > OS0032
 
@@ -174,6 +219,17 @@ SELECT course_name, open_course_start_date,open_course_end_date
 시험문제 : OS0032_181112.zip
 /*
 -- 6번. 개설과목번호를 가지고 시험번호, 출결배점, 필기배점, 실기배점, 시험날짜, 시험문제를 출력하는 쿼리문.
+CREATE OR REPLACE VIEW exam_info_view
+AS
+SELECT e.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, open_subject_id
+    FROM subject_point sp FULL JOIN exam e
+    ON sp.exam_id = e.exam_id;
+    
+    
+SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
+    FROM exam_info_view
+    WHERE open_subject_id ='과목ID';
+
 */
 
 이미 시험이 등록되어 있습니다.
@@ -210,6 +266,11 @@ OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 /*
 -- 5번
 -- 위에 같은 번호 있으니 참고
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lecture_progress
+        FROM score_print_view2
+        WHERE instructor_id = 'INS007'
+        AND score_status IN ('배점 입력 전');
+
 */
 강의 과목 번호 > OS0032
 
@@ -248,6 +309,10 @@ OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 /*
 -- 6번
 -- 위에 같은 번호 있으니 참고
+SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
+    FROM exam_info_view
+    WHERE open_subject_id ='과목ID';
+
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (강사 : 이상원) > 2. 배점 관리
@@ -264,6 +329,11 @@ OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 /*
 -- 5번
 -- 위에 같은 번호 있으니 참고
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lecture_progress
+        FROM score_print_view2
+        WHERE instructor_id = 'INS007'
+        AND score_status IN ('배점 입력 전');
+
 */
 
 강의 과목 번호 > OS0032
@@ -303,6 +373,10 @@ OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 /*
 -- 6번
 -- 위에 같은 번호 있으니 참고
+SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
+    FROM exam_info_view
+    WHERE open_subject_id ='과목ID';
+
 */
 
 시험번호 > EXAM0015
@@ -333,6 +407,11 @@ OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 /*
 -- 5번. 배점 입력전 개설과목번호, 과목명, 과목기간, 비고를 출력
 -- 위에 같은 번호 있으니 참고
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lecture_progress
+        FROM score_print_view2
+        WHERE instructor_id = 'INS007'
+        AND score_status IN ('배점 입력 전');
+
 */
 강의 과목 번호 > OS0033
 없는 강의 과목입니다.
@@ -457,6 +536,11 @@ ST00032	/ 김탈락 / 010-3232-3232 / 2018-06-25 / 수료예정 / 2019-01-17 / 1
 /*
 -- 10번
 -- 위에 같은 번호 있으니 참고
+SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date
+    ,attendance_score, write_score, skill_score, total
+    FROM student_info_view3    
+    WHERE open_subject_id = '과목ID';
+
 */
 
 -- 중도 탈락학생이 있는 경우 -- 
@@ -466,6 +550,11 @@ ST00032	/ 김탈락 / 010-3232-3232 / 2018-06-25 / 수료예정 / 2019-01-17 / 1
 중도 탈락한 학생입니다. 성적을 입력 할 수 없습니다.
 /*
 -- 11번
+UPDATE student_score
+    SET attendance_score = 출결점수, write_score = 필기점수, skill_score = 실기점수
+    WHERE exam_id = '시험ID'
+    AND student_id = '수강생ID';
+
 */
 수강생 번호 > 0
 ---------------------------------------------------------------
@@ -482,38 +571,10 @@ OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 /*
 -- 5번. 배점 입력전 개설과목번호, 과목명, 과목기간, 비고를 출력
 -- 위에 같은 번호 있으니 참고
-CREATE OR REPLACE VIEW score_print_view1
-AS
-SELECT os.open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_id
-    ,CASE
-  WHEN SYSDATE < subject_start_date THEN '강의 예정'
-  WHEN SYSDATE > subject_end_date THEN '강의 종료'
-  else '강의중'
-  END lecture_progress, exam_id
-    FROM open_subject os, subject s, exam e
-    WHERE os.subject_id = s.subject_id
-    AND os.open_subject_id = e.open_subject_id;
-
-CREATE OR REPLACE VIEW score_print_view2
-AS
-SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lecture_progress, instructor_id
-    ,CASE
-    WHEN attendance_point IS NULL OR write_point IS NULL OR skill_point IS NULL THEN '배점 입력 전'
-    else '배점 입력 완료'
-    END score_status,
-    CASE
-    WHEN attendance_score IS NULL OR write_score IS NULL OR skill_score IS NULL THEN '성적 입력 전'
-    else '성적 입력 완료'
-    END distribution
-    FROM score_print_view1 spv, subject_point sp, student_score ss
-    WHERE spv.exam_id = sp.exam_id(+)
-    AND spv.exam_id = ss.exam_id(+);
-
-
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lecture_progress
-        ,score_status, distribution
         FROM score_print_view2
-        WHERE instructor_id = '강사ID';
+        WHERE instructor_id = 'INS007'
+        AND score_status IN ('배점 입력 전');
 
 */
 
@@ -572,6 +633,11 @@ ST00032	/ 김탈락 / 010-3232-3232 / 2018-06-25 / 수료예정 / 2019-01-17 / 1
 /*
 -- 10번
 -- 위에 같은 번호 있으니 참고
+SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date
+    ,attendance_score, write_score, skill_score, total
+    FROM student_info_view3    
+    WHERE open_subject_id = '과목ID';
+
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (강사 : 이상원) 
@@ -587,6 +653,11 @@ OS0032 - Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 /*
 -- 5번. 배점 입력전 개설과목번호, 과목명, 과목기간, 비고를 출력
 -- 위에 같은 번호 있으니 참고
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lecture_progress
+        FROM score_print_view2
+        WHERE instructor_id = 'INS007'
+        AND score_status IN ('배점 입력 전');
+
 */
 
 강의 과목 번호 > OS0031
@@ -643,6 +714,10 @@ ST00032	/ 김탈락 / 010-3232-3232 / 2018-06-25 / 수료예정 / 2019-01-17 / 1
 /*
 -- 10번
 -- 위에 같은 번호 있으니 참고
+SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date
+    ,attendance_score, write_score, skill_score, total
+    FROM student_info_view3    
+    WHERE open_subject_id = '과목ID';
 
 */
 
@@ -654,7 +729,10 @@ ST00032	/ 김탈락 / 010-3232-3232 / 2018-06-25 / 수료예정 / 2019-01-17 / 1
 /*
 -- 18번
 수강생 번호로 성적정보를 삭제하는 쿼리문
-*/
+DELETE FROM student_score
+    WHERE student_id IN (SELECT student_id FROM student
+                        WHERE student_name = '수강생이름' AND student_phone = '수강생전화번호');
+    */
 성적 정보가 삭제되었습니다.
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (강사 : 이상원) 
@@ -705,6 +783,9 @@ SELECT s.subject_id, s.subject_name
 강사 '이상원'의 비밀번호가 변경되었습니다.
 /*
 -- 14번
+UPDATE instructor
+    SET instructor_pw = '새로운패스워드'
+    WHERE instructor_name = '강사이름' AND instructor_pw = '기존패스워드';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (강사 : 이상원) > 4. 개인 정보
