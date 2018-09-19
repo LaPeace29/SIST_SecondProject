@@ -1,4 +1,18 @@
-﻿-- 교재 정보 테이블
+﻿-- 관리자 테이블
+CREATE TABLE ADMIN (
+   admin_id		VARCHAR2(10)   NULL, -- 관리자_ID
+   admin_pw		VARCHAR2(20)   NULL  -- 관리자_PW
+);
+
+ALTER TABLE ADMIN 
+   ADD
+      CONSTRAINT UK_ADMIN_ID_PW	-- 관리자 테이블 유니크키
+      UNIQUE (
+        admin_id,  -- 관리자_ID
+        admin_pw  -- 관리자_PW
+   );
+
+-- 교재 정보 테이블
 CREATE TABLE SUBJECTBOOK (
    subjectbook_id        VARCHAR2(6)   NOT NULL, -- 교재_ID
    subjectbook_name      NVARCHAR2(20) NULL,     -- 교재명
@@ -96,6 +110,14 @@ ALTER TABLE  INSTRUCTOR
           instructor_id  -- 강사_ID
       );
 
+ALTER TABLE INSTRUCTOR   
+   ADD
+      CONSTRAINT UK_INSTRUCTOR_ID_PW	-- 강사 테이블 유니크키
+      UNIQUE (
+        instructor_id,  -- 강사_ID
+        instructor_pw  -- 강사_PW
+   );
+
 -- 강의 가능 과목 테이블               
 CREATE TABLE  INSTRUCTOR_POSSIBLE    (
     instructor_id  VARCHAR2(6) NOT NULL, -- 강사_ID
@@ -191,6 +213,14 @@ ALTER TABLE  STUDENT
       PRIMARY KEY (
           student_id  -- 수강생_ID
       );
+
+ALTER TABLE STUDENT
+   ADD
+      CONSTRAINT UK_STUDENT_ID_PW	-- 수강생 테이블 유니크키
+      UNIQUE (
+        student_id,  -- 수강생_ID
+        student_pw  -- 수강생_PW
+   );
 
 -- 수강 히스토리 테이블
 CREATE TABLE  STUDENT_HISTORY    (
