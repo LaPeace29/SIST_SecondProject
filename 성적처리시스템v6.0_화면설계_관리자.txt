@@ -103,6 +103,11 @@ CS0011 / 오라클기반 DB&모바일 개발자 양성과정 / O
 총 : 11건
 /*
 -- 4번 쿼리문. 과정명 출력. 참조 확인해서 삭제 가능여부까지 확인
+SELECT course_id, course_name
+        ,(SELECT COUNT(*) FROM open_course
+            WHERE course_id=c.course_id) count_
+            FROM course c
+            ORDER BY course_id;
 */
 
 과정 번호 > CS0000
@@ -114,6 +119,7 @@ CS0011 / 오라클기반 DB&모바일 개발자 양성과정 / O
 'CS0011'이 삭제되었습니다.
 /*
 -- 5번 쿼리문. 과정명 삭제
+DELETE FROM course WHERE course_id=과정아이디;
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 1. 과정 관리
@@ -219,6 +225,11 @@ SUB026 / C++ / O
 총 : 26건
 /*
 -- 8번 쿼리문. 과목명 출력. 참조 확인해서 삭제 가능여부까지 확인
+SELECT subject_id, subject_name
+        ,(SELECT COUNT(*) FROM open_subject
+            WHERE subject_id=s.subject_id) count_
+            FROM subject s
+            ORDER BY subject_id;
 */
 과목 번호 > SUB026
 과목명 : C++
@@ -226,6 +237,7 @@ SUB026 / C++ / O
 'SUB026'이 삭제되었습니다.
 /*
 -- 9번 쿼리문. 과목명 삭제.
+DELETE FROM subject WHERE subject_id=’과목아이디’;
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 2. 과목 관리
@@ -296,6 +308,11 @@ CR08 / 8강의실 / 30 / O
 총 : 8건
 /*
 -- 12번 쿼리문. 강의실 출력. 참조 확인해서 삭제 가능여부까지 확인
+SELECT class_room_id, class_room_name, max_number
+        ,(SELECT COUNT(*) FROM open_course
+            WHERE class_room_id=c.class_room_id) count_
+            FROM class_room c
+            ORDER BY class_room_id;
 */
 강의실 번호 > CR00 
 없는 강의실입니다!
@@ -306,6 +323,7 @@ CR08 / 8강의실 / 30 / O
 'CR08'이 삭제되었습니다.
 /*
 -- 13번 쿼리문. 강의실 삭제.
+DELETE FROM class_room WHERE class_room_id='강의실아이디';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리
@@ -400,6 +418,11 @@ SB0022 / 이것이 C언어다 / 한빛미디어 / O
 총 : 22건
 /*
 -- 16번 쿼리문. 교재 입력. 참조 확인해서 삭제 가능여부까지 확인
+SELECT subjectbook_id, subjectbook_name, subjectbook_publisher
+        ,(SELECT COUNT(*) FROM open_subject
+            WHERE subjectbook_id=s.subjectbook_id) count_
+            FROM subjectbook s
+            ORDER BY subjectbook_id;
 */
 
 교재 번호 > SB0022
@@ -409,6 +432,7 @@ SB0022 / 이것이 C언어다 / 한빛미디어 / O
 'SB0022'이 삭제되었습니다.
 /*
 -- 17번 쿼리문. 교재 삭제.
+DELETE FROM subjectbook WHERE subjectbook_id='교재아이디';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 4. 교재 관리
@@ -636,6 +660,7 @@ SELECT i2.instructor_id, i2.instructor_name, i2.instructor_phone, i2.instructor_
 'INS017'이 삭제되었습니다.
 /*
 -- 24번 쿼리문. 강사 삭제하는 쿼리문
+DELETE FROM instructor WHERE instructor_id='강사아이디';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리
@@ -1130,6 +1155,7 @@ OC0016 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / 20
 위의 개설 과정을 삭제하시겠습니까? (0/1) > 1
 /*
 -- 36번 쿼리문. 개설과정번호를 입력받아 삭제하는 쿼리문.
+DELETE FROM open_course WHERE open_course_id = '개설과정번호';
 */
 
 삭제되었습니다.
@@ -1375,6 +1401,7 @@ OS0036 ........... / O
 위의 개설 과목을 삭제하시겠습니까? (0/1) > 1
 /*
 -- 43번 쿼리문. 개설 과목을 삭제하는 쿼리문.
+DELETE FROM open_subject WHERE open_subject_id = '개설과목아이디';
 */
 
 삭제되었습니다.
@@ -1675,6 +1702,7 @@ ST00033 / 김수강 / 010-0000-0000  / 2018-09-13 / O
 위의 수강생을 삭제하시겠습니까? (0/1) > 1
 /*
 -- 51번 쿼리문. 수강생을 삭제하는 쿼리문.
+DELETE FROM student WHERE student_id = '수강생아이디';
 */
 'ST00033'이 삭제되었습니다.
 ---------------------------------------------------------------
