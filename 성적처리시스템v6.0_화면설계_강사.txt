@@ -129,6 +129,33 @@ OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 
 /*
 -- 9번. 강의과목번호로 개설과정명, 개설과정기간,강의실,개설과목명,개설과목기간,교재명을 출력하는 쿼리문
+CREATE OR REPLACE VIEW possible_course_infoT
+AS
+SELECT os.open_subject_id, os.subject_start_date, os.subject_end_date,
+os.instructor_id, os.subject_id, oc.open_course_id, oc.open_course_start_date,
+oc.open_course_end_date, c.course_id, c.course_name, cr.class_room_id, cr.class_room_name, 
+cr.max_number, s.subject_name, os.subjectbook_id
+    FROM open_subject os, open_course oc, course c, class_room cr, subject s
+    WHERE os.open_course_id = oc.open_course_id
+    AND os.subject_id = s.subject_id
+    AND oc.class_room_id = cr.class_room_id
+    AND oc.course_id = c.course_id;
+
+
+CREATE OR REPLACE VIEW possible_course_info
+AS      
+SELECT t.open_subject_id, t.subject_start_date, t.subject_end_date,
+t.instructor_id, t.subject_id, t.open_course_id, t.open_course_start_date,
+t.open_course_end_date, t.course_id, t.course_name, t.class_room_id, t.class_room_name, 
+t.max_number, s.subjectbook_id, s.subjectbook_name, s.subjectbook_publisher, t.subject_name
+    FROM test4 t, subjectbook s
+    WHERE t.subjectbook_id = s.subjectbook_id(+);
+
+    
+SELECT course_name, open_course_start_date,open_course_end_date
+,class_room_name, subject_name, subject_start_date, subject_end_date, subjectbook_name
+    FROM possible_course_info
+    WHERE open_subject_id IN (과목ID);
 */
 
   ** 시험 정보 **
