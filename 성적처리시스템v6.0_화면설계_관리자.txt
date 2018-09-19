@@ -11,6 +11,9 @@
 이름이나 비밀번호가 틀렸습니다.
 /*
 -- 1번 쿼리문.
+SELECT COUNT(*) AS count
+   FROM student
+   WHERE UPPER(student_id)=UPPER('수강생ID') AND student_pw;
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0
@@ -69,6 +72,8 @@ CS0011 / 자바기반 DB&모바일 개발자 양성과정
 총 : 11건
 /*
 -- 3번 쿼리문. 과정명 출력
+SELECT course_id, course_name
+    FROM course;
 */
 
 ---------------------------------------------------------------
@@ -165,6 +170,8 @@ SUB026 / C
 총 : 26건
 /*
 -- 7번 쿼리문. 과목명 출력.
+SELECT subject_id, subject_name
+    FROM subject;
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 2. 과목 관리
@@ -254,6 +261,8 @@ CR08 / 8강의실 / 30
 총 : 8건
 /*
 -- 11번 쿼리문. 강의실 출력. 최대정원 포함.
+SELECT class_room_id, class_room_name
+    FROM class_room;
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 3. 강의실 관리
@@ -338,6 +347,8 @@ SB0022 / 이것이 C언어다 / 한빛미디어
 총 : 22건
 /*
 -- 15번 쿼리문. 교재명 출력. 출판사 포함
+SELECT subjectbook_id, subjectbook_name, subjectbook_publisher
+    FROM subjectbook;
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 4. 교재 관리
@@ -422,6 +433,9 @@ SB0022 / 이것이 C언어다 / 한빛미디어 / O
 강사 전화번호 : 010-1234-4321
 /*
 -- 19번 쿼리문. 강사 이름, 전화번호 출력
+SELECT instructor_id, instructor_name, instructor_phone
+    FROM instructor
+    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
 */
 -------------------------------
 개설 과목명 / 개설 과목 기간 / 개설 과정명 / 개설 과정 기간 / 강의실 / 강의 진행 여부
@@ -432,6 +446,22 @@ Open API / 2018-12-05 ~ 2019-02-18 / 웹기반 빅데이터 분석 응용SW개�
 총 3건
 /*
 -- 20번 쿼리문. 해당 강사의 개설과목명, 개설과목기간, 개설과정명, 개설과정기간, 강의실, 강의진행여부(강의종료, 강의중, 강의예정) 출력
+SELECT subject_name, subject_start_date, subject_end_date, course_name
+     , open_course_start_date, open_course_end_date, class_room_name 
+     ,CASE
+  WHEN SYSDATE <subject_start_date THEN '강의 예정'
+  WHEN SYSDATE >subject_end_date THEN '강의 종료'
+  else '강의 중'
+  END completion
+    FROM subject s, open_subject os, course c, open_course oc, class_room cr
+    , instructor i, instructor_possible ip
+    WHERE s.subject_id = os.subject_id
+    AND oc.open_course_id = os.open_course_id
+    AND c.course_id = oc.course_id
+    AND cr.class_room_id = oc.class_room_id
+    AND i.instructor_id = os.instructor_id
+    AND ip.subject_id = s.subject_id
+    AND ip.instructor_id = '강사번호';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 2. 강사 검색 및 출력
@@ -450,6 +480,9 @@ INS002 / 정종호 / 010-5285-3994 / 2017-02-08
 총 2건
 /*
 -- 21번 쿼리문. 이름으로 검색시 여러건 => 강사번호, 강사이름, 강사휴대폰번호, 등록일 출력
+SELECT instructor_id, instructor_name, instructor_phone, instructor_regDate
+    FROM instructor
+    WHERE INSTR(instructor_name,'강사 이름 일부') > 0;
 */
 검색 결과가 여러건 입니다.
 강사 번호 > INS001
@@ -459,6 +492,9 @@ INS002 / 정종호 / 010-5285-3994 / 2017-02-08
 /*
 -- 19번 쿼리문. 강사 이름, 전화번호 출력
 -- 위에 같은 번호 있으니 참고
+SELECT instructor_id, instructor_name, instructor_phone
+    FROM instructor
+    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
 */
 -------------------------------
 개설 과목명 / 개설 과목 기간 / 개설 과정명 / 개설 과정 기간 / 강의실 / 강의 진행 여부
@@ -470,6 +506,22 @@ Open API / 2018-12-05 ~ 2019-02-18 / 웹기반 빅데이터 분석 응용SW개�
 /*
 -- 20번 쿼리문. 해당 강사의 개설과목명, 개설과목기간, 개설과정명, 개설과정기간, 강의실, 강의진행여부(강의종료, 강의중, 강의예정) 출력
 -- 위에 같은 번호 있으니 참고
+SELECT subject_name, subject_start_date, subject_end_date, course_name
+     , open_course_start_date, open_course_end_date, class_room_name 
+     ,CASE
+  WHEN SYSDATE <subject_start_date THEN '강의 예정'
+  WHEN SYSDATE >subject_end_date THEN '강의 종료'
+  else '강의 중'
+  END completion
+    FROM subject s, open_subject os, course c, open_course oc, class_room cr
+    , instructor i, instructor_possible ip
+    WHERE s.subject_id = os.subject_id
+    AND oc.open_course_id = os.open_course_id
+    AND c.course_id = oc.course_id
+    AND cr.class_room_id = oc.class_room_id
+    AND i.instructor_id = os.instructor_id
+    AND ip.subject_id = s.subject_id
+    AND ip.instructor_id = '강사번호';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 2. 강사 검색 및 출력
@@ -501,6 +553,14 @@ INS017 / 장동건 / 010-2222-3333 / 2018-09-12 /
 /*
 -- 22번 쿼리문. 전체 강사 출력
 -- 강사번호, 강사이름, 강사휴대폰번호, 강사등록일, 강의가능과목(LISTAGG() WITHIN GROUP(ORDER BY value) 사용) 출력
+SELECT i2.instructor_id, i2.instructor_name, i2.instructor_phone, i2.instructor_regdate, (SELECT(LISTAGG(s.subject_name, ', ') WITHIN GROUP(ORDER BY i.instructor_name)) 
+    FROM subject s, instructor_possible pc, instructor i
+    WHERE pc.subject_id = s.subject_id
+    AND i.instructor_id = pc.instructor_id
+    AND i.instructor_id = i2.instructor_id
+    GROUP BY i.instructor_name)as subject_name                                                           
+    FROM instructor i2;
+
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 2. 강사 검색 및 출력
@@ -536,6 +596,16 @@ INS017 / 장동건 / 010-2222-3333 / 2018-09-12 / / O
 /*
 -- 23번 쿼리문. 전체 강사 출력 / 참조키 참고해서 삭제 가능 여부 포함 출력
 -- 강사번호, 강사이름, 강사휴대폰번호, 강사등록일, 강의가능과목(LISTAGG() WITHIN GROUP(ORDER BY value) 사용), 삭제 가능 여부 출력
+SELECT i2.instructor_id, i2.instructor_name, i2.instructor_phone, i2.instructor_regdate, (SELECT(LISTAGG(s.subject_name, ', ') WITHIN GROUP(ORDER BY i.instructor_name)) 
+    FROM subject s, instructor_possible pc, instructor i
+    WHERE pc.subject_id = s.subject_id
+    AND i.instructor_id = pc.instructor_id
+    AND i.instructor_id = i2.instructor_id
+    GROUP BY i.instructor_name)as subject_name, (SELECT count(*) 
+                                            FROM open_subject os
+                                            WHERE i2.instructor_id = os.instructor_id) count_
+                                                                    
+    FROM instructor i2;
 */
 
 강사 번호 > INS017
@@ -576,6 +646,14 @@ INS016 / 송서진 / 010-7558-8648 / 2017-12-21 / Python, jQuery, Ajax
 -- 22번 쿼리문. 전체 강사 출력
 -- 강사번호, 강사이름, 강사휴대폰번호, 강사등록일, 강의가능과목(LISTAGG() WITHIN GROUP(ORDER BY value) 사용) 출력
 -- 위에 같은 번호 있으니 참고
+SELECT i2.instructor_id, i2.instructor_name, i2.instructor_phone, i2.instructor_regdate, (SELECT(LISTAGG(s.subject_name, ', ') WITHIN GROUP(ORDER BY i.instructor_name)) 
+    FROM subject s, instructor_possible pc, instructor i
+    WHERE pc.subject_id = s.subject_id
+    AND i.instructor_id = pc.instructor_id
+    AND i.instructor_id = i2.instructor_id
+    GROUP BY i.instructor_name)as subject_name
+                                                                    
+    FROM instructor i2;
 */
 
 강사 번호 > INS001
@@ -610,6 +688,9 @@ INS016 / 송서진 / 010-7558-8648 / 2017-12-21 / Python, jQuery, Ajax
 /*
 -- 19번 쿼리문. 강사 이름, 강사휴대폰번호 출력
 -- 위에 같은 번호 있으니 참고
+SELECT instructor_id, instructor_name, instructor_phone
+    FROM instructor
+    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
 */
 
 -------------------------------
@@ -619,6 +700,12 @@ SUB005 / HTML
 -------------------------------
 /*
 -- 26번 쿼리문. 강의가능과목(과목번호, 과목명) 출력
+SELECT s.subject_id, subject_name
+        FROM subject s, instructor_possible ip, instructor i
+        WHERE s.subject_id = ip.subject_id
+        AND i.instructor_id = ip.instructor_id
+        AND UPPER(i.instructor_id) = UPPER('강사 번호');
+
 */
 // 1번 누를시 전체 과목이 출력됨.
 과목 번호 > 1
@@ -654,6 +741,8 @@ SUB025 / Python
 /*
 -- 7번 쿼리문. 과목명 출력
 -- 위에 같은 번호 있으니 참고
+SELECT subject_id, subject_name
+    FROM subject;
 */
 과목 번호 > SUB001
 
@@ -661,6 +750,9 @@ SUB025 / Python
 과목명 : Java SE
 /*
 -- 27번 쿼리문. 선택한 과목명만 출력.
+SELECT subject_id, subject_name
+    FROM subject
+    WHERE UPPER(subject_id) = UPPER('sub001');
 */
 
 등록하시겠습니까? (0/1) > 1
@@ -674,6 +766,9 @@ SUB025 / Python
 /*
 -- 19번 쿼리문. 강사 이름, 강사휴대폰번호 출력
 -- 위에 같은 번호 있으니 참고
+SELECT instructor_id, instructor_name, instructor_phone
+    FROM instructor
+    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
 */
 
 -------------------------------
