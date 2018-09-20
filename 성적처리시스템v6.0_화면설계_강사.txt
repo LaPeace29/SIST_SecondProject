@@ -248,6 +248,15 @@ SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
 시험문제 > OS0034_181113.zip
 /*
 -- 7번. 출결배점, 필기배점, 실기배점, 시험날짜, 시험문제를 등록하는 쿼리문
+
+-- 시험 테이블 (이걸먼저생성)
+Insert into EXAM (EXAM_ID,EXAM_DATE,EXAM_FILE,OPEN_SUBJECT_ID)
+values ((SELECT(CONCAT('EXAM', LPAD(NVL(SUBSTR(MAX(exam_id), 5), 0) + 1, 4, 0)))AS newID FROM exam), '시험날짜', '시험문제','과목ID');
+
+Insert into SUBJECT_POINT 
+(SUBJECT_POINT_ID,EXAM_ID,ATTENDANCE_POINT,WRITE_POINT,SKILL_POINT) 
+values ((SELECT(CONCAT('SP', LPAD(NVL(SUBSTR(MAX(SUBJECT_POINT_ID), 3), 0) + 1, 2, 0)))AS newID FROM subject_point),
+(SELECT exam_id FROM exam WHERE exam_date = '시험날짜' AND exam_file = '시험문제'), 출결점수,필기점수,실기점수);
 */
 
 등록하시겠습니까?(0/1) > 1
@@ -384,6 +393,8 @@ SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
 배점(시험정보 포함)을 삭제하시겠습니까? (0/1) > 1
 /*
 -- 16번 시험번호로 배점정보를 삭제하는 쿼리문
+DELETE FROM subject_point
+    WHERE exam_id = '시험ID';
 */
 배점 정보가 삭제되었습니다.
 ---------------------------------------------------------------
