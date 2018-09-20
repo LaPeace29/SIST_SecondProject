@@ -1991,7 +1991,6 @@ ST00024 / 김말자 / 010-5248-7789 / 2018-11-10 / 1회
 /*
 -- 54번 쿼리문. 수강생번호와 개설과정번호로 삭제하는 쿼리문.
 STUDENT_HISTORY에서 삭제.
-STUDENT_HISTORY에서 삭제.
 DELETE FROM student_history 
     WHERE UPPER(student_id)=UPPER('수강생아이디') AND UPPER(open_course_id)=UPPER('개설과정아이디');
 */
