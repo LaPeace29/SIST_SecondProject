@@ -1654,6 +1654,9 @@ ST00031 / 조인성 / 010-1234-1234 / 2018-01-02
 총 3건
 /*
 -- 48번 쿼리문. 수강생 이름을 입력받아(부분입력) 수강생번호, 수강생이름, 수강생휴대폰번호, 수강생 등록일을 출력하는 쿼리문.
+SELECT student_id, student_name, student_phone, student_regdate
+    FROM student
+    WHERE INSTR(student_name,'홍') > 0;
 */
 검색 결과가 여러건 입니다.
 
@@ -2105,6 +2108,12 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17 / 최장학 / HTML5 웹 프로그래밍 
 교재명 : 오라클SQL을 다루는 기술
 /*
 -- 56번 쿼리문. 개설 과목 번호를 입력받아 개설과목명, 개설과목기간, 강사명, 교재명을 출력하는 쿼리문.
+SELECT subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name
+    FROM subject s, open_subject os, instructor i, subjectbook sb
+    WHERE s.subject_id = os.subject_id
+    AND i.instructor_id = os.instructor_id
+    AND sb.subjectbook_id = os.subjectbook_id
+    AND UPPER(os.open_subject_id) = UPPER('OS0032');
 */
 
 시험번호 : EXAM0013
@@ -2115,6 +2124,11 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17 / 최장학 / HTML5 웹 프로그래밍 
 시험문제파일 : OS0032_181015.zip
 /*
 -- 57번 쿼리문. 개설 과목 번호를 입력받아 시험번호, 출결배점, 필기배점, 실기배점, 시험날짜, 시험문제파일을 출력하는 쿼리문.
+SELECT e.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
+    FROM exam e, subject_point p, open_subject os
+    WHERE os.open_subject_id = e.open_subject_id
+    AND e.exam_id = p.exam_id
+    AND UPPER(os.open_subject_id) = UPPER('OS0032');
 */
 
   ** 수강생 정보 **
@@ -2122,6 +2136,12 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17 / 최장학 / HTML5 웹 프로그래밍 
 ST00000 / 홍길동 / 000-000-0000 / 10 / 10 / 10 / 30
 /*
 -- 58번 쿼리문. 시험번호를 입력받아 수강생 번호, 수강생 이름, 전화번호, 출결점수, 필기점수, 실기점수, 총점을 출력하는 쿼리문.
+SELECT s.student_id, student_name, student_phone, attendance_score, write_score, skill_score
+    , (attendance_score+write_score+skill_score) total
+    FROM student s, student_score ss, exam e
+    WHERE s.student_id = ss.student_id 
+    AND ss.exam_id = e.exam_id
+    AND UPPER(e.exam_id) = UPPER('EXAM0013');
 */
 
 시험번호 : EXAM0014
@@ -2160,6 +2180,9 @@ ST00000 / 홍길동 / 000-000-0000 / 10 / 10 / 10 / 30
 수강생 전화번호 : 010-2356-4528
 /*
 -- 59번 쿼리문. 수강생 번호를 입력받아 이름, 전화번호를 출력하는 쿼리문.
+SELECT student_name, student_phone
+    FROM student
+    WHERE UPPER(student_id) = UPPER('ST00001');
 */
 
   ** 개설 과정 정보 **
@@ -2168,6 +2191,13 @@ ST00000 / 홍길동 / 000-000-0000 / 10 / 10 / 10 / 30
 강의실명 : 1강의실
 /*
 -- 60번 쿼리문. 수강생 번호를 수강한 개설과정정보, 개설과정기간, 강의실명을 출력하는 쿼리문.
+SELECT c.course_name, oc.open_course_start_date, oc.open_course_end_date, cr.class_room_name
+    FROM open_course oc, class_room cr, student_history sh, student s, course c
+    WHERE s.student_id = sh.student_id    
+    AND sh.open_course_id = oc.open_course_id
+    AND c.course_id = oc.course_id
+    AND oc.class_room_id = cr.class_room_id
+    AND UPPER(s.student_id) = UPPER('ST00001');
 */
 
   ** 개설 과목 성적 정보 **
@@ -2177,6 +2207,18 @@ AOP / 2018-03-23 ~ 2018-05-06 / 김비삼 / 20(30) / 20(25) / 40(45) / 2018-05-0
 /*
 -- 61번 쿼리문. 개설과정번호로 수강생의 개설과목 성적 정보를 출력하는 쿼리문.
 -- 개설과목명, 개설과목기간, 강사명, 출결배점, 필기배점, 실기배점, 출결점수, 필기점수, 실기점수, 시험날짜를 출력.
+SELECT s.subject_name, os.subject_start_date, os.subject_end_date, i.instructor_name, p.attendance_point
+    , p.write_point, p.skill_point, ss.attendance_score, ss.write_score, ss.skill_score, e.exam_date
+    FROM subject s, open_subject os, instructor i, subject_point p, exam e
+        , student_score ss , student st
+    WHERE os.subject_id = s.subject_id
+    AND i.instructor_id = os.instructor_id
+    AND e.exam_id = p.exam_id
+    AND e.open_subject_id = os.open_subject_id
+    AND ss.exam_id = e.exam_id
+    AND st.student_id = ss.student_id
+    AND UPPER(st.student_id) = UPPER('ST00001');
+
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회 > 2. 수강생 개인 성적 조회
