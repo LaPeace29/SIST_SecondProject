@@ -12,12 +12,10 @@
 이름이나 비밀번호가 틀렸습니다.
 
 /*
-1. 쿼리문 (아이디,비번이 일치하면 count로 1 반환하는쿼리문)
-
-SELECT student_id, count(*) count_
+-- 1번. 아이디와 비밀번호가 일치하면 수강생_ID를 반환하는 쿼리문
+SELECT student_id
     FROM student
-    WHERE student_name = '조인성' AND student_pw = '1234'
-    GROUP BY student_id;
+    WHERE student_name = '김길동' AND student_pw = '1111';
 */
 
 ---------------------------------------------------------------
@@ -28,6 +26,14 @@ SELECT student_id, count(*) count_
 성적 처리 시스템 v6.0 > 1. 수강생 로그인
 이름 > 조인성
 비밀번호 > 1234
+
+/*
+-- 1번. 아이디와 비밀번호가 일치하면 수강생_ID를 반환하는 쿼리문
+-- 위에 동일한 쿼리문이 있으니 참고!
+SELECT student_id
+    FROM student
+    WHERE student_name = '조인성' AND student_pw = '1234';
+*/
 
 수강생 '조인성'님이 로그인되었습니다.
 ---------------------------------------------------------------
@@ -43,8 +49,8 @@ OC0015 / Java & Python 기반 응용 SW 개발자 양성 과정 / 2018-06-25 ~ 2
 -------------------------------
 총 2건
 /*
-2. 쿼리문 (수강생 ‘조인성’에 대한 과정 조회 – 검색)
-CREATE VIEW course_search_view
+-- 2번. 수강생번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간을 출력하는 쿼리문.
+CREATE VIEW course_search_view -- s_course_search_view로 수정
 AS
 SELECT o.open_course_id, course_name, o.open_course_start_date, o.open_course_end_date, sh.student_id
     FROM open_course o, course c, student_history sh
@@ -53,8 +59,8 @@ SELECT o.open_course_id, course_name, o.open_course_start_date, o.open_course_en
  
  
 SELECT open_course_id, course_name, open_course_start_date, open_course_end_date
-    FROM course_search_view
-    WHERE student_id = '수강생ID';
+    FROM course_search_view -- s_course_search_view로 수정
+    WHERE student_id = 'ST00031';
 */
 
 개설 과정 번호 > OC0001
@@ -66,45 +72,34 @@ SELECT open_course_id, course_name, open_course_start_date, open_course_end_date
 수료 여부 : 중도탈락
 중도탈락 날짜 : 2018-03-02
 /*
-3. 쿼리문 (수강생 ‘조인성’의 특정과정에 대한 과정정보 조회)
-CREATE OR REPLACE VIEW sc_test_view1 
+-- 3번. 수강생 번호와 개설 과정 번호를 입력받아
+-- 개설과정명, 개설과정기간, 강의실, 수료여부, 날짜를 출력하는 쿼리문
+CREATE OR REPLACE VIEW s_course_search_detail_view
 AS
-SELECT course_name, open_course_start_date
-, open_course_end_date
-, class_room_name, sh.student_id, sh.open_course_id
+SELECT oc.open_course_id, course_name, open_course_start_date, open_course_end_date, 
+	class_room_name, sh.student_id, sh.open_course_id, (SELECT dropout_date 
+								FROM process_complete pc 
+								WHERE pc.open_course_id = oc.open_course_id 
+								AND pc.student_id = sh.student_id) drop_date
     FROM open_course oc, course c ,class_room cr, student_history sh
     WHERE c.course_id = oc.course_id
     AND cr.class_room_id = oc.class_room_id
-    AND oc.open_course_id = sh.open_course_id;
- 
-
-CREATE OR REPLACE VIEW sc_test_view2
+    AND oc.open_course_id = sh.open_course_id; 
+    
+CREATE OR REPLACE VIEW s_course_search_detail_view2
 AS
-SELECT course_name, open_course_start_date
-, open_course_end_date
-, class_room_name, open_course_id, student_id
-, (SELECT dropout_date FROM process_complete pc WHERE pc.open_course_id = t.open_course_id AND pc.student_id = t.student_id) drop_date
-    FROM sc_test_view1 t;
- 
- 
-CREATE OR REPLACE VIEW specific_course_view
-AS
-SELECT course_name, open_course_start_date
-, open_course_end_date
-, class_room_name,CASE
-  WHEN SYSDATE < open_course_start_date AND drop_date is null THEN '수료예정'
-  WHEN SYSDATE > open_course_end_date AND drop_date is null THEN '수료완료'
-  WHEN drop_date IS NOT NULL THEN '중도탈락'
-  else '진행중'
-  END completion, drop_date, student_id
-FROM sc_test_view2;
- 
- 
-SELECT course_name, open_course_start_date
-, open_course_end_date
-, class_room_name, completion, drop_date
-    FROM specific_course_view
- WHERE student_id = '수강생ID';
+SELECT open_course_id, course_name, open_course_start_date, open_course_end_date, class_room_name,
+        CASE
+            WHEN SYSDATE < open_course_end_date AND drop_date is null THEN '수료예정'
+            WHEN drop_date IS NOT NULL THEN '중도탈락'
+            else '수료'
+        END completion, drop_date, student_id
+    FROM s_course_search_detail_view;
+    
+SELECT open_course_id, course_name, open_course_start_date, open_course_end_date, class_room_name, completion, drop_date
+    FROM s_course_search_detail_view2
+ WHERE student_id = 'ST00031'
+    AND open_course_id = 'OC0001';
 */
 
 -------------------------------
@@ -115,22 +110,21 @@ OS0010 / AOP / 2018-03-23 ~ 2018-05-06
 총 2건
 
 /*
-4. 쿼리문 (수강생 ‘조인성’의 특정과정에 대한 개설과목 조회)
+-- 4번. 수강생 번호와 개설 과정 번호를 입력받아
+-- 개설과목번호, 개설과목명, 개설과목기간을 출력하는 쿼리문
  
-CREATE VIEW open_subject_view
+CREATE VIEW s_open_subject_view
 AS
 SELECT os.open_course_id, subject_name, subject_start_date, subject_end_date, sh.student_id
     FROM student_history sh, open_course oc, open_subject os, subject sub
     WHERE oc.open_course_id = sh.open_course_id
     AND oc.open_course_id = os.open_course_id
     AND sub.subject_id = os.subject_id;
- 
- 
- 
+    
 SELECT open_course_id, subject_name, subject_start_date, subject_end_date
-    FROM open_subject_view
-    WHERE student_id = '수강생ID'
-    AND open_course_id = '과정ID';
+    FROM s_open_subject_view
+    WHERE student_id = 'ST00031'
+    AND open_course_id = 'OC0001';
 */
 
 
@@ -153,6 +147,15 @@ OC0015 / Java & Python 기반 응용 SW 개발자 양성 과정 / 2018-06-25 ~ 2
 수료 여부 : 수료예정
 수료예정 날짜 : 2019-01-17
 
+/*
+-- 3번. 수강생 번호와 개설 과정 번호를 입력받아
+-- 개설과정명, 개설과정기간, 강의실, 수료여부, 날짜를 출력하는 쿼리문
+-- 위에 동일한 쿼리문이 있으니 참고!
+SELECT open_course_id, course_name, open_course_start_date, open_course_end_date, class_room_name, completion, drop_date
+    FROM s_course_search_detail_view2
+ WHERE student_id = 'ST00031'
+    AND open_course_id = 'OC0015';
+*/
 -------------------------------
 개설 과목 번호 / 개설 과목명 / 개설 과목 기간
 OS0031 / Java SE / 2018-06-25 ~ 2018-09-10
@@ -178,37 +181,38 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17
 시험날짜 : 2018-09-10
 시험문제 : OS0031_180910.zip
 /*
-5. 쿼리문 (특정 과정의 특정과목의 정보 검색 조회)
+-- 5번. 수강생 번호와 개설 과목 번호를 입력받아
+-- 개설과목명, 개설과목기간, 교재명, 강사명, 출결배점, 필기배점, 실기배점, 출결점수, 필기점수, 실기점수, 시험날짜, 시험문제를 조회하는 쿼리문.
  
-CREATE VIEW specific_cur_sub_view1
+CREATE VIEW s_score_detail_view1
 AS
 SELECT course_name, subject_name, subject_start_date, subject_end_date
     , instructor_name, subjectbook_id, exam_date, exam_file, exam_id, os.open_subject_id
     FROM open_subject os, open_course oc, course c
         ,exam e, instructor i,subject s
     WHERE i.instructor_id = os.instructor_id
-    AND os.open_subject_id = e.open_subject_id
-    AND os.open_course_id = oc.open_course_id
-    AND oc.course_id = c.course_id
-    AND s.subject_id = os.subject_id;
+        AND os.open_subject_id = e.open_subject_id
+        AND os.open_course_id = oc.open_course_id
+        AND oc.course_id = c.course_id
+        AND s.subject_id = os.subject_id;
 
 
-CREATE VIEW specific_cur_sub_view2
+CREATE VIEW s_score_detail_view2
 AS
 SELECT course_name, subject_name, subject_start_date, subject_end_date
     , subjectbook_name, instructor_name, exam_date, exam_file, open_subject_id
     , attendance_point, write_point, skill_point, student_id, attendance_score, write_score, skill_score
     FROM specific_cur_sub_view1 v, subjectbook sb, subject_point sp, student_score ss
     WHERE v.subjectbook_id = sb.subjectbook_id(+)
-    AND v.exam_id = sp.exam_id(+)
-    AND v.exam_id = ss.exam_id(+);
+        AND v.exam_id = sp.exam_id(+)
+        AND v.exam_id = ss.exam_id(+);
 
-SELECT course_name, subject_name, subject_start_date, subject_end_date
-    , subjectbook_name, instructor_name, attendance_point, write_point, skill_point
-    , attendance_score, write_score, skill_score, exam_date, exam_file
-    FROM specific_cur_sub_view2
-    WHERE open_subject_id = '과목번호'
-    AND student_id = '수강생ID';
+
+SELECT course_name, subject_name, subject_start_date, subject_end_date, subjectbook_name, instructor_name, 
+	attendance_point, write_point, skill_point, attendance_score, write_score, skill_score, exam_date, exam_file
+    FROM s_score_detail_view2
+    WHERE open_subject_id = 'OS0031'
+    AND student_id = 'ST00031';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (수강생 : 조인성) > 1. 성적 조회 > Java & Python 기반 응용 SW 개발자 양성 과정
@@ -246,8 +250,6 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17
 시험날짜 : 2018-10-15
 시험문제 : OS0032_181015.zip
 
-개설 과목명 : Oracle 
-개설 과목 기간 : 2018-09-11 ~ 2018-11-12
 교재명 : 오라클SQL을 다루는 기술
 강사명 : 이상원
 출결배점 : 20
@@ -259,8 +261,8 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17
 시험날짜 : 2018-11-12
 시험문제 : OS0032_181112.zip
 -------------------------------
-
 총 2건
+
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (수강생 : 조인성) > 1. 성적 조회 > Java & Python 기반 응용 SW 개발자 양성 과정
 
