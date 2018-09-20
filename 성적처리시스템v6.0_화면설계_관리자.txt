@@ -285,7 +285,7 @@ CR08 / 8강의실 / 30
 총 : 8건
 /*
 -- 11번 쿼리문. 강의실 출력. 최대정원 포함.
-SELECT class_room_id, class_room_name
+SELECT class_room_id, class_room_name, max_number
     FROM class_room;
 */
 ---------------------------------------------------------------
@@ -709,6 +709,10 @@ SELECT i2.instructor_id, i2.instructor_name, i2.instructor_phone, i2.instructor_
 /*
 -- 19번 쿼리문. 강사 이름, 전화번호 출력
 -- 위에 같은 번호 있으니 참고
+SELECT instructor_id, instructor_name, instructor_phone
+    FROM instructor
+    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
+
 */
 
 강사 비밀번호 > 4321
@@ -825,9 +829,18 @@ SUB001 / Java SE
 SUB005 / HTML
 -------------------------------
 총 2건
+
+
+
 /*
 -- 26번 쿼리문. 강의가능과목(과목번호, 과목명) 출력
 -- 위에 같은 번호 있으니 참고
+SELECT s.subject_id, subject_name
+        FROM subject s, instructor_possible ip, instructor i
+        WHERE s.subject_id = ip.subject_id
+        AND i.instructor_id = ip.instructor_id
+        AND UPPER(i.instructor_id) = UPPER('강사 번호');
+
 */
 
 과목 번호 > SUB020
@@ -837,6 +850,10 @@ SUB005 / HTML
 /*
 -- 27번 쿼리문. 선택한 과목명만 출력.
 -- 위에 같은 번호 있으니 참고
+SELECT subject_id, subject_name
+    FROM subject
+    WHERE UPPER(subject_id) = UPPER('sub001');
+
 */
 
 등록하시겠습니까? (0/1) > 1
@@ -844,6 +861,9 @@ SUB005 / HTML
 /*
 -- 28번 쿼리문. 과목을 강의가능과목에 등록하는 쿼리문.
 -- 위에 같은 번호 있으니 참고
+INSERT INTO instructor_possible (instructor_id, subject_id)
+    VALUES ('INS002', 'SUB001');
+
 */
 
 강사 이름 : 정종호
@@ -851,6 +871,10 @@ SUB005 / HTML
 /*
 -- 19번 쿼리문. 강사 이름, 강사휴대폰번호 출력
 -- 위에 같은 번호 있으니 참고
+SELECT instructor_id, instructor_name, instructor_phone
+    FROM instructor
+    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
+
 */
 
 -------------------------------
@@ -863,6 +887,11 @@ SUB020 / AOP
 /*
 -- 26번 쿼리문. 강의가능과목(과목번호, 과목명) 출력
 -- 위에 같은 번호 있으니 참고
+SELECT s.subject_id, subject_name
+        FROM subject s, instructor_possible ip, instructor i
+        WHERE s.subject_id = ip.subject_id
+        AND i.instructor_id = ip.instructor_id
+        AND UPPER(i.instructor_id) = UPPER('강사 번호');
 */
 
 과목 번호 > 0
@@ -876,9 +905,17 @@ SUB020 / AOP
 
 강사 이름 : 정종호
 강사 휴대폰 번호 : 010-5285-3994
+
+
+
+
 /*
 -- 19번 쿼리문. 강사 이름, 강사휴대폰번호 출력
 -- 위에 같은 번호 있으니 참고
+SELECT instructor_id, instructor_name, instructor_phone
+    FROM instructor
+    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
+
 */
 
 -------------------------------
@@ -891,6 +928,11 @@ SUB020 / AOP
 /*
 -- 26번 쿼리문. 강의가능과목(과목번호, 과목명) 출력
 -- 위에 같은 번호 있으니 참고
+SELECT s.subject_id, subject_name
+        FROM subject s, instructor_possible ip, instructor i
+        WHERE s.subject_id = ip.subject_id
+        AND i.instructor_id = ip.instructor_id
+        AND UPPER(i.instructor_id) = UPPER('강사 번호');
 */
 
 삭제할 강의 번호 > SUB020
@@ -900,6 +942,10 @@ SUB020 / AOP
 /*
 -- 27번 쿼리문. 선택한 과목명만 출력.
 -- 위에 같은 번호 있으니 참고
+SELECT subject_id, subject_name
+    FROM subject
+    WHERE UPPER(subject_id) = UPPER('sub001');
+
 */
 
 삭제하시겠습니까? (0/1) > 1
@@ -943,6 +989,8 @@ CS0010 / 데이터베이스 엔지니어링 향상 과정
 /*
 -- 3번 쿼리문. 과정명 출력
 -- 위에 같은 번호 있으니 참고
+SELECT course_id, course_name
+    FROM course;
 */
 
 과정 번호 > CS0004 
@@ -964,6 +1012,8 @@ CR07 / 7강의실 / 30
 /*
 -- 11번 쿼리문. 강의실 출력. 최대정원 포함.
 -- 위에 같은 번호 있으니 참고
+SELECT class_room_id, class_room_name, max_number
+    FROM class_room;
 */
 
 강의실 번호 > CR01
@@ -996,7 +1046,14 @@ INSERT INTO open_course (open_course_id, class_room_id, course_id
 개설 과정 기간 :  2018-06-25 ~ 2019-01-17
 강의실명 : 2강의실
 /*
--- 31번 쿼리문. 개설 과정 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
+-- 31번 쿼리문. 개설 과정 번호를 입력 받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
+SELECT open_subject_id, open_subject_id subject_name, subject_start_date, subject_end_date
+       , subjectbook_name, instructor_name
+    FROM open_subject os, subject s, instructor i, subjectbook sb
+    WHERE s.subject_id = os.subject_id
+    AND i.instructor_id = os.instructor_id
+    AND  os.subjectbook_id = sb.subjectbook_id(+);
+    --AND open_course_id = 'OC0001';
 */
 
   ** 개설 과목 정보 **
@@ -1009,17 +1066,40 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17 HTML5 웹 프로그래밍 입문 / 최�
 총 3건
 /*
 -- 32번 쿼리문. 개설 과정 번호를 입력받아 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명을 출력하는 쿼리문.
+CREATE OR REPLACE VIEW os_search
+AS
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
+       , subjectbook_name, instructor_name, open_course_id
+    FROM open_subject os, subject s, instructor i, subjectbook sb
+    WHERE s.subject_id = os.subject_id
+    AND i.instructor_id = os.instructor_id
+    AND  os.subjectbook_id = sb.subjectbook_id(+);
+
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
+       , subjectbook_name, instructor_name
+    FROM open_subject os, subject s, instructor i, subjectbook sb
+    WHERE s.subject_id = os.subject_id
+    AND i.instructor_id = os.instructor_id
+    AND  os.subjectbook_id = sb.subjectbook_id(+)
+    AND open_course_id = 'OC0003';
+
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
+       , subjectbook_name, instructor_name
+    FROM os_search
+    WHERE open_course_id = '과정 아이디';
 */
 
   ** 수강생 정보 **
 -------------------------------
-수강생 번호 / 수강생 이름 / 전화번호 / 등록일 / 수료여부 / 날짜
+수강생 번호 / 수강생 이름 / 전화번호 / 등록일 / 수료여부 / 날짜(중도탈락은 탈락일, 과정 종료일)
 ST00031 / 조인성 / 010-1234-1234 / 2018-01-02 / 수료 예정 / 2019-01-17
 ST00032 / 김탈락 / 010-3232-3232 / 2018-06-25 / 중도 탈락 / 2018-09-10
 -------------------------------
 총 2명
 /*
 -- 33번 쿼리문. 개설 과정 번호를 입력받아 수강생번호, 수강생이름, 전화번호, 등록일, 수료여부, 날짜 등을 출력하는 쿼리문.
+
+
 */
 
 ---------------------------------------------------------------
