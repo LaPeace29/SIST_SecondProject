@@ -184,7 +184,7 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17
 -- 5번. 수강생 번호와 개설 과목 번호를 입력받아
 -- 개설과목명, 개설과목기간, 교재명, 강사명, 출결배점, 필기배점, 실기배점, 출결점수, 필기점수, 실기점수, 시험날짜, 시험문제를 조회하는 쿼리문.
  
-CREATE VIEW s_score_detail_view1
+CREATE OR REPLACE VIEW s_score_detail_view1
 AS
 SELECT course_name, subject_name, subject_start_date, subject_end_date
     , instructor_name, subjectbook_id, exam_date, exam_file, exam_id, os.open_subject_id
@@ -197,22 +197,21 @@ SELECT course_name, subject_name, subject_start_date, subject_end_date
         AND s.subject_id = os.subject_id;
 
 
-CREATE VIEW s_score_detail_view2
+CREATE OR REPLACE VIEW s_score_detail_view2
 AS
 SELECT course_name, subject_name, subject_start_date, subject_end_date
     , subjectbook_name, instructor_name, exam_date, exam_file, open_subject_id
-    , attendance_point, write_point, skill_point, student_id, attendance_score, write_score, skill_score
-    FROM specific_cur_sub_view1 v, subjectbook sb, subject_point sp, student_score ss
+    , attendance_point, write_point, skill_point
+    FROM specific_cur_sub_view1 v, subjectbook sb, subject_point sp
     WHERE v.subjectbook_id = sb.subjectbook_id(+)
-        AND v.exam_id = sp.exam_id(+)
-        AND v.exam_id = ss.exam_id(+);
+        AND v.exam_id = sp.exam_id(+);
 
 
 SELECT course_name, subject_name, subject_start_date, subject_end_date, subjectbook_name, instructor_name, 
 	attendance_point, write_point, skill_point, attendance_score, write_score, skill_score, exam_date, exam_file
-    FROM s_score_detail_view2
+    FROM s_score_detail_view2, student_score ss
     WHERE open_subject_id = 'OS0031'
-    AND student_id = 'ST00031';
+    AND student_id(+) = 'ST00031';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (수강생 : 조인성) > 1. 성적 조회 > Java & Python 기반 응용 SW 개발자 양성 과정
@@ -262,7 +261,16 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17
 시험문제 : OS0032_181112.zip
 -------------------------------
 총 2건
+/*
+-- 5번. 수강생 번호와 개설 과목 번호를 입력받아
+-- 개설과목명, 개설과목기간, 교재명, 강사명, 출결배점, 필기배점, 실기배점, 출결점수, 필기점수, 실기점수, 시험날짜, 시험문제를 조회하는 쿼리문.
 
+SELECT course_name, subject_name, subject_start_date, subject_end_date, subjectbook_name, instructor_name, 
+	attendance_point, write_point, skill_point, attendance_score, write_score, skill_score, exam_date, exam_file
+    FROM s_score_detail_view2, student_score ss
+    WHERE open_subject_id = 'OS0032'
+    AND student_id(+) = 'ST00031';
+*/
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (수강생 : 조인성) > 1. 성적 조회 > Java & Python 기반 응용 SW 개발자 양성 과정
 
@@ -322,24 +330,11 @@ OC0015 / Java & Python 기반 응용 SW 개발자 양성 과정 / 2018-06-25 ~ 2
 과정 수강 횟수 : 2번
 
 /*
-6. 쿼리문 (수강생 정보 조회 –검색)
- 
-CREATE VIEW student_search_view
-AS
-SELECT student_name, student_phone, course_name
-    , open_course_start_date, open_course_end_date
-    , class_room_name, sh.student_id
-    FROM student s, student_history sh ,course c, open_course oc, class_room cr
-    WHERE s.student_id = sh.student_id
-    AND sh.open_course_id = oc.open_course_id
-    AND c.course_id = oc.course_id
-    AND cr.class_room_id = oc.class_room_id;
-    
-SELECT student_name, student_phone, course_name
-    , open_course_start_date, open_course_end_date
-    , class_room_name
-    FROM student_search_view
-    WHERE student_id = '수강생ID';
+-- 3번. 수강생 번호를 입력받아
+-- 개설과정명, 개설과정기간, 강의실, 수료여부, 날짜를 출력하는 쿼리문
+SELECT open_course_id, course_name, open_course_start_date, open_course_end_date, class_room_name, completion, drop_date
+    FROM s_course_search_detail_view2
+ WHERE student_id = 'ST00031';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (수강생 : 조인성) > 2. 개인 정보 > 2. 비밀 번호 변경
@@ -350,9 +345,9 @@ SELECT student_name, student_phone, course_name
 
 수강생 '조인성'의 비밀번호가 변경되었습니다.
 /*
-7. 쿼리문 (비밀번호 변경)
-UPDATE student SET student_pw = '새로운패스워드'
-    WHERE UPPER(student_id) = UPPER('수강생아이디') AND student_pw = '원래패스워드';
+-- 7번. 수강생 아이디와 비밀번호를 받아 새로운 비밀번호로 업데이트 하는 쿼리문.
+UPDATE student SET student_pw = '1111'
+    WHERE UPPER(student_id) = UPPER('ST00031') AND student_pw = '1234';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (수강생 : 조인성) > 2. 개인 정보
