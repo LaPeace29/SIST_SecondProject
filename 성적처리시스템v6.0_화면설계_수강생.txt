@@ -195,23 +195,23 @@ SELECT course_name, subject_name, subject_start_date, subject_end_date
         AND os.open_course_id = oc.open_course_id
         AND oc.course_id = c.course_id
         AND s.subject_id = os.subject_id;
-
-
+        
 CREATE OR REPLACE VIEW s_score_detail_view2
-AS
+AS      
 SELECT course_name, subject_name, subject_start_date, subject_end_date
     , subjectbook_name, instructor_name, exam_date, exam_file, open_subject_id
-    , attendance_point, write_point, skill_point
-    FROM specific_cur_sub_view1 v, subjectbook sb, subject_point sp
+    , attendance_point, write_point, skill_point, attendance_score, write_score, skill_score, s.student_id
+    FROM s_score_detail_view1 v, subjectbook sb, subject_point sp, student_score ss, student s
     WHERE v.subjectbook_id = sb.subjectbook_id(+)
-        AND v.exam_id = sp.exam_id(+);
-
-
+        AND v.exam_id = sp.exam_id(+)
+        AND v.exam_id(+) = ss.exam_id;
+        AND s.student_id(+) = ss.student_id;
+        
 SELECT course_name, subject_name, subject_start_date, subject_end_date, subjectbook_name, instructor_name, 
-	attendance_point, write_point, skill_point, attendance_score, write_score, skill_score, exam_date, exam_file
-    FROM s_score_detail_view2, student_score ss
-    WHERE open_subject_id = 'OS0031'
-    AND student_id(+) = 'ST00031';
+	attendance_point, write_point, skill_point, attendance_score, write_score, skill_score, student_id, exam_date, exam_file
+    FROM s_score_detail_view2
+    WHERE open_subject_id = 'OS0032'
+    AND student_id = 'ST00031';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (수강생 : 조인성) > 1. 성적 조회 > Java & Python 기반 응용 SW 개발자 양성 과정
@@ -266,10 +266,10 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17
 -- 개설과목명, 개설과목기간, 교재명, 강사명, 출결배점, 필기배점, 실기배점, 출결점수, 필기점수, 실기점수, 시험날짜, 시험문제를 조회하는 쿼리문.
 
 SELECT course_name, subject_name, subject_start_date, subject_end_date, subjectbook_name, instructor_name, 
-	attendance_point, write_point, skill_point, attendance_score, write_score, skill_score, exam_date, exam_file
-    FROM s_score_detail_view2, student_score ss
+	attendance_point, write_point, skill_point, attendance_score, write_score, skill_score, student_id, exam_date, exam_file
+    FROM s_score_detail_view2
     WHERE open_subject_id = 'OS0032'
-    AND student_id(+) = 'ST00031';
+    AND student_id = 'ST00031';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (수강생 : 조인성) > 1. 성적 조회 > Java & Python 기반 응용 SW 개발자 양성 과정
