@@ -77,7 +77,8 @@ CS0011 / 자바기반 DB&모바일 개발자 양성과정
 /*
 -- 3번 쿼리문. 과정명 출력
 SELECT course_id, course_name
-    FROM course;
+    FROM course
+    ORDER BY course_id;
 */
 
 ---------------------------------------------------------------
@@ -119,7 +120,7 @@ SELECT course_id, course_name
 'CS0011'이 삭제되었습니다.
 /*
 -- 5번 쿼리문. 과정명 삭제
-DELETE FROM course WHERE UPPER(course_id)=UPPER('과정아이디');
+DELETE FROM course WHERE course_id=과정아이디;
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 1. 과정 관리
@@ -185,7 +186,8 @@ SUB026 / C
 /*
 -- 7번 쿼리문. 과목명 출력.
 SELECT subject_id, subject_name
-    FROM subject;
+    FROM subject
+    ORDER BY subject_id;
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 2. 과목 관리
@@ -237,7 +239,7 @@ SELECT subject_id, subject_name
 'SUB026'이 삭제되었습니다.
 /*
 -- 9번 쿼리문. 과목명 삭제.
-DELETE FROM subject WHERE UPPER(subject_id)=UPPER(’과목아이디’);
+DELETE FROM subject WHERE subject_id=’과목아이디’;
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 2. 과목 관리
@@ -286,7 +288,8 @@ CR08 / 8강의실 / 30
 /*
 -- 11번 쿼리문. 강의실 출력. 최대정원 포함.
 SELECT class_room_id, class_room_name, max_number
-    FROM class_room;
+    FROM class_room
+    ORDER BY class_room_id;
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 3. 강의실 관리
@@ -323,7 +326,7 @@ SELECT class_room_id, class_room_name, max_number
 'CR08'이 삭제되었습니다.
 /*
 -- 13번 쿼리문. 강의실 삭제.
-DELETE FROM class_room WHERE UPPER(class_room_id)=UPPER('강의실아이디');
+DELETE FROM class_room WHERE class_room_id='강의실아이디';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리
@@ -382,7 +385,8 @@ SB0022 / 이것이 C언어다 / 한빛미디어
 /*
 -- 15번 쿼리문. 교재명 출력. 출판사 포함
 SELECT subjectbook_id, subjectbook_name, subjectbook_publisher
-    FROM subjectbook;
+    FROM subjectbook
+    ORDER BY subjectbook_id;
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 4. 교재 관리
@@ -432,7 +436,7 @@ SELECT subjectbook_id, subjectbook_name, subjectbook_publisher
 'SB0022'이 삭제되었습니다.
 /*
 -- 17번 쿼리문. 교재 삭제.
-DELETE FROM subjectbook WHERE UPPER(subjectbook_id)=UPPER('교재아이디');
+DELETE FROM subjectbook WHERE subjectbook_id='교재아이디';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 4. 교재 관리
@@ -506,7 +510,8 @@ SELECT subject_name, subject_start_date, subject_end_date, course_name
     AND cr.class_room_id = oc.class_room_id
     AND i.instructor_id = os.instructor_id
     AND ip.subject_id = s.subject_id
-    AND ip.instructor_id = '강사번호';
+    AND UPPER(ip.instructor_id) = UPPER('강사 ID')
+    ORDER BY subject_end_date;
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 2. 강사 검색 및 출력
@@ -527,7 +532,8 @@ INS002 / 정종호 / 010-5285-3994 / 2017-02-08
 -- 21번 쿼리문. 이름으로 검색시 여러건 => 강사번호, 강사이름, 강사휴대폰번호, 등록일 출력
 SELECT instructor_id, instructor_name, instructor_phone, instructor_regDate
     FROM instructor
-    WHERE INSTR(instructor_name,'강사 이름 일부') > 0;
+    WHERE INSTR(instructor_name,'강사 이름 일부') > 0
+ORDER BY instructor_id;
 */
 검색 결과가 여러건 입니다.
 강사 번호 > INS001
@@ -539,7 +545,8 @@ SELECT instructor_id, instructor_name, instructor_phone, instructor_regDate
 -- 위에 같은 번호 있으니 참고
 SELECT instructor_id, instructor_name, instructor_phone
     FROM instructor
-    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
+    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’)
+ORDER BY instructor_id;
 */
 -------------------------------
 개설 과목명 / 개설 과목 기간 / 개설 과정명 / 개설 과정 기간 / 강의실 / 강의 진행 여부
@@ -566,7 +573,8 @@ SELECT subject_name, subject_start_date, subject_end_date, course_name
     AND cr.class_room_id = oc.class_room_id
     AND i.instructor_id = os.instructor_id
     AND ip.subject_id = s.subject_id
-    AND ip.instructor_id = '강사번호';
+    AND ip.instructor_id = '강사번호
+ORDER BY subject_end_date';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 2. 강사 검색 및 출력
@@ -660,7 +668,7 @@ SELECT i2.instructor_id, i2.instructor_name, i2.instructor_phone, i2.instructor_
 'INS017'이 삭제되었습니다.
 /*
 -- 24번 쿼리문. 강사 삭제하는 쿼리문
-DELETE FROM instructor WHERE UPPER(instructor_id)=UPPER('강사아이디');
+DELETE FROM instructor WHERE instructor_id='강사아이디';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리
@@ -754,7 +762,8 @@ SELECT s.subject_id, subject_name
         FROM subject s, instructor_possible ip, instructor i
         WHERE s.subject_id = ip.subject_id
         AND i.instructor_id = ip.instructor_id
-        AND UPPER(i.instructor_id) = UPPER('강사 번호');
+        AND UPPER(i.instructor_id) = UPPER('강사 번호')
+ORDER BY subject_id;
 
 */
 // 1번 누를시 전체 과목이 출력됨.
@@ -792,7 +801,8 @@ SUB025 / Python
 -- 7번 쿼리문. 과목명 출력
 -- 위에 같은 번호 있으니 참고
 SELECT subject_id, subject_name
-    FROM subject;
+    FROM subject
+ORDER BY subject_id;
 */
 과목 번호 > SUB001
 
@@ -839,7 +849,8 @@ SELECT s.subject_id, subject_name
         FROM subject s, instructor_possible ip, instructor i
         WHERE s.subject_id = ip.subject_id
         AND i.instructor_id = ip.instructor_id
-        AND UPPER(i.instructor_id) = UPPER('강사 번호');
+        AND UPPER(i.instructor_id) = UPPER('강사 번호')
+ORDER BY subject_id;
 
 */
 
@@ -891,7 +902,8 @@ SELECT s.subject_id, subject_name
         FROM subject s, instructor_possible ip, instructor i
         WHERE s.subject_id = ip.subject_id
         AND i.instructor_id = ip.instructor_id
-        AND UPPER(i.instructor_id) = UPPER('강사 번호');
+        AND UPPER(i.instructor_id) = UPPER('강사 번호')
+ORDER BY subject_id;
 */
 
 과목 번호 > 0
@@ -932,7 +944,8 @@ SELECT s.subject_id, subject_name
         FROM subject s, instructor_possible ip, instructor i
         WHERE s.subject_id = ip.subject_id
         AND i.instructor_id = ip.instructor_id
-        AND UPPER(i.instructor_id) = UPPER('강사 번호');
+        AND UPPER(i.instructor_id) = UPPER('강사 번호')
+ORDER BY subject_id;
 */
 
 삭제할 강의 번호 > SUB020
@@ -951,8 +964,6 @@ SELECT subject_id, subject_name
 삭제하시겠습니까? (0/1) > 1
 /*
 -- 29번 쿼리문. 강의가능과목을 삭제하는 쿼리문.
-DELETE FROM instructor_possible 
-        WHERE UPPER(instructor_id)=UPPER('강사아이디') AND UPPER(subject_id)=UPPER('과목아이디');
 */
 
 삭제되었습니다.
@@ -992,7 +1003,8 @@ CS0010 / 데이터베이스 엔지니어링 향상 과정
 -- 3번 쿼리문. 과정명 출력
 -- 위에 같은 번호 있으니 참고
 SELECT course_id, course_name
-    FROM course;
+    FROM course
+ORDER BY course_id;
 */
 
 과정 번호 > CS0004 
@@ -1015,7 +1027,8 @@ CR07 / 7강의실 / 30
 -- 11번 쿼리문. 강의실 출력. 최대정원 포함.
 -- 위에 같은 번호 있으니 참고
 SELECT class_room_id, class_room_name, max_number
-    FROM class_room;
+    FROM class_room
+ORDER BY class_room_id;
 */
 
 강의실 번호 > CR01
@@ -1049,13 +1062,14 @@ INSERT INTO open_course (open_course_id, class_room_id, course_id
 강의실명 : 2강의실
 /*
 -- 31번 쿼리문. 개설 과정 번호를 입력 받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
-SELECT open_subject_id, open_subject_id subject_name, subject_start_date, subject_end_date
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
        , subjectbook_name, instructor_name
     FROM open_subject os, subject s, instructor i, subjectbook sb
     WHERE s.subject_id = os.subject_id
     AND i.instructor_id = os.instructor_id
-    AND  os.subjectbook_id = sb.subjectbook_id(+);
-    --AND open_course_id = 'OC0001';
+    AND  os.subjectbook_id = sb.subjectbook_id(+)
+    AND UPPER(open_course_id) = UPPER('과정번호')
+    ORDER BY open_subject_id;
 */
 
   ** 개설 과목 정보 **
@@ -1120,6 +1134,11 @@ OC0010 / 데이터베이스 엔지니어링 향상 과정 / 2018-09-10 ~ 2019-03
 총 3건
 /*
 -- 34번 쿼리문. 개설과정번호, 개설과정명, 개설과정기간, 강의실명 등 전체를 출력하는 쿼리문.
+SELECT open_course_id,course_name,open_course_start_date,open_course_end_date
+    ,class_room_name
+    FROM course_info_view1
+    WHERE INSTR(course_name,'과정명 일부')>0
+    ORDER BY open_course_id;
 */
 
 검색 결과가 여러개입니다.
@@ -1133,6 +1152,14 @@ OC0010 / 데이터베이스 엔지니어링 향상 과정 / 2018-09-10 ~ 2019-03
 /*
 -- 31번 쿼리문. 개설 과정 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
 -- 위에 같은 번호 있으니 참고
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
+       , subjectbook_name, instructor_name
+    FROM open_subject os, subject s, instructor i, subjectbook sb
+    WHERE s.subject_id = os.subject_id
+    AND i.instructor_id = os.instructor_id
+    AND  os.subjectbook_id = sb.subjectbook_id(+)
+    AND UPPER(open_course_id) = UPPER('과정번호')
+    ORDER BY open_subject_id;
 */
 
   ** 개설 과목 정보 **
@@ -1232,13 +1259,22 @@ OC0016 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / 20
 /*
 -- 31번 쿼리문. 개설 과정 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
 -- 위에 같은 번호 있으니 참고
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
+       , subjectbook_name, instructor_name
+    FROM open_subject os, subject s, instructor i, subjectbook sb
+    WHERE s.subject_id = os.subject_id
+    AND i.instructor_id = os.instructor_id
+    AND  os.subjectbook_id = sb.subjectbook_id(+)
+    AND UPPER(open_course_id) = UPPER('과정번호')
+    ORDER BY open_subject_id;
 */
 
 위의 개설 과정을 삭제하시겠습니까? (0/1) > 1
 /*
 -- 36번 쿼리문. 개설과정번호를 입력받아 삭제하는 쿼리문.
-DELETE FROM open_course WHERE UPPER(open_course_id) = UPPER('개설과정번호');
+DELETE FROM open_course WHERE open_course_id = '개설과정번호';
 */
+
 삭제되었습니다.
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 3. 개설 과정 관리
@@ -1466,23 +1502,6 @@ OS0036 ........... / O
 -- 42번 쿼리문. 개설 과목 전체를 출력하는 쿼리문.
 -- 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명, 개설과정명, 개설과정기간, 강의실을 출력하는 테이블
 -- 참조하여 삭제가능여부를 확인하여 삭제 가능 여부 포함.
-SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,
-            subjectbook_name, instructor_name, course_name, open_course_start_date
-            , open_course_end_date, class_room_name
-            ,(SELECT COUNT(*) FROM exam
-                WHERE open_subject_id = os.subject_id) count_
-                      
-            FROM open_subject os, subject s, subjectbook sb, instructor i
-                    , open_course oc, class_room cr, course c
-                    
-                    WHERE os.subject_id = s.subject_id
-                    AND os.subjectbook_id = sb.subjectbook_id
-                    AND os.instructor_id = i.instructor_id
-                    AND os.open_course_id = oc.open_course_id
-                    AND oc.course_id = c.course_id
-                    AND oc.class_room_id = cr.class_room_id
-                    
-                    ORDER BY open_subject_id;
 */
 
 
@@ -1499,7 +1518,7 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,
 위의 개설 과목을 삭제하시겠습니까? (0/1) > 1
 /*
 -- 43번 쿼리문. 개설 과목을 삭제하는 쿼리문.
-DELETE FROM open_subject WHERE UPPER(open_subject_id) = UPPER('개설과목아이디');
+DELETE FROM open_subject WHERE open_subject_id = '개설과목아이디';
 */
 
 삭제되었습니다.
@@ -1587,6 +1606,14 @@ OC0015 / Python / Java 응용 SW실무 개발자 양성 과정 / 2018-06-25 ~ 20
 /*
 -- 31번 쿼리문. 개설 과정 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
 -- 위에 같은 번호 있으니 참고
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
+       , subjectbook_name, instructor_name
+    FROM open_subject os, subject s, instructor i, subjectbook sb
+    WHERE s.subject_id = os.subject_id
+    AND i.instructor_id = os.instructor_id
+    AND  os.subjectbook_id = sb.subjectbook_id(+)
+    AND UPPER(open_course_id) = UPPER('과정번호')
+    ORDER BY open_subject_id;
 */
 
 등록하시겠습니까? (0/1) > 1
@@ -1654,9 +1681,6 @@ ST00031 / 조인성 / 010-1234-1234 / 2018-01-02
 총 3건
 /*
 -- 48번 쿼리문. 수강생 이름을 입력받아(부분입력) 수강생번호, 수강생이름, 수강생휴대폰번호, 수강생 등록일을 출력하는 쿼리문.
-SELECT student_id, student_name, student_phone, student_regdate
-    FROM student
-    WHERE INSTR(student_name,'홍') > 0;
 */
 검색 결과가 여러건 입니다.
 
@@ -1789,10 +1813,6 @@ ST00033 / 김수강 / 010-0000-0000  / 2018-09-13 / O
 -- 50번 쿼리문. 수강생 전체를 출력하는 쿼리문.
 -- 수강생번호, 수강생이름, 수강생전화번호, 수강생등록일 출력.
 -- 참조 여부를 확인하여 수강생 삭제가 가능한지 확인하는 삭제 가능여부 포함하여 출력.
-SELECT student_id, student_name, student_phone, student_regdate
-            ,(SELECT COUNT(*) FROM student_history
-                WHERE student_id = s.student_id) count_
-                FROM student s;
 */
 
 수강생 번호 > ST00033
@@ -1807,7 +1827,7 @@ SELECT student_id, student_name, student_phone, student_regdate
 위의 수강생을 삭제하시겠습니까? (0/1) > 1
 /*
 -- 51번 쿼리문. 수강생을 삭제하는 쿼리문.
-DELETE FROM student WHERE UPPER(student_id) = UPPER('수강생아이디');
+DELETE FROM student WHERE student_id = '수강생아이디';
 */
 'ST00033'이 삭제되었습니다.
 ---------------------------------------------------------------
@@ -1871,9 +1891,6 @@ ST00032 / 김탈락 / 010-3232-3232 / 2018-06-25 / 1회
 진행하시겠습니까? (0/1) > 1
 /*
 -- 52번 쿼리문. 강사 비밀번호 초기화하는 쿼리문
-UPDATE student
-    SET student_pw = '3636'
-    WHERE student_id = 'ST00028';
 */
 
 'ST00028'의 비밀번호가 초기화되었습니다.
@@ -1934,6 +1951,14 @@ OC0016 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / 20
 /*
 -- 31번 쿼리문. 개설 과정 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
 -- 위에 같은 번호 있으니 참고
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
+       , subjectbook_name, instructor_name
+    FROM open_subject os, subject s, instructor i, subjectbook sb
+    WHERE s.subject_id = os.subject_id
+    AND i.instructor_id = os.instructor_id
+    AND  os.subjectbook_id = sb.subjectbook_id(+)
+    AND UPPER(open_course_id) = UPPER('과정번호')
+    ORDER BY open_subject_id;
 */
 
 등록하시겠습니까? (0/1) > 1
@@ -1985,14 +2010,20 @@ ST00024 / 김말자 / 010-5248-7789 / 2018-11-10 / 1회
 /*
 -- 31번 쿼리문. 개설 과정 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
 -- 위에 같은 번호 있으니 참고
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
+       , subjectbook_name, instructor_name
+    FROM open_subject os, subject s, instructor i, subjectbook sb
+    WHERE s.subject_id = os.subject_id
+    AND i.instructor_id = os.instructor_id
+    AND  os.subjectbook_id = sb.subjectbook_id(+)
+    AND UPPER(open_course_id) = UPPER('과정번호')
+    ORDER BY open_subject_id;
 */
 
 취소하시겠습니까? (0/1) > 1
 /*
 -- 54번 쿼리문. 수강생번호와 개설과정번호로 삭제하는 쿼리문.
 STUDENT_HISTORY에서 삭제.
-DELETE FROM student_history 
-    WHERE UPPER(student_id)=UPPER('수강생아이디') AND UPPER(open_course_id)=UPPER('개설과정아이디');
 */
 
 취소되었습니다.
@@ -2046,6 +2077,14 @@ ST00031 / 조인성 / 010-1234-1234 / 2018-01-02 / 2회
 /*
 -- 31번 쿼리문. 개설 과정 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
 -- 위에 같은 번호 있으니 참고
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
+       , subjectbook_name, instructor_name
+    FROM open_subject os, subject s, instructor i, subjectbook sb
+    WHERE s.subject_id = os.subject_id
+    AND i.instructor_id = os.instructor_id
+    AND  os.subjectbook_id = sb.subjectbook_id(+)
+    AND UPPER(open_course_id) = UPPER('과정번호')
+    ORDER BY open_subject_id;
 */
 
 중도 탈락 날짜 > 2018-09-14
@@ -2053,8 +2092,6 @@ ST00031 / 조인성 / 010-1234-1234 / 2018-01-02 / 2회
 /*
 -- 55번 쿼리문. 수강생번호와 개설과정번호, 중도탈락날짜로 등록하는 쿼리문.
 process_complete 테이블에 추가.
-INSERT INTO process_complete (open_course_id, student_id, dropout_date)
-    VALUES ('OC0015', 'ST00031', '18-09-14');
 */
 중도 탈락되었습니다.
 ---------------------------------------------------------------
@@ -2095,6 +2132,14 @@ OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 이상원 / 오라클SQL을 다루�
 OS0033 / HTML / 2018-11-13 ~ 2019-01-17 / 최장학 / HTML5 웹 프로그래밍 입문
 -------------------------------
 총 3건
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
+       , subjectbook_name, instructor_name
+    FROM open_subject os, subject s, instructor i, subjectbook sb
+    WHERE s.subject_id = os.subject_id
+    AND i.instructor_id = os.instructor_id
+    AND  os.subjectbook_id = sb.subjectbook_id(+)
+    AND UPPER(open_course_id) = UPPER('과정번호')
+    ORDER BY open_subject_id;
 /*
 -- 32번 쿼리문. 개설 과정 번호를 입력받아 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명을 출력하는 쿼리문.
 -- 위에 같은 번호 있으니 참고
@@ -2107,12 +2152,6 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17 / 최장학 / HTML5 웹 프로그래밍 
 교재명 : 오라클SQL을 다루는 기술
 /*
 -- 56번 쿼리문. 개설 과목 번호를 입력받아 개설과목명, 개설과목기간, 강사명, 교재명을 출력하는 쿼리문.
-SELECT subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name
-    FROM subject s, open_subject os, instructor i, subjectbook sb
-    WHERE s.subject_id = os.subject_id
-    AND i.instructor_id = os.instructor_id
-    AND sb.subjectbook_id = os.subjectbook_id
-    AND UPPER(os.open_subject_id) = UPPER('OS0032');
 */
 
 시험번호 : EXAM0013
@@ -2123,11 +2162,6 @@ SELECT subject_name, subject_start_date, subject_end_date, instructor_name, subj
 시험문제파일 : OS0032_181015.zip
 /*
 -- 57번 쿼리문. 개설 과목 번호를 입력받아 시험번호, 출결배점, 필기배점, 실기배점, 시험날짜, 시험문제파일을 출력하는 쿼리문.
-SELECT e.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
-    FROM exam e, subject_point p, open_subject os
-    WHERE os.open_subject_id = e.open_subject_id
-    AND e.exam_id = p.exam_id
-    AND UPPER(os.open_subject_id) = UPPER('OS0032');
 */
 
   ** 수강생 정보 **
@@ -2135,12 +2169,6 @@ SELECT e.exam_id, attendance_point, write_point, skill_point, exam_date, exam_fi
 ST00000 / 홍길동 / 000-000-0000 / 10 / 10 / 10 / 30
 /*
 -- 58번 쿼리문. 시험번호를 입력받아 수강생 번호, 수강생 이름, 전화번호, 출결점수, 필기점수, 실기점수, 총점을 출력하는 쿼리문.
-SELECT s.student_id, student_name, student_phone, attendance_score, write_score, skill_score
-    , (attendance_score+write_score+skill_score) total
-    FROM student s, student_score ss, exam e
-    WHERE s.student_id = ss.student_id 
-    AND ss.exam_id = e.exam_id
-    AND UPPER(e.exam_id) = UPPER('EXAM0013');
 */
 
 시험번호 : EXAM0014
@@ -2179,9 +2207,6 @@ ST00000 / 홍길동 / 000-000-0000 / 10 / 10 / 10 / 30
 수강생 전화번호 : 010-2356-4528
 /*
 -- 59번 쿼리문. 수강생 번호를 입력받아 이름, 전화번호를 출력하는 쿼리문.
-SELECT student_name, student_phone
-    FROM student
-    WHERE UPPER(student_id) = UPPER('ST00001');
 */
 
   ** 개설 과정 정보 **
@@ -2190,13 +2215,6 @@ SELECT student_name, student_phone
 강의실명 : 1강의실
 /*
 -- 60번 쿼리문. 수강생 번호를 수강한 개설과정정보, 개설과정기간, 강의실명을 출력하는 쿼리문.
-SELECT c.course_name, oc.open_course_start_date, oc.open_course_end_date, cr.class_room_name
-    FROM open_course oc, class_room cr, student_history sh, student s, course c
-    WHERE s.student_id = sh.student_id    
-    AND sh.open_course_id = oc.open_course_id
-    AND c.course_id = oc.course_id
-    AND oc.class_room_id = cr.class_room_id
-    AND UPPER(s.student_id) = UPPER('ST00001');
 */
 
   ** 개설 과목 성적 정보 **
@@ -2206,18 +2224,6 @@ AOP / 2018-03-23 ~ 2018-05-06 / 김비삼 / 20(30) / 20(25) / 40(45) / 2018-05-0
 /*
 -- 61번 쿼리문. 개설과정번호로 수강생의 개설과목 성적 정보를 출력하는 쿼리문.
 -- 개설과목명, 개설과목기간, 강사명, 출결배점, 필기배점, 실기배점, 출결점수, 필기점수, 실기점수, 시험날짜를 출력.
-SELECT s.subject_name, os.subject_start_date, os.subject_end_date, i.instructor_name, p.attendance_point
-    , p.write_point, p.skill_point, ss.attendance_score, ss.write_score, ss.skill_score, e.exam_date
-    FROM subject s, open_subject os, instructor i, subject_point p, exam e
-        , student_score ss , student st
-    WHERE os.subject_id = s.subject_id
-    AND i.instructor_id = os.instructor_id
-    AND e.exam_id = p.exam_id
-    AND e.open_subject_id = os.open_subject_id
-    AND ss.exam_id = e.exam_id
-    AND st.student_id = ss.student_id
-    AND UPPER(st.student_id) = UPPER('ST00001');
-
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회 > 2. 수강생 개인 성적 조회
@@ -2286,9 +2292,6 @@ AOP / 2018-03-23 ~ 2018-05-06 / 김비삼 / 20(30) / 20(25) / 40(45) / 2018-05-0
 비밀번호를 변경하시겠습니까? (0/1) > 1
 /*
 -- 62번 쿼리문. 관리자의 비밀번호를 변경하는 쿼리문.
-UPDATE admin
-    SET admin_pw = '1111' 
-    WHERE admin_id = 'admin' AND admin_pw = ‘admin’;
 */
 관리자 'admin'의 비밀번호가 변경되었습니다.
 // 쿼리문 작성 
