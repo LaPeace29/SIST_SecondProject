@@ -50,7 +50,7 @@ OC0015 / Java & Python 기반 응용 SW 개발자 양성 과정 / 2018-06-25 ~ 2
 총 2건
 /*
 -- 2번. 수강생번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간을 출력하는 쿼리문.
-CREATE VIEW course_search_view -- s_course_search_view로 수정
+CREATE OR REPLACE VIEW s_course_search_view
 AS
 SELECT o.open_course_id, course_name, o.open_course_start_date, o.open_course_end_date, sh.student_id
     FROM open_course o, course c, student_history sh
@@ -59,8 +59,9 @@ SELECT o.open_course_id, course_name, o.open_course_start_date, o.open_course_en
  
  
 SELECT open_course_id, course_name, open_course_start_date, open_course_end_date
-    FROM course_search_view -- s_course_search_view로 수정
-    WHERE student_id = 'ST00031';
+    FROM s_course_search_view
+    WHERE student_id = 'ST00031'
+    ORDER BY open_course_id;
 */
 
 개설 과정 번호 > OC0001
@@ -77,10 +78,10 @@ SELECT open_course_id, course_name, open_course_start_date, open_course_end_date
 CREATE OR REPLACE VIEW s_course_search_detail_view
 AS
 SELECT oc.open_course_id, course_name, open_course_start_date, open_course_end_date, 
-	class_room_name, sh.student_id, sh.open_course_id, (SELECT dropout_date 
-								FROM process_complete pc 
-								WHERE pc.open_course_id = oc.open_course_id 
-								AND pc.student_id = sh.student_id) drop_date
+	class_room_name, sh.student_id, (SELECT dropout_date 
+                                        FROM process_complete pc 
+                                        WHERE pc.open_course_id = oc.open_course_id 
+                                        AND pc.student_id = sh.student_id) drop_date
     FROM open_course oc, course c ,class_room cr, student_history sh
     WHERE c.course_id = oc.course_id
     AND cr.class_room_id = oc.class_room_id
@@ -124,7 +125,8 @@ SELECT os.open_course_id, subject_name, subject_start_date, subject_end_date, sh
 SELECT open_course_id, subject_name, subject_start_date, subject_end_date
     FROM s_open_subject_view
     WHERE student_id = 'ST00031'
-    AND open_course_id = 'OC0001';
+    AND open_course_id = 'OC0001'
+    ORDER BY subject_start_date;
 */
 
 
@@ -137,6 +139,14 @@ OC0001 / 웹기반 빅데이터 분석 응용 SW 개발자 / 2018-01-02 ~ 2018-0
 OC0015 / Java & Python 기반 응용 SW 개발자 양성 과정 / 2018-06-25 ~ 2019-01-17
 -------------------------------
 총 2건
+/*
+-- 2번. 수강생번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간을 출력하는 쿼리문.
+-- 위에 동일한 쿼리문이 있으니 참고!
+SELECT open_course_id, course_name, open_course_start_date, open_course_end_date
+    FROM s_course_search_view
+    WHERE student_id = 'ST00031'
+    ORDER BY open_course_id;
+*/
 
 개설 과정 번호 > OC0015
 ---------------------------------------------------------------
@@ -163,6 +173,16 @@ OS0032 / Oracle / 2018-09-11 ~ 2018-11-12
 OS0033 / HTML / 2018-11-13 ~ 2019-01-17
 -------------------------------
 총 3건
+/*
+-- 4번. 수강생 번호와 개설 과정 번호를 입력받아
+-- 개설과목번호, 개설과목명, 개설과목기간을 출력하는 쿼리문
+-- 위에 동일한 쿼리문이 있으니 참고!
+SELECT open_course_id, subject_name, subject_start_date, subject_end_date
+    FROM s_open_subject_view
+    WHERE student_id = 'ST00031'
+    AND open_course_id = 'OC0015'
+    ORDER BY subject_start_date;
+*/
 
 개설 과목 번호 > OS0031
 ---------------------------------------------------------------
@@ -170,6 +190,14 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17
 
 개설 과목명 : Java SE
 개설 과목 기간 : 2018-06-25 ~ 2018-09-10
+/*
+-- 8번. 개설 과목번호로 과목명과 개설 과목 기간을 출력하는 쿼리문
+SELECT s.subject_name, os.subject_start_date, os.subject_end_date
+    FROM open_subject os, subject s
+    WHERE os.subject_id = s.subject_id
+    AND os.open_subject_id = 'OS0031';
+*/
+
 교재명 : 이것이 자바다
 강사명 : 이민종
 출결배점 : 30
@@ -221,6 +249,15 @@ SELECT course_name, subject_name, subject_start_date, subject_end_date, subjectb
 강의실 : 2강의실
 수료 여부 : 수료예정
 수료예정 날짜 : 2019-01-17
+/*
+-- 3번. 수강생 번호와 개설 과정 번호를 입력받아
+-- 개설과정명, 개설과정기간, 강의실, 수료여부, 날짜를 출력하는 쿼리문
+-- 위에 동일한 쿼리문이 있으니 참고!
+SELECT open_course_id, course_name, open_course_start_date, open_course_end_date, class_room_name, completion, drop_date
+    FROM s_course_search_detail_view2
+ WHERE student_id = 'ST00031'
+    AND open_course_id = 'OC0015';
+*/
 
 -------------------------------
 개설 과목 번호 / 개설 과목명 / 개설 과목 기간
@@ -229,6 +266,16 @@ OS0032 / Oracle / 2018-09-11 ~ 2018-11-12
 OS0033 / HTML / 2018-11-13 ~ 2019-01-17
 -------------------------------
 총 3건
+/*
+-- 4번. 수강생 번호와 개설 과정 번호를 입력받아
+-- 개설과목번호, 개설과목명, 개설과목기간을 출력하는 쿼리문
+-- 위에 동일한 쿼리문이 있으니 참고!
+SELECT open_course_id, subject_name, subject_start_date, subject_end_date
+    FROM s_open_subject_view
+    WHERE student_id = 'ST00031'
+    AND open_course_id = 'OC0015'
+    ORDER BY subject_start_date;
+*/
 
 개설 과목 번호 > OS0032
 ---------------------------------------------------------------
@@ -236,6 +283,13 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17
 
 개설 과목명 : Oracle 
 개설 과목 기간 : 2018-09-11 ~ 2018-11-12
+/*
+-- 8번. 개설 과목번호로 과목명과 개설 과목 기간을 출력하는 쿼리문
+SELECT s.subject_name, os.subject_start_date, os.subject_end_date
+    FROM open_subject os, subject s
+    WHERE os.subject_id = s.subject_id
+    AND os.open_subject_id = 'OS0032';
+*/
 
 -------------------------------
 교재명 : 오라클SQL을 다루는 기술
@@ -279,6 +333,15 @@ SELECT course_name, subject_name, subject_start_date, subject_end_date, subjectb
 강의실 : 2강의실
 수료 여부 : 수료예정
 수료예정 날짜 : 2019-01-17
+/*
+-- 3번. 수강생 번호와 개설 과정 번호를 입력받아
+-- 개설과정명, 개설과정기간, 강의실, 수료여부, 날짜를 출력하는 쿼리문
+-- 위에 동일한 쿼리문이 있으니 참고!
+SELECT open_course_id, course_name, open_course_start_date, open_course_end_date, class_room_name, completion, drop_date
+    FROM s_course_search_detail_view2
+ WHERE student_id = 'ST00031'
+    AND open_course_id = 'OC0015';
+*/
 
 -------------------------------
 개설 과목 번호 / 개설 과목명 / 개설 과목 기간
@@ -286,8 +349,17 @@ OS0031 / Java SE / 2018-06-25 ~ 2018-09-10
 OS0032 / Oracle / 2018-09-11 ~ 2018-11-12
 OS0033 / HTML / 2018-11-13 ~ 2019-01-17
 -------------------------------
-
 총 3건
+/*
+-- 4번. 수강생 번호와 개설 과정 번호를 입력받아
+-- 개설과목번호, 개설과목명, 개설과목기간을 출력하는 쿼리문
+-- 위에 동일한 쿼리문이 있으니 참고!
+SELECT open_course_id, subject_name, subject_start_date, subject_end_date
+    FROM s_open_subject_view
+    WHERE student_id = 'ST00031'
+    AND open_course_id = 'OC0015'
+    ORDER BY subject_start_date;
+*/
 
 개설 과목 번호 > 0
 ---------------------------------------------------------------
