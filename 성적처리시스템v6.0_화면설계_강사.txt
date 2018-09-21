@@ -10,9 +10,9 @@
 비밀번호 > 1111
 /*
 -- 1번
-SELECT COUNT(*) AS COUNT
-   FROM instructor
-   WHERE UPPER(instructor_id)=UPPER('강사ID') AND instructor_pw;
+SELECT instructor_id
+    FROM instructor
+    WHERE instructor_name = '김길동' AND instructor_pw = '1111';
 */
 이름이나 비밀번호가 틀렸습니다.
 ---------------------------------------------------------------
@@ -26,10 +26,9 @@ SELECT COUNT(*) AS COUNT
 /*
 -- 1번
 -- 위에 같은 번호 있으니 참고
-SELECT COUNT(*) AS COUNT
-   FROM instructor
-   WHERE UPPER(instructor_id)=UPPER('강사ID') AND instructor_pw;
-
+SELECT instructor_id
+    FROM instructor
+    WHERE instructor_name = '이상원' AND instructor_pw = '1332';
 */
 
 강사 '이상원'님이 로그인되었습니다.
@@ -49,7 +48,7 @@ OS0006 - Oracle / 2018-11-29 ~ 2019-03-06 / 강의 예정
 /* 진행단계 구분 : 강의 종료, 강의 중, 강의 예정 */
 /*
 -- 2번
-CREATE OR REPLACE VIEW subject_schedule_view
+CREATE OR REPLACE VIEW i_subject_schedule_view
 AS
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_id,
     CASE
@@ -62,8 +61,9 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, inst
     
     
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, completion
-     FROM subject_schedule_view
-     WHERE instructor_id = '강사ID';
+     FROM i_subject_schedule_view
+     WHERE instructor_id = 'INS007'
+     ORDER BY subject_end_date;
 */
 강의 과목 번호 > OS0034
 
@@ -87,8 +87,6 @@ SELECT course_name, open_course_start_date, open_subject_id
     AND cr.class_room_id = oc.class_room_id
     AND oc.open_course_id = os.open_course_id
     AND s.subject_id = os.subject_id;
-    
-    
 
 CREATE OR REPLACE VIEW course_registration_view2
 AS
