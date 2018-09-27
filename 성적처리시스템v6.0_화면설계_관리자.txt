@@ -1291,6 +1291,12 @@ OC0016 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / 20
 /*
 -- 35번 쿼리문. 개설과정번호, 과정명, 개설과정기간, 강의실명, 개설과목등록갯수, 수강생등록인원 전체를 출력하는 쿼리문
 -- 참조여부를 확인해서 삭제가능여부까지 포함하여 출력.
+SELECT oci.open_course_id, course_name, open_course_start_date
+                ,open_course_end_date, class_room_name
+                ,os_count, s_count,(SELECT COUNT(*) FROM student_history sh
+                    WHERE sh.open_course_id=oci.open_course_id) count_
+                FROM open_course_infoo1 oci
+    ORDER BY open_course_id;
 */
 개설 과정 번호 > OC0016
 
@@ -2630,4 +2636,3 @@ UPDATE admin
 선택 > 0
 프로그램이 종료되었습니다.
 ---------------------------------------------------------------
-
