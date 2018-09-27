@@ -465,6 +465,7 @@ DELETE FROM subjectbook WHERE UPPER(subjectbook_id)=UPPER('교재아이디');
 강사 이름 > 장동건
 강사 휴대폰 번호 > 010-2222-3333
 강사 비밀번호 > 3333
+강사 등록일 > 2018-09-01
 등록하시겠습니까? (0/1) > 1
 강사가 추가되었습니다.
 
@@ -491,7 +492,7 @@ INSERT INTO instructor (instructor_id, instructor_name, instructor_phone ,  inst
 강사 이름 : 이민종
 강사 전화번호 : 010-1234-4321
 /*
--- 19번 쿼리문. 강사 이름, 전화번호 출력
+-- 19번 쿼리문. 강사 번호(저장), 강사 이름, 전화번호 출력
 SELECT instructor_id, instructor_name, instructor_phone
     FROM instructor
     WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
@@ -551,7 +552,7 @@ ORDER BY instructor_id;
 강사 이름 : 이민종
 강사 전화번호 : 010-1234-4321
 /*
--- 19번 쿼리문. 강사 이름, 전화번호 출력
+-- 19번 쿼리문. 강사 번호(저장), 강사 이름, 전화번호 출력
 -- 위에 같은 번호 있으니 참고
 SELECT instructor_id, instructor_name, instructor_phone
     FROM instructor
@@ -720,12 +721,11 @@ SELECT i.instructor_id, i.instructor_name, i.instructor_phone, i.instructor_regd
 강사 이름 : 이민종
 강사 전화번호 : 010-1234-4321
 /*
--- 19번 쿼리문. 강사 이름, 전화번호 출력
+-- 19번 쿼리문. 강사 번호(저장), 강사 이름, 전화번호 출력
 -- 위에 같은 번호 있으니 참고
 SELECT instructor_id, instructor_name, instructor_phone
     FROM instructor
     WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
-
 */
 
 강사 비밀번호 > 4321
@@ -751,7 +751,7 @@ UPDATE instructor SET instructor_pw = '4321'
 강사 이름 : 정종호
 강사 휴대폰 번호 : 010-5285-3994
 /*
--- 19번 쿼리문. 강사 이름, 강사휴대폰번호 출력
+-- 19번 쿼리문. 강사 번호(저장), 강사 이름, 강사휴대폰번호 출력
 -- 위에 같은 번호 있으니 참고
 SELECT instructor_id, instructor_name, instructor_phone
     FROM instructor
@@ -771,8 +771,8 @@ SELECT s.subject_id, subject_name
         AND i.instructor_id = ip.instructor_id
         AND UPPER(i.instructor_id) = UPPER('강사 번호')
 ORDER BY subject_id;
-
 */
+
 // 1번 누를시 전체 과목이 출력됨.
 과목 번호 > 1
 -------------------------------
@@ -833,7 +833,7 @@ INSERT INTO instructor_possible (instructor_id, subject_id)
 강사 이름 : 정종호
 강사 휴대폰 번호 : 010-5285-3994
 /*
--- 19번 쿼리문. 강사 이름, 강사휴대폰번호 출력
+-- 19번 쿼리문. 강사 번호(저장), 강사 이름, 강사휴대폰번호 출력
 -- 위에 같은 번호 있으니 참고
 SELECT instructor_id, instructor_name, instructor_phone
     FROM instructor
@@ -856,7 +856,6 @@ SELECT s.subject_id, subject_name
         AND i.instructor_id = ip.instructor_id
         AND UPPER(i.instructor_id) = UPPER('강사 번호')
 ORDER BY subject_id;
-
 */
 
 과목 번호 > SUB020
@@ -868,7 +867,7 @@ ORDER BY subject_id;
 -- 위에 같은 번호 있으니 참고
 SELECT subject_id, subject_name
     FROM subject
-    WHERE UPPER(subject_id) = UPPER('sub001');
+    WHERE UPPER(subject_id) = UPPER('sub020');
 */
 
 등록하시겠습니까? (0/1) > 1
@@ -877,13 +876,13 @@ SELECT subject_id, subject_name
 -- 28번 쿼리문. 과목을 강의가능과목에 등록하는 쿼리문.
 -- 위에 같은 번호 있으니 참고
 INSERT INTO instructor_possible (instructor_id, subject_id)
-    VALUES ('INS002', 'SUB001');
+    VALUES ('INS002', 'SUB020');
 */
 
 강사 이름 : 정종호
 강사 휴대폰 번호 : 010-5285-3994
 /*
--- 19번 쿼리문. 강사 이름, 강사휴대폰번호 출력
+-- 19번 쿼리문. 강사 번호(저장), 강사 이름, 강사휴대폰번호 출력
 -- 위에 같은 번호 있으니 참고
 SELECT instructor_id, instructor_name, instructor_phone
     FROM instructor
@@ -921,7 +920,7 @@ ORDER BY subject_id;
 강사 휴대폰 번호 : 010-5285-3994
 
 /*
--- 19번 쿼리문. 강사 이름, 강사휴대폰번호 출력
+-- 19번 쿼리문. 강사 번호(저장), 강사 이름, 강사휴대폰번호 출력
 -- 위에 같은 번호 있으니 참고
 SELECT instructor_id, instructor_name, instructor_phone
     FROM instructor
@@ -955,7 +954,7 @@ ORDER BY subject_id;
 -- 위에 같은 번호 있으니 참고
 SELECT subject_id, subject_name
     FROM subject
-    WHERE UPPER(subject_id) = UPPER('sub001');
+    WHERE UPPER(subject_id) = UPPER('sub020');
 */
 
 삭제하시겠습니까? (0/1) > 1
@@ -1039,7 +1038,7 @@ INSERT INTO open_course (open_course_id, class_room_id, course_id
     , open_course_start_date, open_course_end_date)
      VALUES ((SELECT CONCAT('OC',
 		 LPAD(NVL(SUBSTR(MAX(open_course_id),3), 0) + 1, 4, 0)) AS newId FROM open_course)
-         , 'CR01', 'CS0004', '18-09-20', '18-12-19');
+         , 'CR01', 'CS0004', '2018-09-20', '2018-12-19');
 */
 
 개설 과정이 추가되었습니다.
@@ -1065,15 +1064,15 @@ SELECT oc.open_course_id, c.course_name, oc.open_course_start_date, oc.open_cour
     FROM open_course oc, course c, class_room cr
     WHERE oc.course_id = c.course_id
         AND oc.class_room_id = cr.class_room_id
-        AND oc.open_course_id = 'OC0015';
+        AND UPPER(oc.open_course_id) = UPPER('OC0015');
 */
 
   ** 개설 과목 정보 **
 -------------------------------
 개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명
-OS0031 / Java SE / 2018-06-25 ~ 2018-09-10 이것이 자바다 / 이민종
-OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 오라클SQL을 다루는 기술 / 이상원
-OS0033 / HTML / 2018-11-13 ~ 2019-01-17 HTML5 웹 프로그래밍 입문 / 최장학
+OS0031 / Java SE / 2018-06-25 ~ 2018-09-10 / 이것이 자바다 / 이민종
+OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 오라클SQL을 다루는 기술 / 이상원
+OS0033 / HTML / 2018-11-13 ~ 2019-01-17 / HTML5 웹 프로그래밍 입문 / 최장학
 -------------------------------
 총 3건
 /*
@@ -1090,7 +1089,7 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
        , subjectbook_name, instructor_name
     FROM os_search
-    WHERE open_course_id = '과정 아이디';
+    WHERE UPPER(open_course_id) = UPPER('OC0015');
 */
 
   ** 수강생 정보 **
@@ -1127,7 +1126,7 @@ NVL2(dropout_date, dropout_date,open_course_end_date) s_date,
   else '진행중'
   END completion
     FROM student_infoo2
-    WHERE open_course_id = '개설 과정 번호'
+   WHERE UPPER(open_course_id) = UPPER('OC0015')
 ORDER BY student_id;
 */
 
@@ -1169,7 +1168,7 @@ SELECT oc.open_course_id, c.course_name, oc.open_course_start_date, oc.open_cour
     FROM open_course oc, course c, class_room cr
     WHERE oc.course_id = c.course_id
         AND oc.class_room_id = cr.class_room_id
-        AND oc.open_course_id = 'OC0015';
+        AND UPPER(oc.open_course_id) = UPPER('OC0015');
 */
 
   ** 개설 과목 정보 **
@@ -1186,7 +1185,7 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17 HTML5 웹 프로그래밍 입문 / 최�
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
        , subjectbook_name, instructor_name
     FROM os_search
-    WHERE open_course_id = '과정 아이디';
+    WHERE UPPER(open_course_id) = UPPER('OC0015');
 */
 
   ** 수강생 정보 **
@@ -1207,7 +1206,7 @@ NVL2(dropout_date, dropout_date,open_course_end_date) s_date,
   else '진행중'
   END completion
     FROM student_infoo2
-    WHERE open_course_id = '개설 과정 번호'
+    WHERE UPPER(open_course_id) = UPPER('OC0015')
 ORDER BY student_id;
 */
 
@@ -1311,7 +1310,7 @@ SELECT oc.open_course_id, c.course_name, oc.open_course_start_date, oc.open_cour
     FROM open_course oc, course c, class_room cr
     WHERE oc.course_id = c.course_id
         AND oc.class_room_id = cr.class_room_id
-        AND oc.open_course_id = 'OC0015';
+        AND UPPER(oc.open_course_id) = UPPER('OC0015');
 */
 
 위의 개설 과정을 삭제하시겠습니까? (0/1) > 1
