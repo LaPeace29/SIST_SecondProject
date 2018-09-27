@@ -616,13 +616,12 @@ INS017 / 장동건 / 010-2222-3333 / 2018-09-12 /
 /*
 -- 22번 쿼리문. 전체 강사 출력
 -- 강사번호, 강사이름, 강사휴대폰번호, 강사등록일, 강의가능과목(LISTAGG() WITHIN GROUP(ORDER BY value) 사용) 출력
-SELECT i2.instructor_id, i2.instructor_name, i2.instructor_phone, i2.instructor_regdate, (SELECT(LISTAGG(s.subject_name, ', ') WITHIN GROUP(ORDER BY i.instructor_name)) 
-    FROM subject s, instructor_possible pc, instructor i
+SELECT i.instructor_id, i.instructor_name, i.instructor_phone, i.instructor_regdate
+    , (SELECT (LISTAGG(s.subject_name, ', ') WITHIN GROUP(ORDER BY pc.instructor_id))
+    FROM subject s, instructor_possible pc
     WHERE pc.subject_id = s.subject_id
-    AND i.instructor_id = pc.instructor_id
-    AND i.instructor_id = i2.instructor_id
-    GROUP BY i.instructor_name)as subject_name                                                           
-    FROM instructor i2;
+    AND pc.instructor_id = i.instructor_id)  subjectList
+    FROM instructor i;
 */
 
 ---------------------------------------------------------------
@@ -710,14 +709,12 @@ INS016 / 송서진 / 010-7558-8648 / 2017-12-21 / Python, jQuery, Ajax
 -- 22번 쿼리문. 전체 강사 출력
 -- 강사번호, 강사이름, 강사휴대폰번호, 강사등록일, 강의가능과목(LISTAGG() WITHIN GROUP(ORDER BY value) 사용) 출력
 -- 위에 같은 번호 있으니 참고
-SELECT i2.instructor_id, i2.instructor_name, i2.instructor_phone, i2.instructor_regdate, (SELECT(LISTAGG(s.subject_name, ', ') WITHIN GROUP(ORDER BY i.instructor_name)) 
-    FROM subject s, instructor_possible pc, instructor i
+SELECT i.instructor_id, i.instructor_name, i.instructor_phone, i.instructor_regdate
+    , (SELECT (LISTAGG(s.subject_name, ', ') WITHIN GROUP(ORDER BY pc.instructor_id))
+    FROM subject s, instructor_possible pc
     WHERE pc.subject_id = s.subject_id
-    AND i.instructor_id = pc.instructor_id
-    AND i.instructor_id = i2.instructor_id
-    GROUP BY i.instructor_name)as subject_name
-                                                                    
-    FROM instructor i2;
+    AND pc.instructor_id = i.instructor_id)  subjectList
+    FROM instructor i;
 */
 
 강사 번호 > INS001
@@ -1135,7 +1132,8 @@ NVL2(dropout_date, dropout_date,open_course_end_date) s_date,
   else '진행중'
   END completion
     FROM student_infoo2
-    WHERE open_course_id = '개설 과정 번호';
+    WHERE open_course_id = '개설 과정 번호'
+ORDER BY student_id;
 */
 
 ---------------------------------------------------------------
@@ -1217,7 +1215,8 @@ NVL2(dropout_date, dropout_date,open_course_end_date) s_date,
   else '진행중'
   END completion
     FROM student_infoo2
-    WHERE open_course_id = '개설 과정 번호';
+    WHERE open_course_id = '개설 과정 번호'
+ORDER BY student_id;
 */
 
 ---------------------------------------------------------------
@@ -1441,13 +1440,12 @@ INS016 / 송서진 / 010-7558-8648 / 2017-12-21 / Python, jQuery, Ajax
 -- 22번 쿼리문. 전체 강사 출력
 -- 강사번호, 강사이름, 강사휴대폰번호, 강사등록일, 강의가능과목(LISTAGG() WITHIN GROUP(ORDER BY value) 사용) 출력
 -- 위에 같은 번호 있으니 참고
-SELECT i2.instructor_id, i2.instructor_name, i2.instructor_phone, i2.instructor_regdate, (SELECT(LISTAGG(s.subject_name, ', ') WITHIN GROUP(ORDER BY i.instructor_name)) 
-    FROM subject s, instructor_possible pc, instructor i
+SELECT i.instructor_id, i.instructor_name, i.instructor_phone, i.instructor_regdate
+    , (SELECT (LISTAGG(s.subject_name, ', ') WITHIN GROUP(ORDER BY pc.instructor_id))
+    FROM subject s, instructor_possible pc
     WHERE pc.subject_id = s.subject_id
-    AND i.instructor_id = pc.instructor_id
-    AND i.instructor_id = i2.instructor_id
-    GROUP BY i.instructor_name)as subject_name                                                           
-    FROM instructor i2;
+    AND pc.instructor_id = i.instructor_id)  subjectList
+    FROM instructor i;
 */
 
 강사 번호 > INS001
@@ -2631,3 +2629,4 @@ UPDATE admin
 선택 > 0
 프로그램이 종료되었습니다.
 ---------------------------------------------------------------
+
