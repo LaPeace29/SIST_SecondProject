@@ -11,9 +11,10 @@
 /*
 -- 1번
 SELECT instructor_id
-    FROM instructor
-    WHERE instructor_name = '김길동' AND instructor_pw = '1111';
-*/
+   FROM instructor
+   WHERE INSTR(instructor_name,'강사이름') > 0 AND instructor_pw;*/
+
+
 이름이나 비밀번호가 틀렸습니다.
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0
@@ -26,9 +27,10 @@ SELECT instructor_id
 /*
 -- 1번
 -- 위에 같은 번호 있으니 참고
+
 SELECT instructor_id
-    FROM instructor
-    WHERE instructor_name = '이상원' AND instructor_pw = '1332';
+   FROM instructor
+   WHERE INSTR(instructor_name,'강사이름') > 0 AND instructor_pw;
 */
 
 강사 '이상원'님이 로그인되었습니다.
@@ -47,8 +49,8 @@ OS0021 - HTML / 2018-11-13 ~ 2019-01-17 / 강의 예정
 OS0006 - Oracle / 2018-11-29 ~ 2019-03-06 / 강의 예정
 /* 진행단계 구분 : 강의 종료, 강의 중, 강의 예정 */
 /*
--- 2번
-CREATE OR REPLACE VIEW i_subject_schedule_view
+-- 2번 (수정: 2018-09-21)
+CREATE OR REPLACE VIEW subject_schedule_view
 AS
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_id,
     CASE
@@ -61,9 +63,9 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, inst
     
     
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, completion
-     FROM i_subject_schedule_view
-     WHERE instructor_id = 'INS007'
-     ORDER BY subject_end_date;
+     FROM subject_schedule_view
+     WHERE instructor_id = '강사ID'
+     ORDER BY open_subject_id;
 */
 강의 과목 번호 > OS0034
 
@@ -75,10 +77,10 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, comp
 교재명 : HTML5 웹 프로그래밍 입문
 수강생 등록 인원 : 3명
 /*
--- 3번
+-- 3번 (수정: 2018-09-21)
 CREATE OR REPLACE VIEW course_registration_view1
 AS
-SELECT course_name, open_course_start_date, open_subject_id
+SELECT os.instructor_id ,course_name, open_course_start_date, open_subject_id
 , open_course_end_date, class_room_name, subject_name
 , subject_start_date, subject_end_date, subjectbook_id, oc.open_course_id
     FROM course c, open_course oc, class_room cr
@@ -90,20 +92,20 @@ SELECT course_name, open_course_start_date, open_subject_id
 
 CREATE OR REPLACE VIEW course_registration_view2
 AS
-SELECT course_name, open_course_start_date, open_subject_id
+SELECT crv.instructor_id,course_name, open_course_start_date, open_subject_id
 , open_course_end_date, class_room_name, open_course_id
 , subject_name, subject_start_date, subject_end_date, subjectbook_name
     FROM course_registration_view1 crv, subjectbook sb
     WHERE crv.subjectbook_id = sb.subjectbook_id(+);
-    
 
 SELECT course_name, open_course_start_date
 , open_course_end_date, class_room_name
 , subject_name, subject_start_date, subject_end_date, subjectbook_name
 , (SELECT COUNT(*) FROM student_history sh WHERE crv.open_course_id = sh.open_course_id) count
     FROM course_registration_view2 crv
-    WHERE open_subject_id = '과목ID';
-*/
+    WHERE open_subject_id = '과목ID'
+    AND crv.instructor_id = '강사ID'
+;*/
 
   ** 수강생 정보 **
 수강생번호 / 이름 / 전화번호 / 등록일 / 수료여부 / 날짜
@@ -111,10 +113,11 @@ ST00001 / 홍길동 / 010-2356-4528 / 2017-12-20 / 수료 / 2018-05-06
 ST00002 / 이순신 / 010-4758-6532 / 2017-12-26 / 수료 / 2018-05-06
 ST00031 / 조인성 / 010-1234-1234 / 2018-01-02 / 중도탈락 / 2018-03-02
 /*
--- 4번(10번쿼리문에서 따옴)
+-- 4번(10번쿼리문에서 따옴) (수정)
 SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date
     FROM student_info_view3
-    WHERE open_subject_id = 'OS0034';
+    WHERE open_subject_id = 'OS0034'
+AND instructor_id = '강사ID';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (강사 : 이상원) 
@@ -132,7 +135,7 @@ SELECT student_id, student_name, student_phone, student_regDate, completion, com
 OS0034 / HTML / 2018-01-02 ~ 2018-03-02 / 강의 종료
 OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 /*
--- 5번. 배점 입력전 개설과목번호, 과목명, 과목기간, 비고를 출력
+-- 5번. 배점 입력전 개설과목번호, 과목명, 과목기간, 비고를 출력 (수정)
 CREATE OR REPLACE VIEW score_print_view1
 AS
 SELECT os.open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_id
@@ -144,7 +147,6 @@ SELECT os.open_subject_id, subject_name, subject_start_date, subject_end_date, i
     FROM open_subject os, subject s, exam e
     WHERE os.subject_id = s.subject_id
     AND os.open_subject_id = e.open_subject_id;
-
 CREATE OR REPLACE VIEW score_print_view2
 AS
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lecture_progress, instructor_id
@@ -155,11 +157,11 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lect
     FROM score_print_view1 spv, subject_point sp
     WHERE spv.exam_id = sp.exam_id(+);
 
-
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lecture_progress
         FROM score_print_view2
         WHERE instructor_id = 'INS007'
-        AND score_status IN ('배점 입력 전');
+        AND score_status IN ('배점 입력 전')
+        ORDER BY open_subject_id;	
 */
 강의 과목 번호 > OS0032
 
@@ -171,7 +173,7 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lect
 교재명 : 오라클SQL을 다루는 기술
 
 /*
--- 9번. 강의과목번호로 개설과정명, 개설과정기간,강의실,개설과목명,개설과목기간,교재명을 출력하는 쿼리문
+-- 9번. 강의과목번호로 개설과정명, 개설과정기간,강의실,개설과목명,개설과목기간,교재명을 출력하는 쿼리문 (수정)
 CREATE OR REPLACE VIEW possible_course_infoT
 AS
 SELECT os.open_subject_id, os.subject_start_date, os.subject_end_date,
@@ -198,7 +200,8 @@ t.max_number, s.subjectbook_id, s.subjectbook_name, s.subjectbook_publisher, t.s
 SELECT course_name, open_course_start_date,open_course_end_date
 ,class_room_name, subject_name, subject_start_date, subject_end_date, subjectbook_name
     FROM possible_course_info
-    WHERE open_subject_id IN (과목ID);
+    WHERE open_subject_id ='과목ID'
+    AND instructor_id ='강사ID';
 */
 
   ** 시험 정보 **
@@ -216,18 +219,27 @@ SELECT course_name, open_course_start_date,open_course_end_date
 시험날짜 : 2018-11-12
 시험문제 : OS0032_181112.zip
 /*
--- 6번. 개설과목번호를 가지고 시험번호, 출결배점, 필기배점, 실기배점, 시험날짜, 시험문제를 출력하는 쿼리문.
-CREATE OR REPLACE VIEW exam_info_view
-AS
-SELECT e.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, open_subject_id
-    FROM subject_point sp FULL JOIN exam e
-    ON sp.exam_id = e.exam_id;
-    
-    
-SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
-    FROM exam_info_view
-    WHERE open_subject_id ='과목ID';
+-- 6번. 개설과목번호를 가지고 시험번호, 출결배점, 필기배점, 실기배점, 시험날짜, 시험문제를 출력하는 쿼리문. (수정 2018-09-21)
 
+CREATE OR REPLACE VIEW exam_info_view1
+AS
+SELECT os.instructor_id, os.open_course_id, os.open_subject_id, os.subject_end_date, os.subject_id,
+    os.subject_start_date, os.subjectbook_id, e.exam_id, e.exam_date, e.exam_file
+    FROM open_subject os, exam e
+    WHERE os.open_subject_id = e.open_subject_id;
+    
+CREATE OR REPLACE VIEW exam_info_view2
+AS    
+SELECT t.exam_date , t.exam_file , t.instructor_id , t.open_course_id , t.open_subject_id , 
+t.subject_end_date , t.subject_id , t.subject_start_date , t.subjectbook_id, sp.attendance_point ,
+sp.exam_id , sp.skill_point , sp.subject_point_id , sp.write_point 
+    FROM  exam_info_view1 t, subject_point sp
+    WHERE t.exam_id = sp.exam_id(+);
+    
+ SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
+    FROM exam_info_view2
+    WHERE instructor_id = '강사ID'
+    AND open_subject_id = '과목ID';
 */
 
 이미 시험이 등록되어 있습니다.
@@ -245,17 +257,19 @@ SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
 시험날짜 > 2018-11-13
 시험문제 > OS0034_181113.zip
 /*
--- 7번. 출결배점, 필기배점, 실기배점, 시험날짜, 시험문제를 등록하는 쿼리문
+-- 7번. 출결배점, 필기배점, 실기배점, 시험날짜, 시험문제를 등록하는 쿼리문(수정)
 
--- 시험 테이블 (이걸먼저생성)
+
+SELECT (CONCAT('EXAM', LPAD(NVL(SUBSTR(MAX(exam_id), 5), 0) + 1, 4, 0)))AS newID
+ FROM exam;
+
 Insert into EXAM (EXAM_ID,EXAM_DATE,EXAM_FILE,OPEN_SUBJECT_ID)
-values ((SELECT(CONCAT('EXAM', LPAD(NVL(SUBSTR(MAX(exam_id), 5), 0) + 1, 4, 0)))AS newID FROM exam), '시험날짜', '시험문제','과목ID');
+values ('시험ID', '시험날짜', '시험문제','과목ID');
 
 Insert into SUBJECT_POINT 
 (SUBJECT_POINT_ID,EXAM_ID,ATTENDANCE_POINT,WRITE_POINT,SKILL_POINT) 
 values ((SELECT(CONCAT('SP', LPAD(NVL(SUBSTR(MAX(SUBJECT_POINT_ID), 3), 0) + 1, 2, 0)))AS newID FROM subject_point),
-(SELECT exam_id FROM exam WHERE exam_date = '시험날짜' AND exam_file = '시험문제'), 출결점수,필기점수,실기점수);
-*/
+'시험ID', 출결점수,필기점수,실기점수);*/
 
 등록하시겠습니까?(0/1) > 1
 등록되었습니다.
@@ -271,12 +285,13 @@ OS0034 / HTML / 2018-01-02 ~ 2018-03-02 / 강의 종료
 OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 
 /*
--- 5번
+-- 5번(수정)
 -- 위에 같은 번호 있으니 참고
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lecture_progress
         FROM score_print_view2
         WHERE instructor_id = 'INS007'
-        AND score_status IN ('배점 입력 전');
+        AND score_status IN ('배점 입력 전')
+        ORDER BY open_subject_id;
 
 */
 강의 과목 번호 > OS0032
@@ -288,9 +303,14 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lect
 개설 과목 기간 : 2018-09-11 ~ 2018-11-12
 교재명 : 오라클SQL을 다루는 기술
 /*
--- 9번
+-- 9번(수정)
 -- 위에 같은 번호 있으니 참고
 */
+SELECT course_name, open_course_start_date,open_course_end_date
+,class_room_name, subject_name, subject_start_date, subject_end_date, subjectbook_name
+    FROM possible_course_info
+    WHERE open_subject_id ='과목ID'
+    AND instructor_id ='강사ID';
 
   ** 시험 정보 **
 시험번호 : EXAM0013
@@ -314,11 +334,12 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lect
 시험날짜 : 2018-11-13
 시험문제 : OS0034_181113.zip
 /*
--- 6번
+-- 6번(수정)
 -- 위에 같은 번호 있으니 참고
 SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
-    FROM exam_info_view
-    WHERE open_subject_id ='과목ID';
+    FROM exam_info_view2
+    WHERE instructor_id = '강사ID'
+    AND open_subject_id = '과목ID';
 
 */
 ---------------------------------------------------------------
@@ -334,13 +355,13 @@ SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
 OS0034 / HTML / 2018-01-02 ~ 2018-03-02 / 강의 종료
 OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 /*
--- 5번
+-- 5번(수정)
 -- 위에 같은 번호 있으니 참고
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lecture_progress
         FROM score_print_view2
         WHERE instructor_id = 'INS007'
-        AND score_status IN ('배점 입력 전');
-
+        AND score_status IN ('배점 입력 전')
+        ORDER BY open_subject_id;
 */
 
 강의 과목 번호 > OS0032
@@ -352,9 +373,14 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lect
 개설 과목 기간 : 2018-09-11 ~ 2018-11-12
 교재명 : 오라클SQL을 다루는 기술
 /*
--- 9번
+-- 9번(수정)
 -- 위에 같은 번호 있으니 참고
 */
+SELECT course_name, open_course_start_date,open_course_end_date
+,class_room_name, subject_name, subject_start_date, subject_end_date, subjectbook_name
+    FROM possible_course_info
+    WHERE open_subject_id ='과목ID'
+    AND instructor_id ='강사ID';
 
   ** 시험 정보 **
 시험번호 : EXAM0013
@@ -378,11 +404,12 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lect
 시험날짜 : 2018-11-13
 시험문제 : OS0034_181113.zip
 /*
--- 6번
+-- 6번(수정)
 -- 위에 같은 번호 있으니 참고
 SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
-    FROM exam_info_view
-    WHERE open_subject_id ='과목ID';
+    FROM exam_info_view2
+    WHERE instructor_id = '강사ID'
+    AND open_subject_id = '과목ID';
 
 */
 
@@ -390,7 +417,7 @@ SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
 
 배점(시험정보 포함)을 삭제하시겠습니까? (0/1) > 1
 /*
--- 16번 시험번호로 배점정보를 삭제하는 쿼리문
+-- 16번 시험번호로 배점정보를 삭제하는 쿼리문 수정안해도됨
 DELETE FROM subject_point
     WHERE exam_id = '시험ID';
 */
@@ -415,12 +442,12 @@ OS0034 / HTML / 2018-01-02 ~ 2018-03-02 / 강의 종료
 OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 /*
 -- 5번. 배점 입력전 개설과목번호, 과목명, 과목기간, 비고를 출력
--- 위에 같은 번호 있으니 참고
+-- 위에 같은 번호 있으니 참고(수정)
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lecture_progress
         FROM score_print_view2
         WHERE instructor_id = 'INS007'
-        AND score_status IN ('배점 입력 전');
-
+        AND score_status IN ('배점 입력 전')
+        ORDER BY open_subject_id;
 */
 강의 과목 번호 > OS0033
 없는 강의 과목입니다.
@@ -434,9 +461,14 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lect
 개설 과목 기간 : 2018-06-25 ~ 2018-09-10
 교재명 : 이것이 자바다
 /*
--- 9번.
+-- 9번. (수정)
 -- 위에 같은 번호 있으니 참고
 */
+SELECT course_name, open_course_start_date,open_course_end_date
+,class_room_name, subject_name, subject_start_date, subject_end_date, subjectbook_name
+    FROM possible_course_info
+    WHERE open_subject_id ='과목ID'
+    AND instructor_id ='강사ID';
 
   ** 시험 정보 **
 시험번호 : EXAM0012
@@ -479,12 +511,12 @@ ST00031	/ 조인성 / 010-1234-1234 / 2018-01-02 / 수료예정 / 2019-01-17 / 1
 ST00032	/ 김탈락 / 010-3232-3232 / 2018-06-25 / 수료예정 / 2019-01-17 / - / - / - / -
 총 2명
 /*
--- 10번
+-- 10번 (수정완료)
 CREATE VIEW student_info_view1
 AS
 SELECT s.student_id, student_name, student_phone, student_regDate
 ,(SELECT dropout_date FROM process_complete pc WHERE pc.open_course_id = sh.open_course_id AND pc.student_id = sh.student_id) drop_date, open_course_start_date, open_course_end_date
-, attendance_score, write_score, skill_score, open_subject_id
+, attendance_score, write_score, skill_score, open_subject_id, instructor_id
     FROM student_score ss, student s, student_history sh, open_course oc, open_subject os
     WHERE ss.student_id = s.student_id
     AND s.student_id = sh.student_id
@@ -494,7 +526,7 @@ SELECT s.student_id, student_name, student_phone, student_regDate
     
 CREATE VIEW student_info_view2
 AS
-SELECT student_id, student_name, student_phone, student_regDate, open_subject_id, drop_date, open_course_end_date
+SELECT student_id, student_name, student_phone, student_regDate, open_subject_id, drop_date, open_course_end_date, instructor_id
 , CASE
   WHEN SYSDATE < open_course_start_date AND drop_date is null THEN '수료예정'
   WHEN SYSDATE > open_course_end_date AND drop_date is null THEN '수료완료'
@@ -508,15 +540,15 @@ SELECT student_id, student_name, student_phone, student_regDate, open_subject_id
 CREATE VIEW student_info_view3
 AS
 SELECT student_id, student_name, student_phone, student_regDate, completion, CASE completion WHEN '중도탈락' THEN drop_date ELSE open_course_end_date END completion_date
-    ,attendance_score, write_score, skill_score, total
+    ,attendance_score, write_score, skill_score, total, instructor_id
     FROM student_info_view2;
     
     
 SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date
     ,attendance_score, write_score, skill_score, total
     FROM student_info_view3    
-    WHERE open_subject_id = '과목ID';
-*/
+    WHERE open_subject_id = '과목ID'
+    AND instructor_id = '강사ID';*/
 
 수강생 번호 > ST00032	
 이름 : 김탈락 
@@ -529,12 +561,10 @@ SELECT student_id, student_name, student_phone, student_regDate, completion, com
 등록되었습니다.
 
 /*
--- 11번
-UPDATE student_score
-    SET attendance_score = 출결점수, write_score = 필기점수, skill_score = 실기점수
-    WHERE exam_id = '시험ID'
-    AND student_id = '수강생ID';
-*/
+-- 11번 (수정)
+INSERT INTO student_score (student_score_id, attendance_score, write_score, skill_score, exam_id, student_id)
+    VALUES((SELECT (CONCAT('SS', LPAD(NVL(SUBSTR(MAX(student_score_id), 3), 0) + 1, 5, 0)))AS newID FROM student_score)
+    , 출결점수, 필기점수, 실기점수, '시험ID', '수강생ID'); */
 
   ** 수강생 정보 **
 수강생번호 / 이름 / 전화번호 / 등록일 / 수료여부 / 날짜 / 출결 / 필기 / 실기 / 총점
@@ -543,13 +573,14 @@ ST00032	/ 김탈락 / 010-3232-3232 / 2018-06-25 / 수료예정 / 2019-01-17 / 1
 총 2명
 
 /*
--- 10번
+-- 10번(수정)
 -- 위에 같은 번호 있으니 참고
+
 SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date
     ,attendance_score, write_score, skill_score, total
     FROM student_info_view3    
-    WHERE open_subject_id = '과목ID';
-
+    WHERE open_subject_id = '과목ID'
+    AND instructor_id = '강사ID';
 */
 
 -- 중도 탈락학생이 있는 경우 -- 
@@ -558,14 +589,11 @@ SELECT student_id, student_name, student_phone, student_regDate, completion, com
 전화번호 : 010-1234-1234
 중도 탈락한 학생입니다. 성적을 입력 할 수 없습니다.
 /*
--- 11번
-UPDATE student_score
-    SET attendance_score = 출결점수, write_score = 필기점수, skill_score = 실기점수
-    WHERE exam_id = '시험ID'
-    AND student_id = '수강생ID';
+-- 11번(수정)
+INSERT INTO student_score (student_score_id, attendance_score, write_score, skill_score, exam_id, student_id)
+    VALUES((SELECT (CONCAT('SS', LPAD(NVL(SUBSTR(MAX(student_score_id), 3), 0) + 1, 5, 0)))AS newID FROM student_score)
+    , 출결점수, 필기점수, 실기점수, '시험ID', '수강생ID');
 
-*/
-수강생 번호 > 0
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (강사 : 이상원) 
 1. 성적 입력  2. 성적 출력  3. 성적 삭제
@@ -579,12 +607,12 @@ OS0034 / HTML / 2018-01-02 ~ 2018-03-02 / 강의 종료
 OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 /*
 -- 5번. 배점 입력전 개설과목번호, 과목명, 과목기간, 비고를 출력
--- 위에 같은 번호 있으니 참고
+-- 위에 같은 번호 있으니 참고(수정)
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lecture_progress
         FROM score_print_view2
         WHERE instructor_id = 'INS007'
-        AND score_status IN ('배점 입력 전');
-
+        AND score_status IN ('배점 입력 전')
+        ORDER BY open_subject_id;
 */
 
 강의 과목 번호 > OS0031
@@ -596,10 +624,16 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lect
 개설 과목 기간 : 2018-06-25 ~ 2018-09-10
 교재명 : 이것이 자바다
 /*
--- 9번
+-- 9번(수정)
 -- 위에 같은 번호 있으니 참고
 
 */
+
+SELECT course_name, open_course_start_date,open_course_end_date
+,class_room_name, subject_name, subject_start_date, subject_end_date, subjectbook_name
+    FROM possible_course_info
+    WHERE open_subject_id ='과목ID'
+    AND instructor_id ='강사ID';
 
   ** 시험 정보 **
 시험번호 : EXAM0012
@@ -640,13 +674,14 @@ ST00031	/ 조인성 / 010-1234-1234 / 2018-01-02 / 수료예정 / 2019-01-17 / 1
 ST00032	/ 김탈락 / 010-3232-3232 / 2018-06-25 / 수료예정 / 2019-01-17 / 10 / 10 / 10 / 30
 총 2명
 /*
--- 10번
+-- 10번(수정)
 -- 위에 같은 번호 있으니 참고
+
 SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date
     ,attendance_score, write_score, skill_score, total
     FROM student_info_view3    
-    WHERE open_subject_id = '과목ID';
-
+    WHERE open_subject_id = '과목ID'
+    AND instructor_id = '강사ID';
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (강사 : 이상원) 
@@ -661,12 +696,12 @@ OS0034 - HTML / 2018-01-02 ~ 2018-03-02 / 강의 종료
 OS0032 - Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 /*
 -- 5번. 배점 입력전 개설과목번호, 과목명, 과목기간, 비고를 출력
--- 위에 같은 번호 있으니 참고
+-- 위에 같은 번호 있으니 참고(수정)
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lecture_progress
         FROM score_print_view2
         WHERE instructor_id = 'INS007'
-        AND score_status IN ('배점 입력 전');
-
+        AND score_status IN ('배점 입력 전')
+        ORDER BY open_subject_id;
 */
 
 강의 과목 번호 > OS0031
@@ -678,9 +713,14 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lect
 개설 과목 기간 : 2018-06-25 ~ 2018-09-10
 교재명 : 이것이 자바다
 /*
--- 9번
+-- 9번(수정)
 -- 위에 같은 번호 있으니 참고
 */
+SELECT course_name, open_course_start_date,open_course_end_date
+,class_room_name, subject_name, subject_start_date, subject_end_date, subjectbook_name
+    FROM possible_course_info
+    WHERE open_subject_id ='과목ID'
+    AND instructor_id ='강사ID';
 
   ** 시험 정보 **
 시험번호 : EXAM0012
@@ -721,13 +761,14 @@ ST00031	/ 조인성 / 010-1234-1234 / 2018-01-02 / 수료예정 / 2019-01-17 / 1
 ST00032	/ 김탈락 / 010-3232-3232 / 2018-06-25 / 수료예정 / 2019-01-17 / 10 / 10 / 10 / 30
 총 2명
 /*
--- 10번
+-- 10번(수정)
 -- 위에 같은 번호 있으니 참고
+
 SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date
     ,attendance_score, write_score, skill_score, total
     FROM student_info_view3    
-    WHERE open_subject_id = '과목ID';
-
+    WHERE open_subject_id = '과목ID'
+    AND instructor_id = '강사ID';
 */
 
 수강생 번호 > ST00032	
@@ -737,7 +778,7 @@ SELECT student_id, student_name, student_phone, student_regDate, completion, com
 성적 정보를 삭제하시겠습니까? (0/1) > 1
 /*
 -- 18번
-수강생 번호로 성적정보를 삭제하는 쿼리문
+수강생 번호로 성적정보를 삭제하는 쿼리문 수정안해도됨
 DELETE FROM student_score
     WHERE student_id IN (SELECT student_id FROM student
                         WHERE student_name = '수강생이름' AND student_phone = '수강생전화번호');
@@ -761,7 +802,7 @@ DELETE FROM student_score
 전화번호 : 010-1332-1332
 등록일 : 2017-04-20
 /*
--- 12번
+-- 12번 수정안해도됨
 SELECT instructor_id ,instructor_name ,instructor_phone ,instructor_regdate
     FROM instructor
     WHERE instructor_id = "강사 ID";  
@@ -771,8 +812,8 @@ SELECT instructor_id ,instructor_name ,instructor_phone ,instructor_regdate
 SUB002 - Oracle
 SUB005 - HTML
 /*
--- 13번
-SELECT s.subject_id, s.subject_name
+-- 13번 수정안해도됨
+SELECT s.subj ect_id, s.subject_name
     FROM instructor i, instructor_possible iso, subject s
     WHERE i.instructor_id = iso.instructor_id
     AND iso.subject_id = s.subject_id
@@ -791,7 +832,7 @@ SELECT s.subject_id, s.subject_name
 비밀번호를 변경하시겠습니까?(0/1) > Y
 강사 '이상원'의 비밀번호가 변경되었습니다.
 /*
--- 14번
+-- 14번 수정안해도됨
 UPDATE instructor
     SET instructor_pw = '새로운패스워드'
     WHERE instructor_name = '강사이름' AND instructor_pw = '기존패스워드';
