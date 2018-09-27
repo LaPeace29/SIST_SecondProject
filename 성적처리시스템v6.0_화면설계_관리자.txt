@@ -1147,11 +1147,11 @@ OC0010 / 데이터베이스 엔지니어링 향상 과정 / 2018-09-10 ~ 2019-03
 총 3건
 /*
 -- 34번 쿼리문. 개설과정번호, 개설과정명, 개설과정기간, 강의실명 등 전체를 출력하는 쿼리문.
-SELECT open_course_id,course_name,open_course_start_date,open_course_end_date
-    ,class_room_name
-    FROM course_info_view1
-    WHERE INSTR(course_name,'과정명 일부')>0
-    ORDER BY open_course_id;
+SELECT oc.open_course_id, c.course_name, oc.open_course_start_date, oc.open_course_end_date, cr.class_room_name
+    FROM open_course oc, course c, class_room cr
+    WHERE oc.course_id = c.course_id
+        AND oc.class_room_id = cr.class_room_id
+        AND INSTR(c.course_name, '데이터베이스') > 0;
 */
 
 검색 결과가 여러개입니다.
