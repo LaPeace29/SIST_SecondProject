@@ -1247,6 +1247,24 @@ OC0016 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / 20
 총 16건
 /*
 -- 100번 쿼리문. 개설과정번호, 과정명, 개설과정기간, 강의실명, 개설과목등록갯수, 수강생등록인원 전체를 출력하는 쿼리문
+CREATE OR REPLACE VIEW open_course_infoo1
+AS
+    SELECT open_course_id, course_name, open_course_start_date
+                ,open_course_end_date, class_room_name
+                    ,(SELECT COUNT(*) FROM open_subject
+            WHERE open_course_id=oc.open_course_id) os_count
+            ,(SELECT COUNT(*) FROM student_history
+            WHERE open_course_id=oc.open_course_id) s_count
+            
+            FROM open_course oc, course c, class_room cr
+            WHERE oc.course_id = c.course_id
+            AND oc.class_room_id=cr.class_room_id;
+            
+    SELECT open_course_id, course_name, open_course_start_date
+                ,open_course_end_date, class_room_name
+                ,os_count, s_count
+                FROM open_course_infoo1
+            ORDER BY open_course_id;
 */
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 3. 개설 과정 관리 > 2. 개설 과정 검색 및 출력
@@ -1706,7 +1724,11 @@ OC0015 / Python / Java 응용 SW실무 개발자 양성 과정 / 2018-06-25 ~ 20
 /*
 -- 100번 쿼리문. 개설과정번호, 과정명, 개설과정기간, 강의실명, 개설과목등록갯수, 수강생등록인원 전체를 출력하는 쿼리문
 -- 위에 같은 번호 있으니 참고
-
+SELECT open_course_id, course_name, open_course_start_date
+                ,open_course_end_date, class_room_name
+                ,os_count, s_count
+                FROM open_course_infoo1
+            ORDER BY open_course_id;
 */
 
 개설 과정 번호 > OC0014
@@ -2127,6 +2149,11 @@ OC0016 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / 20
 /*
 -- 100번 쿼리문. 개설과정번호, 과정명, 개설과정기간, 강의실명, 개설과목등록갯수, 수강생등록인원 전체를 출력하는 쿼리문
 -- 위에 같은 번호 있으니 참고
+SELECT open_course_id, course_name, open_course_start_date
+                ,open_course_end_date, class_room_name
+                ,os_count, s_count
+                FROM open_course_infoo1
+            ORDER BY open_course_id;
 */
 
 개설 과정 번호 > OC0014
