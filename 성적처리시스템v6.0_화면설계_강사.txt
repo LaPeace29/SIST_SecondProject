@@ -405,7 +405,13 @@ SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
 /*
 -- 16번 시험번호로 배점정보를 삭제하는 쿼리문 수정안해도됨
 DELETE FROM subject_point
-    WHERE exam_id = '시험ID';
+    WHERE exam_id = (SELECT sp.exam_id
+                        FROM subject_point sp, exam e, open_subject os, instructor i 
+                        WHERE sp.exam_id = e.exam_id
+                            AND e.open_subject_id = os.open_subject_id
+                            AND os.instructor_id = i.instructor_id
+                            AND i.instructor_id = 'INS007'
+                            AND e.exam_id = 'EXAM0015');
 */
 배점 정보가 삭제되었습니다.
 ---------------------------------------------------------------
