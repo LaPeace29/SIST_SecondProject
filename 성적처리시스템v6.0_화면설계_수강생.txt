@@ -286,9 +286,12 @@ SELECT open_course_id, subject_name, subject_start_date, subject_end_date
 /*
 -- 8번. 개설 과목번호로 과목명과 개설 과목 기간을 출력하는 쿼리문
 SELECT s.subject_name, os.subject_start_date, os.subject_end_date
-    FROM open_subject os, subject s
+    FROM open_subject os, subject s, student st, student_history sh
     WHERE os.subject_id = s.subject_id
-    AND os.open_subject_id = 'OS0032';
+    AND sh.student_id = st.student_id
+    AND sh.open_course_id = os.open_course_id
+    AND os.open_subject_id = 'OS0032'
+    AND st.student_id = 'ST00031';
 */
 
 -------------------------------
