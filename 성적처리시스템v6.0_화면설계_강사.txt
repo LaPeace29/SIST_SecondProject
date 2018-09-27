@@ -11,9 +11,9 @@
 /*
 -- 1번
 SELECT instructor_id
-   FROM instructor
-   WHERE INSTR(instructor_name,'강사이름') > 0 AND instructor_pw;*/
-
+    FROM instructor
+    WHERE instructor_name = '김길동' AND instructor_pw = '1111';
+*/
 
 이름이나 비밀번호가 틀렸습니다.
 ---------------------------------------------------------------
@@ -27,10 +27,9 @@ SELECT instructor_id
 /*
 -- 1번
 -- 위에 같은 번호 있으니 참고
-
 SELECT instructor_id
-   FROM instructor
-   WHERE INSTR(instructor_name,'강사이름') > 0 AND instructor_pw;
+    FROM instructor
+    WHERE instructor_name = '이상원' AND instructor_pw = '1332';
 */
 
 강사 '이상원'님이 로그인되었습니다.
