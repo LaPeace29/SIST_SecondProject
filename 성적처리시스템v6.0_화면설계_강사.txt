@@ -478,7 +478,7 @@ SELECT course_name, open_course_start_date,open_course_end_date
 -- 성적 등록 인원수와 성적 입력 여부 포함해서 출력
 CREATE OR REPLACE VIEW all_exam_view1
 AS
-SELECT e.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, os.open_course_id
+SELECT e.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, os.open_course_id, instructor_id
     FROM exam e, subject_point sp, open_subject os, open_course oc
     WHERE e.exam_id = sp.exam_id
     AND e.open_subject_id = os.open_subject_id
@@ -486,7 +486,7 @@ SELECT e.exam_id, attendance_point, write_point, skill_point, exam_date, exam_fi
 
 CREATE OR REPLACE VIEW all_exam_view2
 AS
-SELECT  v.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
+SELECT  v.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, instructor_id
         ,(SELECT COUNT(*) FROM student_score ss WHERE v.exam_id = ss.exam_id) count_
         ,(SELECT COUNT(*) FROM student_history sh WHERE v.open_course_id = sh.open_course_id) score_s
     FROM all_exam_view1 v
@@ -494,7 +494,7 @@ SELECT  v.exam_id, attendance_point, write_point, skill_point, exam_date, exam_f
     
 CREATE OR REPLACE VIEW all_exam_view3
 AS
-SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, count_
+SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, count_, instructor_id
     , CASE count_
         WHEN score_s THEN '성적 입력 완료'
         else '성적 입력 전'
@@ -503,7 +503,8 @@ SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
 
 SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, count_, score_state
     FROM all_exam_view3
-    WHERE exam_id = '시험ID';
+    WHERE exam_id = '시험ID'
+    AND instructor_id = '강사ID';
 */
 
 시험번호 > EXAM0012
@@ -673,7 +674,8 @@ SELECT course_name, open_course_start_date,open_course_end_date
 -- 위에 같은 번호 있으니 참고
 SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, count_, score_state
     FROM all_exam_view3
-    WHERE exam_id = '시험ID';
+    WHERE exam_id = '시험ID'
+    AND instructor_id = '강사ID';
 */
 시험 번호 > EXAM0012
 
@@ -693,7 +695,8 @@ SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
 -- 위에 같은 번호 있으니 참고
 SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, count_, score_state
     FROM all_exam_view3
-    WHERE exam_id = '시험ID';
+    WHERE exam_id = '시험ID'
+    AND instructor_id = '강사ID';
 */
 
   ** 수강생 정보 **
@@ -766,7 +769,8 @@ SELECT course_name, open_course_start_date,open_course_end_date
 -- 위에 같은 번호 있으니 참고
 SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, count_, score_state
     FROM all_exam_view3
-    WHERE exam_id = '시험ID';
+    WHERE exam_id = '시험ID'
+    AND instructor_id = '강사ID';
 */
 시험 번호 > EXAM0012
 
@@ -786,7 +790,8 @@ SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
 -- 위에 같은 번호 있으니 참고
 SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, count_, score_state
     FROM all_exam_view3
-    WHERE exam_id = '시험ID';
+    WHERE exam_id = '시험ID'
+    AND instructor_id = '강사ID';
 */
   ** 수강생 정보 **
 수강생번호 / 이름 / 전화번호 / 등록일 / 수료여부 / 날짜 / 출결 / 필기 / 실기 / 총점
