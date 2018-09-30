@@ -13,6 +13,7 @@ public class CourseDAO {
 		
 		return result;
 	}
+	
 	// 과정 출력 메소드
 	// 과정번호 / 과정이름
 	public List<Course> print1() {
