@@ -1,6 +1,6 @@
 package com.scoremanagement.domain;
 
-public class SubjectBook {
+public class Subjectbook {
 	// Field
 	private String subjectbook_id;
 	private String subjectbook_name;
@@ -8,17 +8,17 @@ public class SubjectBook {
 	private int count_;
 	
 	// Constructor
-	public SubjectBook() {
+	public Subjectbook() {
 	
 	}
 
-	public SubjectBook(String subjectbook_id, String subjectbook_name, String subjectbook_publisher) {
+	public Subjectbook(String subjectbook_id, String subjectbook_name, String subjectbook_publisher) {
 		this.subjectbook_id = subjectbook_id;
 		this.subjectbook_name = subjectbook_name;
 		this.subjectbook_publisher = subjectbook_publisher;
 	}
 	
-	public SubjectBook(String subjectbook_id, String subjectbook_name, String subjectbook_publisher, int count_) {
+	public Subjectbook(String subjectbook_id, String subjectbook_name, String subjectbook_publisher, int count_) {
 		this.subjectbook_id = subjectbook_id;
 		this.subjectbook_name = subjectbook_name;
 		this.subjectbook_publisher = subjectbook_publisher;
