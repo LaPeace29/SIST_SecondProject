@@ -41,7 +41,7 @@ public class Course {
 	}
 
 	// print method
-	// Return 과목번호 / 과목이름
+	// Return 과정번호 / 과정이름
 	public String print1() {
 		String result = "";
 		result = String.format("%s / %s", 
@@ -49,7 +49,7 @@ public class Course {
 		return result;
 	}
 
-	// Return 과목번호 / 과목이름 / 삭제가능여부
+	// Return 과정번호 / 과정이름 / 삭제가능여부
 	public String print2() {
 		String result = "";
 		result = String.format("%s / %s / %s", 
