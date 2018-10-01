@@ -2,9 +2,9 @@ package com.scoremanagement.domain;
 
 public class Course {
 	// Field
-	private String course_id;
-	private String course_name;
-	private int count_;
+	private String course_id;		// 과정 아이디
+	private String course_name;		// 과정 이름
+	private int count_;				// 삭제 가능 여부
 	
 	// Constructor
 	public Course() {
