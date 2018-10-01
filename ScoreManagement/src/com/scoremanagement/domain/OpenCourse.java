@@ -6,6 +6,7 @@ public class OpenCourse {
 	
 	private String open_course_id;			// 개설 과정 아이디
 	private String class_room_id;			// 강의실 아이디
+	private String class_room_name;
 	private String course_id;				// 과정 아이디
 	private String course_name;				// 과정 이름
 	private Date open_course_start_date;	// 개설 과정 시작일
@@ -16,4 +17,6 @@ public class OpenCourse {
 	private int count_;						// 삭제 가능 여부
 	private String completion_status;		// 수료 여부
 	private Date dropout_date;				// 수료or탈락 날짜
+
+	
 }
