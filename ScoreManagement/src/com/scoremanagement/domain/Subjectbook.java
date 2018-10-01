@@ -2,10 +2,10 @@ package com.scoremanagement.domain;
 
 public class Subjectbook {
 	// Field
-	private String subjectbook_id;
-	private String subjectbook_name;
-	private String subjectbook_publisher;
-	private int count_;
+	private String subjectbook_id;			// 교재 아이디
+	private String subjectbook_name;		// 교재 이름
+	private String subjectbook_publisher;	// 교재 출판사
+	private int count_;						// 삭제 가능 여부
 	
 	// Constructor
 	public Subjectbook() {
