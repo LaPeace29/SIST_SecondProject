@@ -67,6 +67,8 @@ SELECT open_course_id, course_name, open_course_start_date, open_course_end_date
 개설 과정 번호 > OC0001
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (수강생 : 조인성) > 1. 성적 조회 > 웹기반 빅데이터 분석 응용 SW 개발자
+
+개설 과정 번호 : OC0001
 개설 과정명 : 웹기반 빅데이터 분석 응용 SW 개발자
 개설 과정 기간 : 2018-01-02 ~ 2018-05-06
 강의실 : 1강의실
@@ -151,6 +153,8 @@ SELECT open_course_id, course_name, open_course_start_date, open_course_end_date
 개설 과정 번호 > OC0015
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (수강생 : 조인성) > 1. 성적 조회 > Java & Python 기반 응용 SW 개발자 양성 과정
+
+개설 과정 번호 : OC0015
 개설 과정명 : Java & Python 기반 응용 SW 개발자 양성 과정
 개설 과정 기간 : 2018-06-25 ~ 2019-01-17
 강의실 : 2강의실
@@ -244,6 +248,7 @@ SELECT course_name, subject_name, subject_start_date, subject_end_date, subjectb
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (수강생 : 조인성) > 1. 성적 조회 > Java & Python 기반 응용 SW 개발자 양성 과정
 
+개설 과정 번호 : OC0015
 개설 과정명 : Java & Python 기반 응용 SW 개발자 양성 과정
 개설 과정 기간 : 2018-06-25 ~ 2019-01-17
 강의실 : 2강의실
@@ -331,6 +336,7 @@ SELECT course_name, subject_name, subject_start_date, subject_end_date, subjectb
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (수강생 : 조인성) > 1. 성적 조회 > Java & Python 기반 응용 SW 개발자 양성 과정
 
+개설 과정 번호 : OC0015
 개설 과정명 : Java & Python 기반 응용 SW 개발자 양성 과정
 개설 과정 기간 : 2018-06-25 ~ 2019-01-17
 강의실 : 2강의실
