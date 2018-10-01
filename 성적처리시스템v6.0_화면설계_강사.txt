@@ -42,10 +42,10 @@ SELECT instructor_id
   ** 강의 과목 **
 오늘 날짜 : 2018-09-11
 개설과목번호 / 과목명 / 과목 기간 / 비고
-OS0034 - HTML / 2018-01-02 ~ 2018-03-02 / 강의 종료
-OS0032 - Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
-OS0021 - HTML / 2018-11-13 ~ 2019-01-17 / 강의 예정
-OS0006 - Oracle / 2018-11-29 ~ 2019-03-06 / 강의 예정
+OS0034 / HTML / 2018-01-02 ~ 2018-03-02 / 강의 종료
+OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
+OS0021 / HTML / 2018-11-13 ~ 2019-01-17 / 강의 예정
+OS0006 / Oracle / 2018-11-29 ~ 2019-03-06 / 강의 예정
 /* 진행단계 구분 : 강의 종료, 강의 중, 강의 예정 */
 /*
 -- 2번 (수정: 2018-09-21)
@@ -66,8 +66,9 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, comp
      WHERE instructor_id = '강사ID'
      ORDER BY open_subject_id;
 */
-강의 과목 번호 > OS0034
+개설 과목 번호 > OS0034
 
+개설 과목 번호 : OS0034
 개설 과정명 : 웹기반 빅데이터 분석 응용SW개발자
 개설 과정 기간 : 2018-01-02 ~ 2018-05-06
 강의실 : 1강의실
@@ -152,8 +153,9 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lect
         WHERE instructor_id = 'INS007'
         ORDER BY open_subject_id;
 */
-강의 과목 번호 > OS0032
+개설 과목 번호 > OS0032
 
+개설 과목 번호 : OS0032
 개설 과정명 : Python / Java 응용 SW실무 개발자 양성 과정
 개설 과정 기간 : 2018-06-25 ~ 2019-01-17
 강의실 : 2강의실
@@ -269,7 +271,7 @@ values ((SELECT(CONCAT('SP', LPAD(NVL(SUBSTR(MAX(SUBJECT_POINT_ID), 3), 0) + 1, 
 ---------------------------------------------------------------
   ** 강의 과목 **
 오늘 날짜 : 2018-09-11
-개설과목번호 / 과목명 / 과목 기간 / 비고 / 진행 단계
+개설과목번호 / 과목명 / 과목 기간 / 비고
 OS0034 / HTML / 2018-01-02 ~ 2018-03-02 / 강의 종료
 OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
 
@@ -281,8 +283,9 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lect
         WHERE instructor_id = 'INS007'
         ORDER BY open_subject_id;
 */
-강의 과목 번호 > OS0032
+개설 과목 번호 > OS0032
 
+개설 과목 번호 : OS0032
 개설 과정명 : Python / Java 응용 SW실무 개발자 양성 과정
 개설 과정 기간 : 2018-06-25 ~ 2019-01-17
 강의실 : 2강의실
@@ -337,7 +340,6 @@ SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
 성적 처리 시스템 v6.0 (강사 : 이상원) > 2. 배점 관리 > 3. 배점 삭제
   ** 강의 과목 **
 오늘 날짜 : 2018-09-11
-오늘 날짜 : 2018-09-11
 개설과목번호 / 과목명 / 과목 기간 / 비고
 OS0034 / HTML / 2018-01-02 ~ 2018-03-02 / 강의 종료
 OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
@@ -350,8 +352,9 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lect
         ORDER BY open_subject_id;
 */
 
-강의 과목 번호 > OS0032
+개설 과목 번호 > OS0032
 
+개설 과목 번호 : OS0032
 개설 과정명 : Python / Java 응용 SW실무 개발자 양성 과정
 개설 과정 기간 : 2018-06-25 ~ 2019-01-17
 강의실 : 2강의실
@@ -440,11 +443,12 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lect
         WHERE instructor_id = 'INS007'
         ORDER BY open_subject_id;
 */
-강의 과목 번호 > OS0033
+개설 과목 번호 > OS0033
 없는 강의 과목입니다.
 
-강의 과목 번호 > OS0031
+개설 과목 번호 > OS0031
 
+개설 과목 번호 : OS0031
 개설 과정명 : Python / Java 응용 SW실무 개발자 양성 과정
 개설 과정 기간 : 2018-06-25 ~ 2019-01-17
 강의실 : 2강의실
@@ -638,8 +642,9 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lect
         ORDER BY open_subject_id;
 */
 
-강의 과목 번호 > OS0031
+개설 과목 번호 > OS0031
 
+개설 과목 번호 : OS0031
 개설 과정명 : Python / Java 응용 SW실무 개발자 양성 과정
 개설 과정 기간 : 2018-06-25 ~ 2019-01-17
 강의실 : 2강의실
@@ -734,8 +739,9 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, lect
         ORDER BY open_subject_id;
 */
 
-강의 과목 번호 > OS0031
+개설 과목 번호 > OS0031
 
+개설 과목 번호 : OS0031
 개설 과정명 : Python / Java 응용 SW실무 개발자 양성 과정
 개설 과정 기간 : 2018-06-25 ~ 2019-01-17
 강의실 : 2강의실
@@ -836,6 +842,8 @@ DELETE FROM student_score
 선택 > 1
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (강사 : 이상원) > 4. 개인 정보 > 1. 개인 정보 조회
+
+강사번호 : INS007
 이름 : 이상원
 전화번호 : 010-1332-1332
 등록일 : 2017-04-20
