@@ -260,7 +260,7 @@ values ('시험ID', '시험날짜', '시험문제','과목ID');
 Insert into SUBJECT_POINT 
 (SUBJECT_POINT_ID,EXAM_ID,ATTENDANCE_POINT,WRITE_POINT,SKILL_POINT) 
 values ((SELECT(CONCAT('SP', LPAD(NVL(SUBSTR(MAX(SUBJECT_POINT_ID), 3), 0) + 1, 2, 0)))AS newID FROM subject_point),
-'시험ID', 출결점수,필기점수,실기점수);*/
+'시험ID', 출결배점, 필기배점, 실기배점);*/
 
 등록하시겠습니까?(0/1) > 1
 등록되었습니다.
