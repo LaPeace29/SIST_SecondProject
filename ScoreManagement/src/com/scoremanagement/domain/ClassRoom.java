@@ -2,10 +2,10 @@ package com.scoremanagement.domain;
 
 public class ClassRoom {
 	// Field
-	private String class_room_id;
-	private String class_room_name;
-	private int max_number;
-	private int count_;
+	private String class_room_id;			// 강의실 아이디
+	private String class_room_name;			// 강의실 이름
+	private int max_number;					// 최대 정원
+	private int count_;						// 삭제 가능 여부
 	
 	// Constructor
 	public ClassRoom() {
