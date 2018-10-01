@@ -2,8 +2,8 @@ package com.scoremanagement.domain;
 
 public class Admin {
 	// Field
-	private String admin_id;
-	private String admin_pw;
+	private String admin_id;		// 관리자 아이디
+	private String admin_pw;		// 관리자 비밀번호
 
 	// Constructor
 	public Admin() {
