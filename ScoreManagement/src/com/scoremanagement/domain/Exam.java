@@ -6,6 +6,7 @@ public class Exam {
 	
 	// Field
 	private String exam_id;				// 시험 아이디
+	private String subject_id;			// 과목 아이디
 	private String subject_name;		// 과목 이름
 	private String subjectbook_name;	// 교재 이름
 	private Date subject_start_date;	// 과목 시작일
@@ -29,5 +30,5 @@ public class Exam {
 	private Date completion_date;		// 날짜(수료 or 중도탈락)
 	private String score_status;		// 성적 입력 여부(관리자 20번 참고)
 
-
+	
 }
