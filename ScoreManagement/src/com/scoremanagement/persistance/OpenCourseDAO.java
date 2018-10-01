@@ -61,6 +61,7 @@ public class OpenCourseDAO {
 		
 		return list;
 	}
+	
 	// 개설 과정 출력 메소드(7)
 	// 개설 과정 번호 / 과정명 / 개설과정기간
 	public List<OpenCourse> print7() {
