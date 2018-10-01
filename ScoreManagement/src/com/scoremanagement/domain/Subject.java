@@ -2,9 +2,9 @@ package com.scoremanagement.domain;
 
 public class Subject {
 	// Field
-	private String subject_id;
-	private String subject_name;
-	private int count_;
+	private String subject_id;			// 과목 아이디
+	private String subject_name;		// 과목 이름
+	private int count_;					// 삭제 가능 여부
 	
 	// Constructor
 	public Subject() {
