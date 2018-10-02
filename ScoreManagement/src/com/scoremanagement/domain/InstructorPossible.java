@@ -17,6 +17,12 @@ public class InstructorPossible {
 		this.subject_id = subject_id;
 	}
 	
+	public InstructorPossible(String instructor_id, String subject_id, String subject_name) {
+		this.instructor_id = instructor_id;
+		this.subject_id = subject_id;
+		this.subject_name = subject_name;
+	}
+
 	// Getter
 	public String getInstructor_id() {
 		return instructor_id;
