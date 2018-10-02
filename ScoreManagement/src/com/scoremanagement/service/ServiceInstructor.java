@@ -8,9 +8,11 @@ import java.util.Scanner;
 
 import com.scoremanagement.domain.Exam;
 import com.scoremanagement.domain.Instructor;
+import com.scoremanagement.domain.InstructorPossible;
 import com.scoremanagement.domain.OpenSubject;
 import com.scoremanagement.domain.Student;
 import com.scoremanagement.persistance.ExamDAO;
+import com.scoremanagement.persistance.InsructorPossibleDAO;
 import com.scoremanagement.persistance.InstructorDAO;
 import com.scoremanagement.persistance.OpenSubjectDAO;
 import com.scoremanagement.persistance.StudentDAO;
@@ -21,6 +23,7 @@ public class ServiceInstructor {
 	private OpenSubjectDAO osDAO = new OpenSubjectDAO();
 	private StudentDAO stDAO = new StudentDAO();
 	private ExamDAO eDAO = new ExamDAO();
+	private InsructorPossibleDAO ipDAO = new InsructorPossibleDAO();
 	
 	private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 	private String instructor_id = null;
@@ -382,7 +385,6 @@ public class ServiceInstructor {
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (강사 : %s) > 3. 성적 관리 > 2. 성적 출력\n", instructor_name);
 
-		boolean run = true;
 		int size1 = this.schedule_print();
 		
 		if(size1 > 0) {
@@ -410,9 +412,8 @@ public class ServiceInstructor {
 	// 성적 처리 시스템 v6.0 (강사 : OOO) > 3. 성적 관리 > 3. 성적 삭제
 	private void m3_s3(Scanner sc) {
 		System.out.println("---------------------------------------------------------------");
-		System.out.printf("성적 처리 시스템 v6.0 (강사 : %s) > 3. 성적 관리 > 1. 성적 입력\n", instructor_name);
+		System.out.printf("성적 처리 시스템 v6.0 (강사 : %s) > 3. 성적 관리 > 3. 성적 삭제\n", instructor_name);
 
-		boolean run = true;
 		int size1 = this.schedule_print();
 		
 		if(size1 > 0) {
@@ -462,17 +463,85 @@ public class ServiceInstructor {
 	
 	// 성적 처리 시스템 v6.0 (강사 : OOO) > 4. 개인 정보
 	private void m4(Scanner sc) {
-		
+		boolean run = true;
+		while(run) {
+			System.out.println("---------------------------------------------------------------");
+			System.out.printf("성적 처리 시스템 v6.0 (강사 : %s) > 4. 개인 정보\n", instructor_name);
+			System.out.println("1. 개인 정보 조회  2. 비밀 번호 변경");
+			System.out.print("선택 > ");
+			int selectNum = sc.nextInt();
+			sc.nextLine();
+			
+			switch(selectNum) {
+			case 1:
+				this.m4_s1();
+				break;
+				
+			case 2:
+				this.m4_s2(sc);
+				break;
+
+			case 0:
+				run = false;
+				break;
+				
+			default:
+				System.out.println("없는 번호입니다.");
+				break;
+			}
+		}
+
 	}
 	
 	// 성적 처리 시스템 v6.0 (강사 : OOO) > 4. 개인 정보 > 1. 개인 정보 조회
 	private void m4_s1() {
+		System.out.println("---------------------------------------------------------------");
+		System.out.printf("성적 처리 시스템 v6.0 (강사 : %s) > 4. 개인 정보 > 1. 개인 정보 조회\n", instructor_name);
+		List<Instructor> list = this.iDAO.print2(instructor_id);
+		for(Instructor i : list) {
+			System.out.printf("강사번호 : %s\n", i.getInstructor_id());
+			System.out.printf("이름 : %s\n", i.getInstructor_name());
+			System.out.printf("휴대폰번호 : %s\n", i.getInstructor_phone());
+			System.out.printf("등록일 : %s\n", i.getInstructor_regDate());
+		}
 		
+		List<InstructorPossible> list2 = this.ipDAO.print(instructor_id);
+		if(list2.size() > 0) {
+			System.out.println("** 강의 가능 과목 **");
+			for(InstructorPossible ip : list2) {
+				System.out.printf("%s - %s", ip.getSubject_id(), ip.getSubject_name());
+			}
+		}
 	}
 	
 	// 성적 처리 시스템 v6.0 (강사 : OOO) > 4. 개인 정보 > 2. 비밀 번호 변경
 	private void m4_s2(Scanner sc) {
+		System.out.println("---------------------------------------------------------------");
+		System.out.printf("성적 처리 시스템 v6.0 (강사 : %s) > 4. 개인 정보 > 2. 비밀 번호 변경\n", instructor_name);
+		System.out.print("현재 비밀번호 > ");
+		String pw = sc.nextLine();
+		System.out.print("신규 비밀번호 > ");
+		String new_pw = sc.nextLine();
+		System.out.print("비밀번호 확인 > ");
+		String new_pw2 = sc.nextLine();
 		
+		System.out.print("비밀번호를 변경하시겠습니까? (0/1) > ");
+		int selectNum = sc.nextInt();
+		sc.nextLine();
+		
+		if(new_pw.equals(new_pw2)) {
+			if(selectNum == 1) {
+				int result = this.iDAO.modify(new Instructor(instructor_name, pw, new_pw));
+				
+				if(result > 0) {
+					System.out.printf("강사 '%s'의 비밀번호가 변경되었습니다.\n", instructor_name);
+				} else {
+					System.out.println("실패했습니다.");
+				}
+			}
+		} else {
+			System.out.println("비밀번호가 일치하지 않습니다.");
+		}
 	}
 	
 	private int schedule_print() {
