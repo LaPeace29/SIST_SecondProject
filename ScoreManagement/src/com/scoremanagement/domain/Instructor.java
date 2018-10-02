@@ -18,8 +18,8 @@ public class Instructor {
 
 	}
 
-	public Instructor(String instructor_id, String instructor_pw) {
-		this.instructor_id = instructor_id;
+	public Instructor(String instructor_name, String instructor_pw) {
+		this.instructor_name = instructor_name;
 		this.instructor_pw = instructor_pw;
 	}
 
