@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.scoremanagement.connection.OracleConnection;
-import com.scoremanagement.domain.OpenSubject;
 import com.scoremanagement.domain.Student;
 import com.scoremanagement.domain.StudentHistory;
 
@@ -38,8 +37,47 @@ public class StudentDAO {
 	
 	// 수강생 출력 메소드(1)
 	// 수강생 이름 / 수강생 휴대폰번호
-	public List<Student> print1() {
+	public List<Student> print1(String student_id) {
 		List<Student> list = new ArrayList<Student>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "SELECT student_name, student_phone\r\n" + 
+					"    FROM student\r\n" + 
+					"    WHERE UPPER(student_id) = UPPER(?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, student_id);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String student_name = rs.getString("student_name");
+				String student_phone = rs.getString("student_phone");
+				
+				Student s = new Student(student_name, student_phone);
+				list.add(s);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
 		
 		return list;
 	}
