@@ -1,17 +1,61 @@
 package com.scoremanagement.persistance;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.scoremanagement.connection.OracleConnection;
 import com.scoremanagement.domain.Instructor;
 
 public class InstructorDAO {
 
+	String instructor_id = null;
+	
 	// 강사 로그인 메소드
-	public int login(Instructor i) {
-		int result = 0;
+	public String login(Instructor i) {
 		
-		return result;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			
+			String sql = "SELECT instructor_id\r\n" + 
+							"    FROM instructor\r\n" + 
+							"    WHERE instructor_name = ? AND instructor_pw = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, i.getInstructor_name());
+			pstmt.setString(2, i.getInstructor_pw());
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				instructor_id = rs.getString("instructor_id");
+			}
+			
+			rs.close();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+		return instructor_id;
 	}
 	
 	// 강사 추가 메소드
