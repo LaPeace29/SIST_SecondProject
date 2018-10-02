@@ -12,7 +12,7 @@ import com.scoremanagement.domain.InstructorPossible;
 import com.scoremanagement.domain.OpenSubject;
 import com.scoremanagement.domain.Student;
 import com.scoremanagement.persistance.ExamDAO;
-import com.scoremanagement.persistance.InsructorPossibleDAO;
+import com.scoremanagement.persistance.InstructorPossibleDAO;
 import com.scoremanagement.persistance.InstructorDAO;
 import com.scoremanagement.persistance.OpenSubjectDAO;
 import com.scoremanagement.persistance.StudentDAO;
@@ -23,7 +23,7 @@ public class ServiceInstructor {
 	private OpenSubjectDAO osDAO = new OpenSubjectDAO();
 	private StudentDAO stDAO = new StudentDAO();
 	private ExamDAO eDAO = new ExamDAO();
-	private InsructorPossibleDAO ipDAO = new InsructorPossibleDAO();
+	private InstructorPossibleDAO ipDAO = new InstructorPossibleDAO();
 	
 	private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 	private String instructor_id = null;

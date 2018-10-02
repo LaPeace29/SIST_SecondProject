@@ -10,7 +10,7 @@ import java.util.List;
 import com.scoremanagement.connection.OracleConnection;
 import com.scoremanagement.domain.InstructorPossible;
 
-public class InsructorPossibleDAO {
+public class InstructorPossibleDAO {
 
 	// 강의 가능 과목 추가 메소드
 	public int subjectPossibleAdd(InstructorPossible ip) {
