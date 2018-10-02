@@ -8,11 +8,12 @@ public class Exam {
 	private String exam_id;				// 시험 아이디
 	private String subject_project_id;	// 과목별 배점 정보 아이디
 	private String student_score_id;	// 수강생 성적 정보 아이디
-	private String subject_id;			// 과목 아이디
+	private String open_subject_id;		// 개설 과목 아이디
 	private String subject_name;		// 과목 이름
 	private String subjectbook_name;	// 교재 이름
 	private Date subject_start_date;	// 과목 시작일
 	private Date subject_end_Date;		// 과목 종료일
+	private String instructor_id;		// 강사 아이디
 	private String instructor_name;		// 강사 이름
 	private int attendance_point;		// 출결 배점
 	private int write_point;			// 필기 배점
@@ -38,12 +39,19 @@ public class Exam {
 		
 	}
 
+	// 배점 삭제, 성적 삭제시 사용
+	public Exam(String exam_id, String student_id, String instructor_id) {
+		this.exam_id = exam_id;
+		this.student_id = student_id;
+		this.instructor_id = instructor_id;
+	}
+	
 	// 배점 등록시 사용
 	// 시험번호 / 출결배점 / 필기배점 / 실기배점 / 시험날짜 / 시험문제파일
-	public Exam(String exam_id, String subject_id, int attendance_point, int write_point, int skill_point,
+	public Exam(String exam_id, String open_subject_id, int attendance_point, int write_point, int skill_point,
 			Date exam_date, String exam_file) {
 		this.exam_id = exam_id;
-		this.subject_id = subject_id;
+		this.open_subject_id = open_subject_id;
 		this.attendance_point = attendance_point;
 		this.write_point = write_point;
 		this.skill_point = skill_point;
@@ -148,8 +156,8 @@ public class Exam {
 		return student_score_id;
 	}
 
-	public String getSubject_id() {
-		return subject_id;
+	public String getOpen_subject_id() {
+		return open_subject_id;
 	}
 
 	public String getSubject_name() {
@@ -168,6 +176,10 @@ public class Exam {
 		return subject_end_Date;
 	}
 
+	public String getInstructor_id() {
+		return instructor_id;
+	}
+	
 	public String getInstructor_name() {
 		return instructor_name;
 	}
@@ -241,8 +253,8 @@ public class Exam {
 	}
 
 	// Setter
-	public void setSubject_id(String subject_id) {
-		this.subject_id = subject_id;
+	public void setOpen_subject_id(String open_subject_id) {
+		this.open_subject_id = open_subject_id;
 	}
 
 	public void setSubject_name(String subject_name) {
@@ -261,6 +273,10 @@ public class Exam {
 		this.subject_end_Date = subject_end_Date;
 	}
 
+	public void getInstructor_id(String instructor_id) {
+		this.instructor_id = instructor_id;
+	}
+	
 	public void setInstructor_name(String instructor_name) {
 		this.instructor_name = instructor_name;
 	}
