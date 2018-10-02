@@ -10,6 +10,7 @@ public class Instructor {
 	private String instructor_phone;	// 강사 휴대폰 번호
 	private Date instructor_regDate;	// 강사 등록일
 	private String instructor_pw;		// 강사 비밀번호
+	private String instructor_new_pw;	// 강사 새 비밀번호
 	private String instructor_possible;	// 강의 가능 과목 나열
 	private int count_;					// 삭제 가능 여부
 	
@@ -21,6 +22,14 @@ public class Instructor {
 	public Instructor(String instructor_name, String instructor_pw) {
 		this.instructor_name = instructor_name;
 		this.instructor_pw = instructor_pw;
+	}
+
+	// 비밀번호 수정시 사용
+	public Instructor(String instructor_id, String instructor_pw, String instructor_new_pw) {
+		super();
+		this.instructor_id = instructor_id;
+		this.instructor_pw = instructor_pw;
+		this.instructor_new_pw = instructor_new_pw;
 	}
 
 	public Instructor(String instructor_id, String instructor_name, String instructor_phone, Date instructor_regDate) {
@@ -68,7 +77,11 @@ public class Instructor {
 	public String getInstructor_pw() {
 		return instructor_pw;
 	}
-
+	
+	public String getInstructor_new_pw() {
+		return instructor_new_pw;
+	}
+	
 	public String getInstructor_possible() {
 		return instructor_possible;
 	}
@@ -94,6 +107,8 @@ public class Instructor {
 		this.instructor_pw = instructor_pw;
 	}	
 	
-	
+	public void setInstructor_new_pw(String instructor_new_pw) {
+		this.instructor_new_pw = instructor_new_pw;
+	}	
 	// print method
 }
