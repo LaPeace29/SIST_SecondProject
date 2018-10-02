@@ -416,6 +416,14 @@ DELETE FROM subject_point
                             AND os.instructor_id = i.instructor_id
                             AND i.instructor_id = 'INS007'
                             AND e.exam_id = 'EXAM0015');
+                            
+DELETE FROM EXAM
+    WHERE exam_id = (SELECT exam_id
+                        FROM exam e, open_subject os, instructor i 
+                        WHERE e.open_subject_id = os.open_subject_id
+                            AND os.instructor_id = i.instructor_id
+                            AND i.instructor_id = 'INS007'
+                            AND e.exam_id = 'EXAM0015');
 */
 배점 정보가 삭제되었습니다.
 ---------------------------------------------------------------
@@ -433,6 +441,7 @@ DELETE FROM subject_point
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (강사 : 이상원) > 3. 성적 관리 > 1. 성적 입력
   ** 강의 과목 **
+오늘 날짜 : 2018-09-11
 개설과목번호 / 과목명 / 과목 기간 / 비고
 OS0034 / HTML / 2018-01-02 ~ 2018-03-02 / 강의 종료
 OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 강의 중
@@ -483,7 +492,7 @@ SELECT course_name, open_course_start_date,open_course_end_date
 -- 성적 등록 인원수와 성적 입력 여부 포함해서 출력
 CREATE OR REPLACE VIEW all_exam_view1
 AS
-SELECT e.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, os.open_course_id, instructor_id
+SELECT e.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, os.open_course_id, instructor_id, os.open_subject_id
     FROM exam e, subject_point sp, open_subject os, open_course oc
     WHERE e.exam_id = sp.exam_id
     AND e.open_subject_id = os.open_subject_id
@@ -491,7 +500,7 @@ SELECT e.exam_id, attendance_point, write_point, skill_point, exam_date, exam_fi
 
 CREATE OR REPLACE VIEW all_exam_view2
 AS
-SELECT  v.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, instructor_id
+SELECT  v.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, instructor_id, open_subject_id
         ,(SELECT COUNT(*) FROM student_score ss WHERE v.exam_id = ss.exam_id) count_
         ,(SELECT COUNT(*) FROM student_history sh WHERE v.open_course_id = sh.open_course_id) score_s
     FROM all_exam_view1 v
@@ -499,7 +508,7 @@ SELECT  v.exam_id, attendance_point, write_point, skill_point, exam_date, exam_f
     
 CREATE OR REPLACE VIEW all_exam_view3
 AS
-SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, count_, instructor_id
+SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, count_, instructor_id, open_subject_id
     , CASE count_
         WHEN score_s THEN '성적 입력 완료'
         else '성적 입력 전'
@@ -508,8 +517,8 @@ SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
 
 SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, count_, score_state
     FROM all_exam_view3
-    WHERE exam_id = '시험ID'
-    AND instructor_id = '강사ID';
+    WHERE instructor_id = '강사ID'
+    AND open_subject_id = '과목ID';
 */
 
 시험번호 > EXAM0012
@@ -530,7 +539,9 @@ SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
 -- 위에 같은 번호 있으니 참고
 SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, count_, score_state
     FROM all_exam_view3
-    WHERE exam_id = '시험ID';
+    WHERE exam_id = '시험ID'
+    AND instructor_id = '강사ID'
+    AND open_subject_id = '과목ID';
 */
 
   ** 수강생 정보 **
@@ -540,11 +551,11 @@ ST00032	/ 김탈락 / 010-3232-3232 / 2018-06-25 / 수료예정 / 2019-01-17 / -
 총 2명
 /*
 -- 10번 (수정완료)
-CREATE VIEW student_info_view1
+CREATE OR REPLACE VIEW student_info_view1
 AS
 SELECT s.student_id, student_name, student_phone, student_regDate
 ,(SELECT dropout_date FROM process_complete pc WHERE pc.open_course_id = sh.open_course_id AND pc.student_id = sh.student_id) drop_date, open_course_start_date, open_course_end_date
-, attendance_score, write_score, skill_score, open_subject_id, instructor_id
+, attendance_score, write_score, skill_score, open_subject_id, instructor_id, exam_id
     FROM student_score ss, student s, student_history sh, open_course oc, open_subject os
     WHERE ss.student_id = s.student_id
     AND s.student_id = sh.student_id
@@ -552,9 +563,9 @@ SELECT s.student_id, student_name, student_phone, student_regDate
     AND oc.open_course_id = os.open_course_id;
     
     
-CREATE VIEW student_info_view2
+CREATE OR REPLACE VIEW student_info_view2
 AS
-SELECT student_id, student_name, student_phone, student_regDate, open_subject_id, drop_date, open_course_end_date, instructor_id
+SELECT student_id, student_name, student_phone, student_regDate, open_subject_id, drop_date, open_course_end_date, instructor_id, exam_id
 , CASE
   WHEN SYSDATE < open_course_start_date AND drop_date is null THEN '수료예정'
   WHEN SYSDATE > open_course_end_date AND drop_date is null THEN '수료완료'
@@ -565,10 +576,10 @@ SELECT student_id, student_name, student_phone, student_regDate, open_subject_id
     FROM student_info_view1;
 
 
-CREATE VIEW student_info_view3
+CREATE OR REPLACE VIEW student_info_view3
 AS
 SELECT student_id, student_name, student_phone, student_regDate, completion, CASE completion WHEN '중도탈락' THEN drop_date ELSE open_course_end_date END completion_date
-    ,attendance_score, write_score, skill_score, total, instructor_id
+    ,attendance_score, write_score, skill_score, total, instructor_id, open_subject_id, exam_id
     FROM student_info_view2;
     
     
@@ -576,6 +587,7 @@ SELECT student_id, student_name, student_phone, student_regDate, completion, com
     ,attendance_score, write_score, skill_score, total
     FROM student_info_view3    
     WHERE open_subject_id = '과목ID'
+    AND exam_id = 'EXAM0012'
     AND instructor_id = '강사ID';*/
 
 수강생 번호 > ST00032	
@@ -825,8 +837,7 @@ SELECT student_id, student_name, student_phone, student_regDate, completion, com
 -- 18번
 수강생 번호로 성적정보를 삭제하는 쿼리문 수정안해도됨
 DELETE FROM student_score
-    WHERE student_id IN (SELECT student_id FROM student
-                        WHERE student_name = '수강생이름' AND student_phone = '수강생전화번호');
+    WHERE student_id = UPPER('수강생번호');
     */
 성적 정보가 삭제되었습니다.
 ---------------------------------------------------------------
