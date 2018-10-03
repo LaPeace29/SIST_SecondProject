@@ -1,8 +1,14 @@
 package com.scoremanagement.persistance;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.scoremanagement.connection.OracleConnection;
 import com.scoremanagement.domain.OpenCourse;
 
 public class OpenCourseDAO {
@@ -48,8 +54,52 @@ public class OpenCourseDAO {
 	
 	// 개설 과정 출력 메소드(5)
 	// 개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 / 수료여부 / 날짜
-	public List<OpenCourse> print5() {
+	public List<OpenCourse> print5(String student_id) {
 		List<OpenCourse> list = new ArrayList<OpenCourse>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "SELECT open_course_id, course_name, open_course_start_date, open_course_end_date, class_room_name, completion, drop_date\r\n" + 
+					"    FROM s_course_search_detail_view2\r\n" + 
+					"    WHERE student_id = UPPER(?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, student_id);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String open_course_id = rs.getString("open_course_id");
+				String course_name = rs.getString("course_name");
+				Date open_course_start_date = rs.getDate("open_course_start_date");
+				Date open_course_end_date = rs.getDate("open_course_end_date");
+				String class_room_name = rs.getString("class_room_name");
+				String completion_status = rs.getString("completion");
+				Date dropout_date = rs.getDate("drop_date");
+				OpenCourse oc = new OpenCourse(open_course_id, class_room_name, course_name, open_course_start_date,
+						open_course_end_date, completion_status, dropout_date);
+				list.add(oc);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
 		/*CREATE OR REPLACE VIEW s_course_search_detail_view
 		AS
 		SELECT oc.open_course_id, course_name, open_course_start_date, open_course_end_date, 
