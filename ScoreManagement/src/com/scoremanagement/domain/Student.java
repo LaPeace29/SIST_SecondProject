@@ -10,6 +10,7 @@ public class Student {
 	private String student_phone;		// 수강생 휴대폰번호
 	private Date student_regDate;		// 수강생 등록일
 	private String student_pw;			// 수강생 비밀번호
+	private String student_new_pw;		// 수강생 새 비밀번호
 	private String completion_status;	// 수료 여부(수료 예정, 수료 완료, 중도 탈락)
 	private Date completeion_date;		// 날짜(중도탈락, 수료)
 	private int count_;					// 삭제 가능 여부
@@ -23,6 +24,14 @@ public class Student {
 	public Student(String student_name, String student_pw) {
 		this.student_name = student_name;
 		this.student_pw = student_pw;
+	}
+
+	// 비밀번호 수정시 사용
+	public Student(String student_name, String student_pw, String student_new_pw) {
+		super();
+		this.student_name = student_name;
+		this.student_pw = student_pw;
+		this.student_new_pw = student_new_pw;
 	}
 
 	// 수강생이름 / 수강생전화번호
@@ -85,6 +94,10 @@ public class Student {
 		return student_pw;
 	}
 
+	public String getStudent_new_pw() {
+		return student_new_pw;
+	}
+	
 	public String getCompletion_status() {
 		return completion_status;
 	}
@@ -114,6 +127,10 @@ public class Student {
 		this.student_pw = student_pw;
 	}
 
+	public void setStudent_new_pw(String student_new_pw) {
+		this.student_new_pw = student_new_pw;
+	}
+	
 	public void setCompletion_status(String completion_status) {
 		this.completion_status = completion_status;
 	}
