@@ -1,4 +1,7 @@
-﻿-- 과정 정보 테이블 삽입
+﻿-- 관리자 테이블
+Insert into ADMIN (admin_id,admin_pw) values ('admin','admin');
+
+-- 과정 정보 테이블 삽입
 Insert into COURSE (COURSE_ID,COURSE_NAME) values ('CS0001','웹기반 빅데이터 분석 응용SW개발자');
 Insert into COURSE (COURSE_ID,COURSE_NAME) values ('CS0002','Python / Java 응용 SW실무 개발자 양성 과정');
 Insert into COURSE (COURSE_ID,COURSE_NAME) values ('CS0003','시큐어 코딩 / 웹 애플리케이션 응용SW개발자');
