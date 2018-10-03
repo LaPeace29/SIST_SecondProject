@@ -212,7 +212,11 @@ public class ExamDAO {
 	// 교재명 / 강사명 / 출결 배점 / 필기 배점 / 실기 배점 / 출결 점수 / 필기 점수 / 실기 점수 / 시험 날짜 / 시험문제 파일
 	public List<Exam> print6() {
 		List<Exam> list = new ArrayList<Exam>();
-		
+		/*SELECT course_name, subject_name, subject_start_date, subject_end_date, subjectbook_name, instructor_name, 
+		attendance_point, write_point, skill_point, attendance_score, write_score, skill_score, student_id, exam_date, exam_file
+	    FROM s_score_detail_view2
+	    WHERE open_subject_id = 'OS0032'
+	    AND student_id = 'ST00031';*/
 		return list;
 	}
 	

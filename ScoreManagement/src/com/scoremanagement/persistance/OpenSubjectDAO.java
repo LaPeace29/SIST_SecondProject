@@ -40,7 +40,11 @@ public class OpenSubjectDAO {
 	// 과목명 / 개설 과목 기간
 	public List<OpenSubject> print3() {
 		List<OpenSubject> list = new ArrayList<OpenSubject>();
-		
+		/*		SELECT s.subject_name, os.subject_start_date, os.subject_end_date
+	    FROM open_subject os, subject s
+	    WHERE os.subject_id = s.subject_id
+	    AND os.open_subject_id = 'OS0031';
+*/
 		return list;
 	}
 	
@@ -173,7 +177,20 @@ public class OpenSubjectDAO {
 	// 개설 과목 번호 / 과목명 / 개설 과목 기간
 	public List<OpenSubject> print8() {
 		List<OpenSubject> list = new ArrayList<OpenSubject>();
-		
+		/*		CREATE VIEW s_open_subject_view
+		AS
+		SELECT os.open_course_id, subject_name, subject_start_date, subject_end_date, sh.student_id
+		    FROM student_history sh, open_course oc, open_subject os, subject sub
+		    WHERE oc.open_course_id = sh.open_course_id
+		    AND oc.open_course_id = os.open_course_id
+		    AND sub.subject_id = os.subject_id;
+		    
+		SELECT open_course_id, subject_name, subject_start_date, subject_end_date
+		    FROM s_open_subject_view
+		    WHERE student_id = 'ST00031'
+		    AND open_course_id = 'OC0001'
+		    ORDER BY subject_start_date;
+*/
 		return list;
 	}
 	

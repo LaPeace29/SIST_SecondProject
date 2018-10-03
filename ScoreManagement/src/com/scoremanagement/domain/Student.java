@@ -20,8 +20,8 @@ public class Student {
 	}
 
 	// 수강생 로그인시 사용
-	public Student(String student_id, String student_pw) {
-		this.student_id = student_id;
+	public Student(String student_name, String student_pw) {
+		this.student_name = student_name;
 		this.student_pw = student_pw;
 	}
 

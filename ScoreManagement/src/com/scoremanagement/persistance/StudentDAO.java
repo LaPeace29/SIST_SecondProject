@@ -17,7 +17,10 @@ public class StudentDAO {
 	// 수강생 로그인 메소드
 	public int login(Student s) {
 		int result = 0;
-		
+/*		SELECT student_id
+	    FROM student
+	    WHERE student_name = '김길동' AND student_pw = '1111';
+*/
 		return result;
 	}
 	
@@ -148,6 +151,13 @@ public class StudentDAO {
                 se.printStackTrace();
             }
         }
+
+		return list;
+	}
+	
+
+	public List<Student> print4() {
+		List<Student> list = new ArrayList<Student>();
 
 		return list;
 	}
