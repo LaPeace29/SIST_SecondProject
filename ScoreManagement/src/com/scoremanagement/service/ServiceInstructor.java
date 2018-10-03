@@ -466,7 +466,7 @@ public class ServiceInstructor {
 		boolean run = true;
 		while(run) {
 			System.out.println("---------------------------------------------------------------");
-			System.out.printf("성적 처리 시스템 v6.0 (강사 : %s) > 4. 개인 정보\n", instructor_name);
+			System.out.printf("성적 처리 시스템 v6.0 (강사 : %s) > 4. 개인 정보\n", this.instructor_name);
 			System.out.println("1. 개인 정보 조회  2. 비밀 번호 변경");
 			System.out.print("선택 > ");
 			int selectNum = sc.nextInt();
@@ -496,8 +496,8 @@ public class ServiceInstructor {
 	// 성적 처리 시스템 v6.0 (강사 : OOO) > 4. 개인 정보 > 1. 개인 정보 조회
 	private void m4_s1() {
 		System.out.println("---------------------------------------------------------------");
-		System.out.printf("성적 처리 시스템 v6.0 (강사 : %s) > 4. 개인 정보 > 1. 개인 정보 조회\n", instructor_name);
-		List<Instructor> list = this.iDAO.print2(instructor_id);
+		System.out.printf("성적 처리 시스템 v6.0 (강사 : %s) > 4. 개인 정보 > 1. 개인 정보 조회\n", this.instructor_name);
+		List<Instructor> list = this.iDAO.print2(this.instructor_id);
 		for(Instructor i : list) {
 			System.out.printf("강사번호 : %s\n", i.getInstructor_id());
 			System.out.printf("이름 : %s\n", i.getInstructor_name());
@@ -506,7 +506,7 @@ public class ServiceInstructor {
 			System.out.println();
 		}
 		
-		List<InstructorPossible> list2 = this.ipDAO.print(instructor_id);
+		List<InstructorPossible> list2 = this.ipDAO.print(this.instructor_id);
 		if(list2.size() > 0) {
 			System.out.println("** 강의 가능 과목 **");
 			for(InstructorPossible ip : list2) {
@@ -518,24 +518,24 @@ public class ServiceInstructor {
 	// 성적 처리 시스템 v6.0 (강사 : OOO) > 4. 개인 정보 > 2. 비밀 번호 변경
 	private void m4_s2(Scanner sc) {
 		System.out.println("---------------------------------------------------------------");
-		System.out.printf("성적 처리 시스템 v6.0 (강사 : %s) > 4. 개인 정보 > 2. 비밀 번호 변경\n", instructor_name);
+		System.out.printf("성적 처리 시스템 v6.0 (강사 : %s) > 4. 개인 정보 > 2. 비밀 번호 변경\n", this.instructor_name);
 		System.out.print("현재 비밀번호 > ");
-		String pw = sc.nextLine();
+		String instructor_pw = sc.nextLine();
 		System.out.print("신규 비밀번호 > ");
-		String new_pw = sc.nextLine();
+		String instructor_new_pw = sc.nextLine();
 		System.out.print("비밀번호 확인 > ");
-		String new_pw2 = sc.nextLine();
+		String intructor_new_pw2 = sc.nextLine();
 		
 		System.out.print("비밀번호를 변경하시겠습니까? (0/1) > ");
 		int selectNum = sc.nextInt();
 		sc.nextLine();
 		
-		if(new_pw.equals(new_pw2)) {
+		if(instructor_new_pw.equals(intructor_new_pw2)) {
 			if(selectNum == 1) {
-				int result = this.iDAO.modify(new Instructor(instructor_name, pw, new_pw));
+				int result = this.iDAO.modify(new Instructor(this.instructor_name, instructor_pw, instructor_new_pw));
 				
 				if(result > 0) {
-					System.out.printf("강사 '%s'의 비밀번호가 변경되었습니다.\n", instructor_name);
+					System.out.printf("강사 '%s'의 비밀번호가 변경되었습니다.\n", this.instructor_name);
 				} else {
 					System.out.println("실패했습니다.");
 				}
