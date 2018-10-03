@@ -14,14 +14,50 @@ import com.scoremanagement.domain.StudentHistory;
 
 public class StudentDAO {
 
+	String student_id = null;
+	
 	// 수강생 로그인 메소드
-	public int login(Student s) {
-		int result = 0;
-/*		SELECT student_id
-	    FROM student
-	    WHERE student_name = '김길동' AND student_pw = '1111';
-*/
-		return result;
+	public String login(Student s) {
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			
+			String sql = "SELECT student_id\r\n" + 
+							"    FROM student\r\n" + 
+							"    WHERE student_name = ? AND student_pw = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, s.getStudent_name());
+			pstmt.setString(2, s.getStudent_pw());
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				student_id = rs.getString("student_id");
+			}
+			
+			rs.close();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+		return student_id;
 	}
 	
 	// 수강생 추가 메소드
@@ -87,8 +123,55 @@ public class StudentDAO {
 	
 	// 수강생 출력 메소드(2)
 	// 수강생 번호 / 수강생 이름 / 수강생 휴대폰번호 / 수강생 등록일
+	public List<Student> print2(String student_id) {
+		List<Student> list = new ArrayList<Student>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "SELECT student_id, student_name, student_phone, student_regDate\r\n" + 
+					"    FROM student\r\n" + 
+					"    WHERE student_id = UPPER(?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, student_id);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String student_id1 = rs.getString("student_id");
+				String student_name = rs.getString("student_name");
+				String student_phone = rs.getString("student_phone");
+				Date student_regDate = rs.getDate("student_regDate");
+				Student s = new Student(student_id1, student_name, student_phone, student_regDate);
+				list.add(s);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+		
+		return list;
+	}
+	
 	public List<Student> print2() {
 		List<Student> list = new ArrayList<Student>();
+	
 		
 		return list;
 	}
@@ -180,6 +263,39 @@ public class StudentDAO {
 	// 수강생 비밀번호 수정 메소드
 	public int modify(Student s) {
 		int result = 0;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "UPDATE student\r\n" + 
+					"    SET student_pw = ?\r\n" + 
+					"    WHERE student_name = ? AND student_pw = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, s.getStudent_new_pw());
+			pstmt.setString(2, s.getStudent_name());
+			pstmt.setString(3, s.getStudent_pw());
+			
+			result = pstmt.executeUpdate();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
 		
 		return result;
 	}
