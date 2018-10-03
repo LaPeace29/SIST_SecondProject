@@ -1,7 +1,9 @@
 package com.scoremanagement.service;
 
+import java.util.List;
 import java.util.Scanner;
 
+import com.scoremanagement.domain.OpenCourse;
 import com.scoremanagement.domain.Student;
 import com.scoremanagement.persistance.ExamDAO;
 import com.scoremanagement.persistance.OpenCourseDAO;
@@ -10,30 +12,32 @@ import com.scoremanagement.persistance.StudentDAO;
 
 public class ServiceStudent {
 
-	private String student_name;
-	private String student_id;
 	private OpenCourseDAO ocDAO = new OpenCourseDAO();
 	private OpenSubjectDAO osDAO = new OpenSubjectDAO();
 	private ExamDAO eDAO = new ExamDAO(); 
 	private StudentDAO stDAO = new StudentDAO();
+	
+	private String student_name = null;
+	private String student_id = null;
 	
 	// 성적 처리 시스템 v6.0 > 1. 수강생 로그인
 	public void login(Scanner sc) {
 		System.out.println("---------------------------------------------------------------");
 		System.out.println("성적 처리 시스템 v6.0 > 1. 수강생 로그인");
 		System.out.print("이름 > ");
-		String student_name = sc.nextLine();
+		student_name = sc.nextLine();
+		
 		System.out.print("비밀번호 > ");
 		String student_pw = sc.nextLine();
 		
-		int result = this.stDAO.login(new Student(student_name, student_pw));
-		if (result ==0) {
-			System.out.println("아이디나 비밀번호가 틀렸습니다.");	
-		} else {
-			
-			System.out.printf("수강생 %s 님이 로그인되었습니다.%n", student_name);	
-			
+		Student s = new Student(student_name, student_pw);
+		student_id = this.stDAO.login(s);
+		
+		if(student_id != null) {
+			System.out.printf("수강생 '%s'님이 로그인되었습니다.\n", student_name);
 			this.main(sc);
+		} else {
+			 System.out.println("아이디 또는 패스워드가 틀렸습니다.");
 		}
 	}
 	
@@ -55,11 +59,13 @@ public class ServiceStudent {
 			switch(num) {
 			case 1: this.m1(sc);
 				break;
+				
 			case 2: this.m2(sc);
 				break;
+				
 			default :
+				System.out.println("없는 번호입니다.");
 				break;
-			
 			}
 		}
 	}
@@ -98,7 +104,7 @@ public class ServiceStudent {
 		System.out.print("수료 여부 : ");
 		System.out.print("중도탈락 날짜 : ");
 		/* OpenCourse print5() */
-		this.ocDAO.print5();
+		this.ocDAO.print5(this.student_id);
 
 		System.out.println("-------------------------------");
 		System.out.println("개설 과목 번호 / 개설 과목명 / 개설 과목 기간");
@@ -137,66 +143,101 @@ public class ServiceStudent {
 	
 	// 성적 처리 시스템 v6.0 (수강생 : OOO) > 2. 개인 정보
 	private void m2(Scanner sc) {
-		System.out.println("---------------------------------------------------------------");
-		System.out.println("성적 처리 시스템 v6.0 (수강생 : 조인성) > 2. 개인 정보");
-		System.out.println("1. 개인 정보 조회  2. 비밀 번호 변경");
-		System.out.print("선택 > ");
-		int num = sc.nextInt();
-		sc.nextLine();
-		System.out.println("---------------------------------------------------------------");
+		boolean run = true;
+		while(run) {
+			System.out.println("---------------------------------------------------------------");
+			System.out.printf("성적 처리 시스템 v6.0 (수강생 : %s) > 2. 개인 정보\n", this.student_name);
+			System.out.println("1. 개인 정보 조회  2. 비밀 번호 변경");
+			System.out.print("선택 > ");
+			int selectNum = sc.nextInt();
+			sc.nextLine();
+			
+			switch(selectNum) {
+			case 1:
+				this.m2_s1();
+				break;
+				
+			case 2:
+				this.m2_s2(sc);
+				break;
+	
+			case 0:
+				run = false;
+				break;
+				
+			default:
+				System.out.println("없는 번호입니다.");
+				break;
+			}
+		}
 	}
 	
 	// 성적 처리 시스템 v6.0 (수강생 : OOO) > 2. 개인 정보 > 1. 개인 정보 조회
 	private void m2_s1() {
 		System.out.println("---------------------------------------------------------------");
-		System.out.println("성적 처리 시스템 v6.0 (수강생 : 조인성) > 2. 개인 정보 > 1. 개인 정보 조회");
-		System.out.print("이름 : ");
-		System.out.print("전화번호 : ");
-		/*StudentDAO print1()*/
-		this.stDAO.print1(student_id);
+		System.out.printf("성적 처리 시스템 v6.0 (수강생 : %s) > 2. 개인 정보 > 1. 개인 정보 조회\n", this.student_name);
+		List<Student> list = this.stDAO.print2(this.student_id);
+		for(Student s : list) {
+			System.out.printf("수강생 번호 : %s\n", s.getStudent_id());
+			System.out.printf("이름 : %s\n", s.getStudent_name());
+			System.out.printf("휴대폰 번호 : %s\n", s.getStudent_phone());
+			System.out.printf("등록일 : %s\n", s.getStudent_regDate());
+			System.out.println();
+		}
 		
-		System.out.println("-------------------------------");
-		System.out.print("수강 신청 과정명 : ");
-		System.out.print("개설 과정 기간 : ");
-		System.out.print("강의실 : ");
-		System.out.print("수료 여부 : ");
-		System.out.print("중도탈락 날짜 : ");
-		/*OpenCourse print5()*/
-		this.ocDAO.print5();
-		System.out.println("-------------------------------");
+		List<OpenCourse> list2 = this.ocDAO.print5(this.student_id);
+		
+		if(list2.size() > 0) {
+			System.out.println("-------------------------------");
+			
+			for(OpenCourse oc : list2) {
+				System.out.printf("개설 과정명 : %s\n", oc.getCourse_name());
+				System.out.printf("개설 과정 기간 : %s ~ %s\n", oc.getOpen_course_start_date(), oc.getOpen_course_end_date());
+				System.out.printf("강의실 : %s\n", oc.getClass_room_name());
+				System.out.printf("수료 여부 : %s\n", oc.getCompletion_status());
+				System.out.printf("%s 날짜 : %s\n", oc.getCompletion_status(), oc.getDropout_date());
+				System.out.println();
+			}
+			System.out.println("-------------------------------");
+			System.out.printf("과정 수강 횟수 : %d번\n", list2.size());
+		}
 	}
 	
 	// 성적 처리 시스템 v6.0 (수강생 : OOO) > 2. 개인 정보 > 2. 비밀 번호 변경
 	private void m2_s2(Scanner sc) {
 		System.out.println("---------------------------------------------------------------");
-		System.out.println("성적 처리 시스템 v6.0 (수강생 : 조인성) > 2. 개인 정보 > 2. 비밀 번호 변경");
+		System.out.printf("성적 처리 시스템 v6.0 (수강생 : %s) > 2. 개인 정보 > 2. 비밀 번호 변경\n", this.student_name);
 		System.out.print("현재 비밀번호 > ");
 		String student_pw = sc.nextLine();
 		System.out.print("신규 비밀번호 > ");
 		String student_new_pw = sc.nextLine();
 		System.out.print("비밀번호 확인 > ");
-		
-		int result = this.stDAO.modify(new Student(this.student_name, student_new_pw ));
-		
-		if (result ==0) {
-			System.out.println("비밀번호가 일치하지 않습니다.");	
+		String student_new_pw2 = sc.nextLine();
+
+		System.out.println("비밀번호를 변경하시겠습니까? (0/1) > ");
+		int selectNum = sc.nextInt();
+		sc.nextLine();
+
+		if (student_new_pw.equals(student_new_pw2)) {
+			if (selectNum == 1) {
+				int result = this.stDAO.modify(new Student(this.student_name, student_pw, student_new_pw));
+
+				if (result > 0) {
+					System.out.printf("수강생 '%s'의 비밀번호가 변경되었습니다.\n", this.student_name);
+				} else {
+					System.out.println("실패했습니다.");
+				}
+			}
 		} else {
-			System.out.printf("수강생 %s 님이 로그인되었습니다.%n", this.student_name);	
-			
+			System.out.println("비밀번호가 일치하지 않습니다.");
 		}
-		
-		System.out.print("비밀번호를 변경하시겠습니까? (0/1) > ");
-		
-		System.out.println("수강생 '조인성'의 비밀번호가 변경되었습니다.");
-		
-		/*// Field
-		private String student_id;			// 수강생 아이디
-		private String student_name;		// 수강생 이름
-		private String student_phone;		// 수강생 휴대폰번호
-		private Date student_regDate;		// 수강생 등록일
-		private String student_pw;			// 수강생 비밀번호
-		private String completion_status;	// 수료 여부(수료 예정, 수료 완료, 중도 탈락)
-		private Date completeion_date;		// 날짜(중도탈락, 수료)
-		private int count_;					// 삭제 가능 여부
-*/	}
+
+		/*
+		 * // Field private String student_id; // 수강생 아이디 private String student_name;
+		 * // 수강생 이름 private String student_phone; // 수강생 휴대폰번호 private Date
+		 * student_regDate; // 수강생 등록일 private String student_pw; // 수강생 비밀번호 private
+		 * String completion_status; // 수료 여부(수료 예정, 수료 완료, 중도 탈락) private Date
+		 * completeion_date; // 날짜(중도탈락, 수료) private int count_; // 삭제 가능 여부
+		 */
+	}
 }
