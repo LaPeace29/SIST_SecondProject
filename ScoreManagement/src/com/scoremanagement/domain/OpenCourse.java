@@ -6,7 +6,7 @@ public class OpenCourse {
 	
 	private String open_course_id;			// 개설 과정 아이디
 	private String class_room_id;			// 강의실 아이디
-	private String class_room_name;
+	private String class_room_name;			// 강의실 이름
 	private String course_id;				// 과정 아이디
 	private String course_name;				// 과정 이름
 	private Date open_course_start_date;	// 개설 과정 시작일
