@@ -111,6 +111,7 @@ public class ServiceInstructor {
 					System.out.printf("개설 과목 기간 : %s ~ %s\n", os.getSubject_start_date(), os.getSubject_end_date());
 					System.out.printf("교재명 : %s\n", os.getSubjectbook_name());					
 					System.out.printf("수강생 등록 인원 : %d명\n", os.getStudent_count());
+					System.out.println();
 					
 					List<Student> list3 = stDAO.print4(open_subject_id, instructor_id);
 					if(list3.size() > 0) {
@@ -121,7 +122,7 @@ public class ServiceInstructor {
 									s.getStudent_id(), s.getStudent_name(), s.getStudent_phone(), s.getStudent_regDate(),
 									s.getCompletion_status(), s.getCompleteion_date());
 						}
-						
+						System.out.println();
 					} else {
 						System.out.println("검색 결과가 없습니다.");
 					}
@@ -335,7 +336,7 @@ public class ServiceInstructor {
 					int size4 = this.score_print3(open_subject_id, exam_id);
 					
 					if(size4 > 0) {
-						this.student_print(open_subject_id, open_subject_id, exam_id);
+						this.student_print(open_subject_id, instructor_id, exam_id);
 						while(run) {
 							System.out.print("수강생 번호 > ");
 							String student_id = sc.nextLine();
@@ -400,9 +401,8 @@ public class ServiceInstructor {
 					System.out.print("시험 번호 > ");
 					String exam_id = sc.nextLine();
 					int size4 = this.score_print3(open_subject_id, exam_id);
-					
 					if(size4 > 0) {
-						this.student_print(open_subject_id, open_subject_id, exam_id);
+						this.student_print(open_subject_id, instructor_id, exam_id);
 					}
 				}
 			}
@@ -431,7 +431,7 @@ public class ServiceInstructor {
 					int size4 = this.score_print3(open_subject_id, exam_id);
 					
 					if(size4 > 0) {
-						this.student_print(open_subject_id, open_subject_id, exam_id);
+						this.student_print(open_subject_id, instructor_id, exam_id);
 						System.out.print("수강생 번호 > ");
 						String student_id = sc.nextLine();
 						
@@ -503,13 +503,14 @@ public class ServiceInstructor {
 			System.out.printf("이름 : %s\n", i.getInstructor_name());
 			System.out.printf("휴대폰번호 : %s\n", i.getInstructor_phone());
 			System.out.printf("등록일 : %s\n", i.getInstructor_regDate());
+			System.out.println();
 		}
 		
 		List<InstructorPossible> list2 = this.ipDAO.print(instructor_id);
 		if(list2.size() > 0) {
 			System.out.println("** 강의 가능 과목 **");
 			for(InstructorPossible ip : list2) {
-				System.out.printf("%s - %s", ip.getSubject_id(), ip.getSubject_name());
+				System.out.printf("%s - %s\n", ip.getSubject_id(), ip.getSubject_name());
 			}
 		}
 	}
@@ -556,6 +557,7 @@ public class ServiceInstructor {
 						os.getOpen_subject_id(), os.getSubject_name(), 
 						os.getSubject_start_date(), os.getSubject_end_date(), os.getInstructor_status());
 			}
+			System.out.println();
 		} else {
 			System.out.println("검색 결과가 없습니다.");
 		}
@@ -564,9 +566,10 @@ public class ServiceInstructor {
 	
 	private int open_subject_print(String open_subject_id) {
 		int size = 0;
-		List<OpenSubject> list2 = osDAO.print7(open_subject_id, instructor_id);
-		if(list2.size() > 0) {
-			for(OpenSubject os : list2) {
+		List<OpenSubject> list = osDAO.print7(open_subject_id, instructor_id);
+		size = list.size();
+		if(size > 0) {
+			for(OpenSubject os : list) {
 				System.out.printf("개설 과목 번호 : %s\n", open_subject_id);
 				System.out.printf("개설 과정명 : %s\n", os.getCourse_name());
 				System.out.printf("개설 과정 기간 : %s ~ %s\n", os.getOpen_course_start_date(), os.getOpen_course_end_date());
@@ -585,11 +588,11 @@ public class ServiceInstructor {
 	private int score_print1(String open_subject_id) {
 		int size = 0;
 
-		List<Exam> list3 = eDAO.print1(open_subject_id, instructor_id);
-		size = list3.size();
-		if(list3.size() > 0) {
+		List<Exam> list = eDAO.print1(open_subject_id, instructor_id);
+		size = list.size();
+		if(size > 0) {
 			System.out.println("** 시험 정보 **");
-			for(Exam e : list3) {
+			for(Exam e : list) {
 				System.out.printf("시험 번호 : %s\n", e.getExam_id());
 				System.out.printf("출결 배점 : %d\n", e.getAttendance_point());
 				System.out.printf("필기 배점 : %d\n", e.getWrite_point());
@@ -609,11 +612,11 @@ public class ServiceInstructor {
 	private int score_print2(String open_subject_id) {
 		int size = 0;
 
-		List<Exam> list3 = eDAO.print3(open_subject_id, instructor_id, null);
-		size = list3.size();
-		if(list3.size() > 0) {
+		List<Exam> list = eDAO.print3(open_subject_id, instructor_id, null);
+		size = list.size();
+		if(size > 0) {
 			System.out.println("** 시험 정보 **");
-			for(Exam e : list3) {
+			for(Exam e : list) {
 				System.out.printf("시험 번호 : %s\n", e.getExam_id());
 				System.out.printf("출결 배점 : %d\n", e.getAttendance_point());
 				System.out.printf("필기 배점 : %d\n", e.getWrite_point());
@@ -635,11 +638,11 @@ public class ServiceInstructor {
 	private int score_print3(String open_subject_id, String exam_id) {
 		int size = 0;
 
-		List<Exam> list3 = eDAO.print3(open_subject_id, instructor_id, exam_id);
-		size = list3.size();
-		if(list3.size() > 0) {
+		List<Exam> list = eDAO.print3(open_subject_id, instructor_id, exam_id);
+		size = list.size();
+		if(size > 0) {
 			System.out.println("** 시험 정보 **");
-			for(Exam e : list3) {
+			for(Exam e : list) {
 				System.out.printf("시험 번호 : %s\n", e.getExam_id());
 				System.out.printf("출결 배점 : %d\n", e.getAttendance_point());
 				System.out.printf("필기 배점 : %d\n", e.getWrite_point());
@@ -660,7 +663,7 @@ public class ServiceInstructor {
 	private int student_print(String open_subject_id, String instructor_id, String exam_id) {
 		int size = 0;
 
-		List<Exam> list = eDAO.print5(open_subject_id, instructor_id, exam_id);
+		List<Exam> list = this.eDAO.print5(open_subject_id, instructor_id, exam_id);
 		size = list.size();
 		if(list.size() > 0) {
 			System.out.println("** 수강생 정보 **");
