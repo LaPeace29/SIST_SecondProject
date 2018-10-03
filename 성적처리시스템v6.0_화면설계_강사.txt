@@ -871,7 +871,7 @@ SUB002 - Oracle
 SUB005 - HTML
 /*
 -- 13번 수정안해도됨
-SELECT s.subj ect_id, s.subject_name
+SELECT s.subject_id, s.subject_name
     FROM instructor i, instructor_possible iso, subject s
     WHERE i.instructor_id = iso.instructor_id
     AND iso.subject_id = s.subject_id
