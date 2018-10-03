@@ -37,6 +37,7 @@ public class Main {
 				break;
 				
 			case 0:
+				System.out.println("---------------------------------------------------------------");
 				run = false;
 				break;
 				
@@ -45,5 +46,6 @@ public class Main {
 			}
 		}
 		sc.close();
+		System.out.println("프로그램이 종료되었습니다.");
 	}
 }
