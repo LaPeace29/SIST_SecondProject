@@ -167,9 +167,9 @@ public class InstructorDAO {
 					"    WHERE instructor_name = ? AND instructor_pw = ?";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, i.getInstructor_pw());
+			pstmt.setString(1, i.getInstructor_new_pw());
 			pstmt.setString(2, i.getInstructor_name());
-			pstmt.setString(3, i.getInstructor_new_pw());
+			pstmt.setString(3, i.getInstructor_pw());
 			
 			result = pstmt.executeUpdate();
 		} catch (ClassNotFoundException e) {
