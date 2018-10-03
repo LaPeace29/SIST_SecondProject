@@ -156,9 +156,9 @@ public class ExamDAO {
 		
 		try {
 			conn = OracleConnection.connect();
-			String sql = "SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date\r\n" + 
-					"    ,attendance_score, write_score, skill_score, total\r\n" + 
-					"    FROM student_info_view3    \r\n" + 
+			String sql = "SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date," + 
+					"    attendance_score, write_score, skill_score, total\r\n" + 
+					"    FROM student_info_view3\r\n" + 
 					"    WHERE open_subject_id = ?\r\n" + 
 					"    AND instructor_id = ?\r\n" + 
 					"    AND exam_id = ?";
@@ -167,7 +167,7 @@ public class ExamDAO {
 			pstmt.setString(1, open_subject_id);
 			pstmt.setString(2, instructor_id);
 			pstmt.setString(3, exam_id);
-			
+
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -181,7 +181,7 @@ public class ExamDAO {
 				int total_score = rs.getInt("total");				
 				String completion_status = rs.getString("completion");
 				Date completion_date = rs.getDate("completion_date");
-				
+
 				Exam e = new Exam(student_id, student_name, student_phone, student_regDate,
 						attendance_score, write_score, skill_score, total_score, completion_status,
 						completion_date);
@@ -321,7 +321,7 @@ public class ExamDAO {
 					"                        WHERE e.open_subject_id = os.open_subject_id\r\n" + 
 					"                            AND os.instructor_id = i.instructor_id\r\n" + 
 					"                            AND i.instructor_id = ?\r\n" + 
-					"                            AND e.exam_id = ?);";
+					"                            AND e.exam_id = ?)";
 			
 			pstmt2 = conn.prepareStatement(sql2);
 			
