@@ -25,9 +25,8 @@ public class Instructor {
 	}
 
 	// 비밀번호 수정시 사용
-	public Instructor(String instructor_id, String instructor_pw, String instructor_new_pw) {
-		super();
-		this.instructor_id = instructor_id;
+	public Instructor(String instructor_name, String instructor_pw, String instructor_new_pw) {
+		this.instructor_name = instructor_name;
 		this.instructor_pw = instructor_pw;
 		this.instructor_new_pw = instructor_new_pw;
 	}
