@@ -24,6 +24,13 @@ public class OpenCourse {
 
 	}
 	
+	
+	// 개설 과정 삭제할 때 사용
+	public OpenCourse(String open_course_id, String course_name) {
+		this.open_course_id = open_course_id;
+		this.course_name = course_name;
+	}
+
 	// 개설 과정 추가할 때 사용
 	public OpenCourse(String open_course_id, String class_room_id, String course_id, Date open_course_start_date,
 			Date open_course_end_date) {
