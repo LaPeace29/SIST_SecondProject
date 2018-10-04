@@ -19,12 +19,14 @@ public class Instructor {
 
 	}
 
-	public Instructor(String instructor_name, String instructor_pw) {
-		this.instructor_name = instructor_name;
+	// 강사 비밀번호 초기화시 사용
+	public Instructor(String instructor_id, String instructor_pw) {
+		this.instructor_id = instructor_id;
 		this.instructor_pw = instructor_pw;
 	}
 
-	// 비밀번호 수정시 사용
+	// 강사 로그인시 사용
+	// 강사 비밀번호 수정시 사용
 	public Instructor(String instructor_name, String instructor_pw, String instructor_new_pw) {
 		this.instructor_name = instructor_name;
 		this.instructor_pw = instructor_pw;
