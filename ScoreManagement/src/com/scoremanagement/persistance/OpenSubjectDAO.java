@@ -50,8 +50,53 @@ public class OpenSubjectDAO {
 	
 	// 개설 과목 출력 메소드(4)
 	// 개설 과목 번호 / 과목명 / 개설 과목 기간 / 교재명 / 강사명
-	public List<OpenSubject> print4() {
+	public List<OpenSubject> print4(String open_course_id) {
 		List<OpenSubject> list = new ArrayList<OpenSubject>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "SELECT open_subject_id, subject_name, subject_start_date, subject_end_date\r\n" + 
+					"       , subjectbook_name, instructor_name\r\n" + 
+					"    FROM os_search2\r\n" + 
+					"    WHERE UPPER(open_course_id) = UPPER(?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, open_course_id);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String open_subject_id = rs.getString("open_subject_id");
+				String subject_name = rs.getString("subject_name");
+				Date subject_start_date = rs.getDate("subject_start_date");
+				Date subject_end_date = rs.getDate("subject_end_date");
+				String subjectbook_name = rs.getString("subjectbook_name");
+				String instructor_name = rs.getString("instructor_name");
+				
+				OpenSubject os = new OpenSubject(open_subject_id, subject_name, subjectbook_name, instructor_name,
+						"", subject_start_date, subject_end_date, null, null, null);
+				list.add(os);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
 		
 		return list;
 	}
