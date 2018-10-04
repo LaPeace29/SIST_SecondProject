@@ -17,6 +17,43 @@ public class OpenCourseDAO {
 	public int insert(OpenCourse oc) {
 		int result = 0;
 		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "INSERT INTO open_course (open_course_id, class_room_id, course_id\r\n" + 
+					"    , open_course_start_date, open_course_end_date)\r\n" + 
+					"     VALUES ((SELECT CONCAT('OC',\r\n" + 
+					"		 LPAD(NVL(SUBSTR(MAX(open_course_id),3), 0) + 1, 4, 0)) AS newId FROM open_course)\r\n" + 
+					"         , ?, ?, ?, ?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, oc.getClass_room_id());
+			pstmt.setString(2, oc.getCourse_id());
+			pstmt.setDate(3, oc.getOpen_course_start_date());
+			pstmt.setDate(4, oc.getOpen_course_end_date());
+			
+			result = pstmt.executeUpdate();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+		
 		return result;
 	}
 	
@@ -33,6 +70,51 @@ public class OpenCourseDAO {
 	public List<OpenCourse> print2() {
 		List<OpenCourse> list = new ArrayList<OpenCourse>();
 		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "SELECT open_course_id, course_name, open_course_start_date\r\n" + 
+					"                ,open_course_end_date, class_room_name\r\n" + 
+					"                ,os_count, s_count\r\n" + 
+					"                FROM open_course_infoo1\r\n" + 
+					"            ORDER BY open_course_id";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String open_course_id = rs.getString("open_course_id");
+				String course_name = rs.getString("course_name");
+				Date open_course_start_date = rs.getDate("open_course_start_date");
+				Date open_course_end_date = rs.getDate("open_course_end_date");
+				String class_room_name = rs.getString("class_room_name");
+				int os_count = rs.getInt("os_count");
+				int s_count = rs.getInt("s_count");			
+				OpenCourse oc = new OpenCourse(open_course_id, class_room_name, course_name, open_course_start_date,
+						open_course_end_date, os_count, s_count);
+				list.add(oc);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+		
 		return list;
 	}
 	
@@ -40,6 +122,51 @@ public class OpenCourseDAO {
 	// 개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 / 삭제 가능 여부
 	public List<OpenCourse> print3() {
 		List<OpenCourse> list = new ArrayList<OpenCourse>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "SELECT oci.open_course_id, course_name, open_course_start_date\r\n" + 
+					"                ,open_course_end_date, class_room_name\r\n" + 
+					"                ,os_count, s_count,(SELECT COUNT(*) FROM student_history sh\r\n" + 
+					"                    WHERE sh.open_course_id=oci.open_course_id) count_\r\n" + 
+					"                FROM open_course_infoo1 oci\r\n" + 
+					"    ORDER BY open_course_id";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String open_course_id = rs.getString("open_course_id");
+				String course_name = rs.getString("course_name");
+				Date open_course_start_date = rs.getDate("open_course_start_date");
+				Date open_course_end_date = rs.getDate("open_course_end_date");
+				String class_room_name = rs.getString("class_room_name");
+				int count_ = rs.getInt("count_");
+				OpenCourse oc = new OpenCourse(open_course_id, class_room_name, course_name, open_course_start_date,
+						open_course_end_date, count_);
+				list.add(oc);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
 		
 		return list;
 	}
@@ -163,12 +290,128 @@ public class OpenCourseDAO {
 	public List<OpenCourse> search(String key, String value) {
 		List<OpenCourse> list = new ArrayList<OpenCourse>();
 		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		if(key.equals("open_course_id")) {
+			try {
+				conn = OracleConnection.connect();
+				String sql = "SELECT open_course_id, course_name, open_course_start_date\r\n" + 
+						"    , open_course_end_date, class_room_name\r\n" + 
+						"    FROM open_course_search_view1\r\n" + 
+						"    WHERE UPPER(open_course_id) = UPPER(?)";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value);
+				
+				ResultSet rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					String open_course_id = rs.getString("open_course_id");
+					String course_name = rs.getString("course_name");
+					Date open_course_start_date = rs.getDate("open_course_start_date");
+					Date open_course_end_date = rs.getDate("open_course_end_date");
+					String class_room_name = rs.getString("class_room_name");
+					OpenCourse oc = new OpenCourse(open_course_id, class_room_name, course_name, open_course_start_date,
+							open_course_end_date, null, null);
+					list.add(oc);
+				}
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+	            try {
+	                if (pstmt != null)
+	                    pstmt.close();
+	            } catch (SQLException se) {
+	                se.printStackTrace();
+	            }
+	            try {
+	                OracleConnection.close();
+	            } catch (SQLException se) {
+	                se.printStackTrace();
+	            }
+	        }
+		}
+		
+		if(key.equals("course_name")) {
+			try {
+				conn = OracleConnection.connect();
+				String sql = "SELECT open_course_id, course_name, open_course_start_date, open_course_end_date, class_room_name\r\n" + 
+						"    FROM c_info_view\r\n" + 
+						"    WHERE INSTR(course_name, ?) > 0";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value);
+				
+				ResultSet rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					String open_course_id = rs.getString("open_course_id");
+					String course_name = rs.getString("course_name");
+					Date open_course_start_date = rs.getDate("open_course_start_date");
+					Date open_course_end_date = rs.getDate("open_course_end_date");
+					String class_room_name = rs.getString("class_room_name");
+					OpenCourse oc = new OpenCourse(open_course_id, class_room_name, course_name, open_course_start_date,
+							open_course_end_date, null, null);
+					list.add(oc);
+				}
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+	            try {
+	                if (pstmt != null)
+	                    pstmt.close();
+	            } catch (SQLException se) {
+	                se.printStackTrace();
+	            }
+	            try {
+	                OracleConnection.close();
+	            } catch (SQLException se) {
+	                se.printStackTrace();
+	            }
+	        }
+		}
+		
 		return list;
 	}
 	
 	// 개설 과정 삭제 메소드
 	public int remove(OpenCourse oc) {
 		int result = 0;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "DELETE FROM open_course WHERE UPPER(open_course_id) = UPPER(?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, oc.getOpen_course_id());
+			
+			result = pstmt.executeUpdate();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
 		
 		return result;
 	}
