@@ -247,4 +247,20 @@ public class OpenSubject {
 	}
 	
 	// print method
+	public String print1() {
+	      String result = "";
+	      result = String.format("%s / %s / %s ~ %s / %s / %s", 
+	            this.getOpen_subject_id(), this.getSubject_name(), this.getSubject_start_date(), this.getSubject_end_date()
+	            , this.getInstructor_name(), this.getSubjectbook_name());
+	      return result;
+   }
+	
+	/*개설 과목 번호 / 개설 과목명 / 개설 과목 기간*/
+	public String print8() {
+		String result = "";
+		result = String.format("%s / %s / %s ~ %s", 
+				this.getOpen_subject_id(), this.getSubject_name(), this.getSubject_start_date(),
+				this.getSubject_end_date());
+		return result;
+	}
 }

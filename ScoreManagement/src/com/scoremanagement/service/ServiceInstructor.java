@@ -588,7 +588,7 @@ public class ServiceInstructor {
 	private int score_print1(String open_subject_id) {
 		int size = 0;
 
-		List<Exam> list = eDAO.print1(open_subject_id, instructor_id);
+		List<Exam> list = eDAO.print1("open_subject_id", open_subject_id, instructor_id);
 		size = list.size();
 		if(size > 0) {
 			System.out.println("** 시험 정보 **");

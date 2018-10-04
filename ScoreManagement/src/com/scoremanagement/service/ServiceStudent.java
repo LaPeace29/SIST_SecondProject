@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.scoremanagement.domain.OpenCourse;
+import com.scoremanagement.domain.OpenSubject;
 import com.scoremanagement.domain.Student;
 import com.scoremanagement.persistance.ExamDAO;
 import com.scoremanagement.persistance.OpenCourseDAO;
@@ -77,7 +78,11 @@ public class ServiceStudent {
 			System.out.println("성적 처리 시스템 v6.0 (수강생 : %s) > 1. 성적 조회");
 			System.out.println("-------------------------------");
 			System.out.println("개설 과정 번호 / 개설 과정명 / 개설 과정 기간");
-			this.ocDAO.print7();
+			
+			List<OpenCourse> list = this.ocDAO.print7(this.student_id);
+			for(OpenCourse s : list) {
+				System.out.println(s.print7());
+			}
 			/* OpenCourseDAO print7() */
 
 			/*
@@ -85,44 +90,70 @@ public class ServiceStudent {
 			 * Python 기반 응용 SW 개발자 양성 과정 / 2018-06-25 ~ 2019-01-17
 			 */
 			System.out.println("-------------------------------");
-			System.out.println("총 %d 건");
+			System.out.printf("총 %d 건 %n", list.size()
+					);
+			this.m1_s1(sc);
 
-			System.out.print("개설 과정 번호 > ");
-			String open_course_id = sc.nextLine();
+			
 		}
 	}
 	
 	// 성적 처리 시스템 v6.0 (수강생 : OOO) > 1. 성적 조회 > 개설 과정명
 	private void m1_s1(Scanner sc) {
-		System.out.println("---------------------------------------------------------------");
-		System.out.println("성적 처리 시스템 v6.0 (수강생 : 조인성) > 1. 성적 조회 > 웹기반 빅데이터 분석 응용 SW 개발자");
+		
+		System.out.print("개설 과정 번호 > ");
+		String open_course_id = sc.nextLine();
+		List<OpenCourse> list1 = this.ocDAO.print5("two", this.student_id, open_course_id);
+		
+		
 
-		System.out.print("개설 과정 번호 : ");
-		System.out.print("개설 과정명 : ");
-		System.out.print("개설 과정 기간 : ");
-		System.out.print("강의실 : ");
-		System.out.print("수료 여부 : ");
-		System.out.print("중도탈락 날짜 : ");
+		if(list1.size() > 0) {
+			for (OpenCourse oc : list1) {
+				System.out.println("---------------------------------------------------------------");
+				System.out.printf("성적 처리 시스템 v6.0 (수강생 : 조인성) > 1. 성적 조회 > %s", oc.getCourse_name());
+				System.out.printf("개설 과정 번호 : %s%n", oc.getOpen_course_id());
+				System.out.printf("개설 과정명 : %s%n", oc.getCourse_name());
+				System.out.printf("개설 과정 기간 : %s ~ %s %n", oc.getOpen_course_start_date(), oc.getOpen_course_end_date());
+				System.out.printf("강의실 : %s%n", oc.getClass_room_name());
+				System.out.printf("수료 여부 : %s%n", oc.getCompletion_status());
+				System.out.printf("중도탈락 날짜 : %s%n%n", oc.getDropout_date());
+				
+				
+			}
+		
 		/* OpenCourse print5() */
-		this.ocDAO.print5("", this.student_id);
-
+		
+		}
+		List<OpenSubject> list2 = this.osDAO.print8(this.student_id, open_course_id);
+		
 		System.out.println("-------------------------------");
 		System.out.println("개설 과목 번호 / 개설 과목명 / 개설 과목 기간");
+		
+		for(OpenSubject os : list2) {
+			System.out.println(os.print8());
+		}
 		/* OpenSubjectDAO print8() */
-		this.osDAO.print8();
+		
 		System.out.println("-------------------------------");
-		System.out.println("총 %d 건");
+		System.out.printf("총 %d 건%n", list2.size());
 
 		System.out.print("개설 과목 번호 > ");
 		String open_subject_id = sc.nextLine();
-		System.out.print("양성 과정 > ");
-		String open_course_id = sc.nextLine();
+		
 
 		System.out.println("---------------------------------------------------------------");
-		System.out.print("개설 과목명 : ");
-		System.out.print("개설 과목 기간 :");
+		List<OpenSubject> list3 = this.osDAO.print3(this.student_id, open_subject_id);
+			for(OpenSubject os : list3) {
+				System.out.printf("개설 과목명 : %s%n", os.getSubject_name());
+				System.out.printf("개설 과목 기간 : %s~%s%n", os.getSubject_start_date(), os.getSubject_end_date());
+				
+			}
+		
 		/* OpenSubjectDAO print3() */
-		this.ocDAO.print3();
+		
+		
+		
+		
 
 		System.out.println("-------------------------------");
 		System.out.print("교재명 : ");
@@ -185,7 +216,7 @@ public class ServiceStudent {
 			System.out.println();
 		}
 		
-		List<OpenCourse> list2 = this.ocDAO.print5("student_id", this.student_id);
+		List<OpenCourse> list2 = this.ocDAO.print5("student_id", this.student_id, "");
 		
 		if(list2.size() > 0) {
 			System.out.println("-------------------------------");

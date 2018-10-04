@@ -177,4 +177,10 @@ public class OpenCourse {
 	}
 	
 	// print method
+	public String print7() {
+		String result = "";
+		result = String.format("%s / %s / %s ~ %s", 
+				this.getOpen_course_id(), this.getCourse_name(), this.getOpen_course_start_date(), this.getOpen_course_end_date());
+		return result;
+	}
 }

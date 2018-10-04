@@ -140,4 +140,10 @@ public class Student {
 	}
 	
 	// print method
+	public String print1() {
+	      String result = "";
+	      result = String.format("%s / %s / %s / %s", 
+	            this.getStudent_id(), this.getStudent_name(), this.getStudent_phone(), this.getStudent_regDate());
+	      return result;
+   }
 }

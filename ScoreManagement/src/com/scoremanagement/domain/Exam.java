@@ -350,4 +350,24 @@ public class Exam {
 	}
 	
 	// print method
+	// 2018-10-04 은미 수정
+	public String print1() {
+	      String result = "";
+	      result = String.format("%s / %s / %s / %d / %d / %d / %d%n", 
+	            this.getStudent_id(), this.getStudent_name(), this.getStudent_phone()
+	            , this.getAttendance_score(), this.getWrite_score(),this.getSkill_score()
+	            , this.getTotal_score());
+	      return result;
+	  }
+	
+	// 2018-10-04 은미 수정
+	public String print2() {
+		String result = "";
+		result = String.format("%s / %tF ~ %tF / %s / %d(%d) / %d(%d) / %d(%d) / %s", 
+				this.getSubject_name(), this.getSubject_start_date(), this.getSubject_end_Date()
+				, this.getInstructor_name(), this.getAttendance_score(), this.getAttendance_point()
+				, this.getWrite_score(), this.getWrite_point(), this.getSkill_score()
+				, this.getSkill_point(), this.getExam_date());
+		return result;
+	}
 }

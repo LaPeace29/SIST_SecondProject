@@ -71,6 +71,36 @@ public class StudentDAO {
 	public int studentHistoryAdd(StudentHistory sh) {
 		int result = 0;
 		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = OracleConnection.connect();
+
+			String sql = "INSERT INTO student_history (open_course_id, student_id)\r\n"
+					+ "    VALUES (upper(?), upper(?))";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, sh.getOpen_course_id());
+			pstmt.setString(2, sh.getStudent_id());
+
+			result = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+			try {
+				OracleConnection.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		
 		return result;
 	}
 	
@@ -139,6 +169,15 @@ public class StudentDAO {
 				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, student_id);
+			}
+			
+			else if(key.equals("student_name")) {
+				String sql = "SELECT student_id, student_name, student_phone, student_regDate\r\n" + 
+						"    FROM student\r\n" + 
+						"    WHERE INSTR(student_name, ?) > 0";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value);
 			}
 
 			ResultSet rs = pstmt.executeQuery();
@@ -452,6 +491,35 @@ public class StudentDAO {
 	public int studentHistoryRemove(StudentHistory sh) {
 		int result = 0;
 		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = OracleConnection.connect();
+
+			String sql = "DELETE FROM student_history \r\n"
+					+ "    WHERE UPPER(student_id)=UPPER(?) AND UPPER(open_course_id)=UPPER(?)";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, sh.getStudent_id());
+			pstmt.setString(2, sh.getOpen_course_id());
+			result = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+			try {
+				OracleConnection.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		
 		return result;
 	}
 	
@@ -459,6 +527,36 @@ public class StudentDAO {
 	public int processCompleteAdd(StudentHistory sh) {
 		int result = 0;
 		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = OracleConnection.connect();
+
+			String sql = "INSERT INTO StudentHistory (open_course_id, student_id, dropout_date)\r\n"
+					+ "    VALUES (?, ?, ?)";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, sh.getStudent_id());
+			pstmt.setString(2, sh.getOpen_course_id());
+			pstmt.setDate(3, sh.getDropout_date());
+			result = pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+			try {
+				OracleConnection.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+
 		return result;
 	}
 }

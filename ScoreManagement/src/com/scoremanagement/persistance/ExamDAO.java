@@ -16,22 +16,44 @@ public class ExamDAO {
 
 	// 시험 출력 메소드(1)
 	// 시험번호 / 출결 배점 / 필기 배점 / 실기 배점 / 시험 날짜 / 시험문제 파일
-	public List<Exam> print1(String open_subject_id, String instructor_id) {
+	public List<Exam> print1(String key, String value1, String value2) {
 		List<Exam> list = new ArrayList<Exam>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			conn = OracleConnection.connect();
-			String sql = "SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file\r\n" + 
-					"    FROM exam_info_view2\r\n" + 
-					"    WHERE instructor_id = ?\r\n" + 
-					"    AND open_subject_id = ?";
 			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, instructor_id);
-			pstmt.setString(2, open_subject_id);
+			if(key.equals("open_subject_id")) {
+				String sql = "SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file\r\n" + 
+						"    FROM exam_info_view2\r\n" + 
+						"    WHERE instructor_id = ?\r\n" + 
+						"    AND open_subject_id = ?";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value2);
+				pstmt.setString(2, value1);
+			}
+
+			else if(key.equals("exam")) {
+				String sql = "SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file\r\n" + 
+						"    FROM exam_info_view2\r\n" +
+						"     WHERE open_subject_id = UPPER(?)";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value1);
+			}
 			
+			else if(key.equals("exam")) {
+				String sql = "SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file\r\n" + 
+						"    FROM exam_info_view2\r\n" +
+						"     WHERE open_subject_id = UPPER(?)\r\n" + 
+						"     AND instructor_id = UPPER(?)";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value1);
+				pstmt.setString(2, value2);
+			}
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -68,8 +90,53 @@ public class ExamDAO {
 	
 	// 시험 출력 메소드(2)
 	// 수강생 번호 / 수강생 이름 / 수강생 휴대폰번호 / 출결 점수 / 필기 점수 / 실기 점수 / 총점
-	public List<Exam> print2() {
+	public List<Exam> print2(String examId) {
 		List<Exam> list = new ArrayList<Exam>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "SELECT student_id, student_name, student_phone, attendance_score, write_score, skill_score, total\r\n" + 
+					"    FROM exam_search_view\r\n" + 
+					"    WHERE UPPER(exam_id) = UPPER(?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, examId);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String student_id = rs.getString("student_id");
+				String student_name = rs.getString("student_name");
+				String student_phone = rs.getString("student_phone");
+				int attendance_score = rs.getInt("attendance_score");
+				int write_score = rs.getInt("write_score");
+				int skill_score = rs.getInt("skill_score");
+				int total = rs.getInt("total");
+				
+				Exam e = new Exam(student_id, student_name, student_phone, attendance_score, write_score,
+						skill_score, total);
+				list.add(e);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
 		
 		return list;
 	}
@@ -115,6 +182,64 @@ public class ExamDAO {
 				
 				Exam e = new Exam(exam_id1, attendance_point, write_point, skill_point, exam_date,
 						exam_file, class_count, score_status);
+				list.add(e);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+		
+		return list;
+	}
+	
+	public List<Exam> print3(String student_id) {
+		List<Exam> list = new ArrayList<Exam>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "SELECT subject_name, subject_start_date, subject_end_date, instructor_name, attendance_point\r\n" + 
+					"    , write_point, skill_point, attendance_score, write_score, skill_score, exam_date\r\n" + 
+					"    FROM score_search_view\r\n" + 
+					"    WHERE UPPER(student_id) = UPPER(?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, student_id);
+			
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String subject_name = rs.getString("subject_name");
+				Date subject_start_date = rs.getDate("subject_start_date");
+				Date subject_end_date = rs.getDate("subject_end_date");
+				String instructor_name = rs.getString("instructor_name");
+				int attendance_point = rs.getInt("attendance_point");
+				int write_point = rs.getInt("write_point");
+				int skill_point = rs.getInt("skill_point");
+				int attendance_score = rs.getInt("attendance_score");
+				int write_score = rs.getInt("write_score");
+				int skill_score = rs.getInt("skill_score");
+				Date exam_date = rs.getDate("exam_date");
+				
+				Exam e = new Exam(subject_name, subject_start_date, subject_end_date,instructor_name,
+						attendance_point, write_point, skill_point, exam_date, attendance_score,
+						write_score, skill_score);
 				list.add(e);
 			}
 		} catch (ClassNotFoundException e) {
