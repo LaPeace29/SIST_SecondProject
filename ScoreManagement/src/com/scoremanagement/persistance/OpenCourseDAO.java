@@ -181,7 +181,7 @@ public class OpenCourseDAO {
 	
 	// 개설 과정 출력 메소드(5)
 	// 개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 / 수료여부 / 날짜
-	public List<OpenCourse> print5(String student_id) {
+	public List<OpenCourse> print5(String key, String value) {
 		List<OpenCourse> list = new ArrayList<OpenCourse>();
 		
 		Connection conn = null;
@@ -189,13 +189,24 @@ public class OpenCourseDAO {
 		
 		try {
 			conn = OracleConnection.connect();
-			String sql = "SELECT open_course_id, course_name, open_course_start_date, open_course_end_date, class_room_name, completion, drop_date\r\n" + 
-					"    FROM s_course_search_detail_view2\r\n" + 
-					"    WHERE student_id = UPPER(?)";
 			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, student_id);
+			if(key.equals("student_id")) {
+				String sql = "SELECT open_course_id, course_name, open_course_start_date, open_course_end_date, class_room_name, completion, drop_date\r\n" + 
+						"    FROM s_course_search_detail_view2\r\n" + 
+						"    WHERE student_id = UPPER(?)";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value);
+			}
 			
+			else if (key.equals("student_name")){
+				String sql = "SELECT open_course_id, course_name, open_course_start_date, open_course_end_date, class_room_name, completion, drop_date\r\n" + 
+						"    FROM s_course_search_detail_view2\r\n" + 
+						"    WHERE student_id = ?";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value);
+			}
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
