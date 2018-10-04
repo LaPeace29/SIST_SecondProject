@@ -25,6 +25,54 @@ public class OpenSubjectDAO {
 	public List<OpenSubject> print1() {
 		List<OpenSubject> list = new ArrayList<OpenSubject>();
 		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_name\r\n" + 
+					"    , instructor_name,  course_name , open_course_start_date,  open_course_end_date, class_room_name\r\n" + 
+					"    FROM open_subject_all_view2\r\n" + 
+					"    ORDER BY open_subject_id";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String open_subject_id = rs.getString("open_subject_id");
+				String subject_name = rs.getString("subject_name");
+				Date subject_start_date = rs.getDate("subject_start_date");
+				Date subject_end_date = rs.getDate("subject_end_date");
+				String subjectbook_name = rs.getString("subjectbook_name");
+				String instructor_name = rs.getString("instructor_name");
+				String course_name = rs.getString("course_name");
+				Date open_course_start_date = rs.getDate("open_course_start_date");
+				Date open_course_end_date = rs.getDate("open_course_end_date");
+				String class_room_name = rs.getString("class_room_name");
+				
+				OpenSubject os = new OpenSubject(open_subject_id, subject_name, subjectbook_name, instructor_name, course_name,
+						subject_start_date, subject_end_date, open_course_start_date, open_course_end_date, class_room_name);
+				list.add(os);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+		
 		return list;
 	}
 	
