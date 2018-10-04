@@ -17,6 +17,47 @@ public class OpenSubjectDAO {
 	public int insert(OpenSubject os) {
 		int result = 0;
 		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "INSERT INTO open_subject (open_subject_id, subjectbook_id, subject_id\r\n" + 
+					"    , instructor_id, open_course_id, subject_start_date, subject_end_date)\r\n" + 
+					"    VALUES ((SELECT CONCAT('OS',\r\n" + 
+					"		 LPAD(NVL(SUBSTR(MAX(open_subject_id),3), 0) + 1, 4, 0)) AS newId FROM open_subject)\r\n" + 
+					"         , ?, ?, ?, ?, ?, ?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, os.getSubjectbook_id());
+			pstmt.setString(2, os.getSubject_id());
+			pstmt.setString(3, os.getInstructor_id());
+			pstmt.setString(4, os.getOpen_course_id());
+			pstmt.setDate(5, os.getSubject_start_date());
+			pstmt.setDate(6, os.getSubject_end_date());
+
+			result = pstmt.executeUpdate();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 		return result;
 	}
 	
@@ -108,28 +149,66 @@ public class OpenSubjectDAO {
 	public List<OpenSubject> print2() {
 		List<OpenSubject> list = new ArrayList<OpenSubject>();
 		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,\r\n" + 
+					"            subjectbook_name, instructor_name, course_name, open_course_start_date\r\n" + 
+					"            , open_course_end_date, class_room_name\r\n" + 
+					"            , count_\r\n" + 
+					"                FROM open_subject_all_view3\r\n" + 
+					"                ORDER BY open_subject_id";
+			
+			pstmt = conn.prepareStatement(sql);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				String open_subject_id = rs.getString("open_subject_id");
+				String subject_name = rs.getString("subject_name");
+				Date subject_start_date = rs.getDate("subject_start_date");
+				Date subject_end_date = rs.getDate("subject_end_date");
+				String subjectbook_name = rs.getString("subjectbook_name");
+				String instructor_name = rs.getString("instructor_name");
+				String course_name = rs.getString("course_name");
+				Date open_course_start_date = rs.getDate("open_course_start_date");
+				Date open_course_end_date = rs.getDate("open_course_end_date");
+				String class_room_name = rs.getString("class_room_name");
+				int count_ = rs.getInt("count_");
+
+				OpenSubject os = new OpenSubject(open_subject_id, subject_name, subjectbook_name, instructor_name,
+						course_name, subject_start_date, subject_end_date, open_course_start_date, open_course_end_date,
+						class_room_name, count_);
+
+				list.add(os);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+			try {
+				OracleConnection.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		
 		return list;
 	}
 	
 	// 개설 과목 출력 메소드(3)
 	// 과목명 / 개설 과목 기간
-	public List<OpenSubject> print3(String valueS1, String valueO2) {
+	public List<OpenSubject> print3(String student_id, String open_course_id) {
 		List<OpenSubject> list = new ArrayList<OpenSubject>();
-		/*	CREATE OR REPLACE VIEW subject_ss1
- AS
-SELECT s.subject_name, os.subject_start_date, os.subject_end_date, sh.student_id, os.subject_id
-    FROM open_subject os, subject s, open_course oc, student_history sh
-    
-    WHERE os.subject_id = s.subject_id
-    AND os.open_course_id = oc.open_course_id
-    AND oc.open_course_id = sh.open_course_id;
-    
-SELECT subject_name, subject_start_date, subject_end_date
-    FROM subject_ss1
-    WHERE student_id = UPPER(?)
-    AND open_subject_id = ?;
-*/
-		
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -142,8 +221,8 @@ SELECT subject_name, subject_start_date, subject_end_date
 					"    AND open_subject_id = UPPER(?)";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, valueS1);
-			pstmt.setString(2, valueO2);
+			pstmt.setString(1, student_id);
+			pstmt.setString(2, open_course_id);
 			
 			ResultSet rs = pstmt.executeQuery();
 			
@@ -173,6 +252,52 @@ SELECT subject_name, subject_start_date, subject_end_date
             }
         }
 		
+		return list;
+	}
+	
+	public List<OpenSubject> print3(String open_subject_id) {
+		List<OpenSubject> list = new ArrayList<OpenSubject>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "SELECT s.subject_name, os.subject_start_date, os.subject_end_date\r\n" + 
+					"	    FROM open_subject os, subject s\r\n" + 
+					"	    WHERE os.subject_id = s.subject_id\r\n" + 
+					"	    AND os.open_subject_id = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, open_subject_id);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String subject_name = rs.getString("subject_name");
+				Date subject_start_date = rs.getDate("subject_start_date");
+				Date subject_end_date = rs.getDate("subject_end_date");
+				
+				OpenSubject os = new OpenSubject("", subject_name, subject_start_date, subject_end_date,"");
+				list.add(os);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
 		return list;
 	}
 	
@@ -208,7 +333,8 @@ SELECT subject_name, subject_start_date, subject_end_date
 			
 			else if(key.equals("subject_name")) {
 				String sql = "SELECT subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name\r\n" + 
-						"    FROM os_search_view2 \r\n";
+						"    FROM os_search_view2 \r\n" +
+						"    WHERE INSTR(subject_name, ?) > 0";
 				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, value);
@@ -260,6 +386,7 @@ SELECT subject_name, subject_start_date, subject_end_date
 	// 개설 과목 번호 / 과목명 / 개설 과목 기간 / 비고
 	public List<OpenSubject> print6(String instructor_id) {
 		List<OpenSubject> list = new ArrayList<OpenSubject>();
+		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -367,22 +494,9 @@ SELECT subject_name, subject_start_date, subject_end_date
 	
 	// 개설 과목 출력 메소드(8)
 	// 개설 과목 번호 / 과목명 / 개설 과목 기간
-	public List<OpenSubject> print8(String valueS1, String valueO2) {
+	public List<OpenSubject> print8(String student_id, String open_course_id) {
 		List<OpenSubject> list = new ArrayList<OpenSubject>();
-		/*		CREATE VIEW s_open_subject_view
-		AS
-		SELECT os.open_course_id, subject_name, subject_start_date, subject_end_date, sh.student_id
-		    FROM student_history sh, open_course oc, open_subject os, subject sub
-		    WHERE oc.open_course_id = sh.open_course_id
-		    AND oc.open_course_id = os.open_course_id
-		    AND sub.subject_id = os.subject_id;
-		    
-		SELECT open_course_id, subject_name, subject_start_date, subject_end_date
-		    FROM s_open_subject_view
-		    WHERE student_id = 'ST00031'
-		    AND open_course_id = 'OC0001'
-		    ORDER BY subject_start_date;
-*/
+
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -395,8 +509,8 @@ SELECT subject_name, subject_start_date, subject_end_date
 					"		    ORDER BY subject_start_date";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, valueS1);
-			pstmt.setString(2, valueO2);
+			pstmt.setString(1, student_id);
+			pstmt.setString(2, open_course_id);
 			
 			ResultSet rs = pstmt.executeQuery();
 			
@@ -432,7 +546,7 @@ SELECT subject_name, subject_start_date, subject_end_date
 	
 	// 개설 과목 출력 메소드(9)
 	// 과목명 / 개설 과목 기간 / 과정명 / 개설 과정 기간 / 강의실 / 강의 진행 여부
-	public List<OpenSubject> print9(String instructor_id) {
+	public List<OpenSubject> print9(String key, String value) {
 		List<OpenSubject> list = new ArrayList<OpenSubject>();
 
 		Connection conn = null;
@@ -440,13 +554,31 @@ SELECT subject_name, subject_start_date, subject_end_date
 
 		try {
 			conn = OracleConnection.connect();
-			String sql = "SELECT subject_name, subject_start_date, subject_end_date, course_name\r\n"
-					+ "     , open_course_start_date, open_course_end_date, class_room_name \r\n"
-					+ "     , completion\r\n" + "     FROM instructor_search_view1\r\n"
-					+ "     WHERE UPPER(instructor_id) = UPPER( ? )\r\n" + "     ORDER BY subject_end_date";
+			
+			if(key.equals("instructor_id")) {
+				String sql = "SELECT subject_name, subject_start_date, subject_end_date, course_name\r\n" + 
+						"     , open_course_start_date, open_course_end_date, class_room_name \r\n" + 
+						"     , completion\r\n" + 
+						"     FROM instructor_search_view1\r\n" + 
+						"     WHERE UPPER(instructor_id) = UPPER(?)\r\n" + 
+						"     ORDER BY subject_end_date";
 
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, instructor_id);
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value);	
+			}
+						
+			else if(key.equals("instructor_name")) {
+				String sql = "SELECT subject_name, subject_start_date, subject_end_date, course_name\r\n" + 
+						"     , open_course_start_date, open_course_end_date, class_room_name \r\n" + 
+						"     , completion\r\n" + 
+						"     FROM instructor_search_view1\r\n" + 
+						"     WHERE INSTR(instructor_name, ?) > 0\r\n" + 
+						"     ORDER BY subject_end_date";
+
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value);	
+			}
+			
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -492,17 +624,24 @@ SELECT subject_name, subject_start_date, subject_end_date
 
 		try {
 			conn = OracleConnection.connect();
-			String sql = "SELECT subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name\r\n" + 
-					"    FROM os_search_view2 \r\n";
 			
-			if(key.equals("subjectNum")) {
-				sql += "    WHERE UPPER(open_subject_id) = UPPER(?)";
-			} else if (key.equals("subjectName")) {
-				sql += "";
+			if(key.equals("open_subject_id")) {
+				String sql = "SELECT subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name\r\n" + 
+						"    FROM os_search_view2 \r\n" + 
+						"    WHERE UPPER(open_subject_id) = UPPER(?)";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value);
 			}
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, value);
+
+			else if(key.equals("subject_name")) {
+				String sql = "SELECT subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name\r\n" + 
+						"    FROM os_search_view2 \r\n" + 
+						"    WHERE INSTR(subject_name, ?) > 0";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value);
+			}
 
 			ResultSet rs = pstmt.executeQuery();
 
@@ -541,6 +680,35 @@ SELECT subject_name, subject_start_date, subject_end_date
 	// 개설 과목 삭제 메소드
 	public int remove(OpenSubject os) {
 		int result = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = OracleConnection.connect();
+			String sql = "DELETE FROM open_subject WHERE UPPER(open_subject_id) = UPPER(?)";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, os.getOpen_subject_id());
+
+			result = pstmt.executeUpdate();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+			try {
+				OracleConnection.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
 		
 		return result;
 	}
