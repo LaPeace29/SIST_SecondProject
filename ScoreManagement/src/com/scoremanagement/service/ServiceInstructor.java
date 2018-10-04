@@ -39,7 +39,7 @@ public class ServiceInstructor {
 		System.out.print("비밀번호 > ");
 		String instructor_pw = sc.nextLine();
 		
-		Instructor i = new Instructor(instructor_name, instructor_pw);
+		Instructor i = new Instructor(instructor_name, instructor_pw, "");
 		instructor_id = this.iDAO.login(i);
 		
 		if(instructor_id != null) {
