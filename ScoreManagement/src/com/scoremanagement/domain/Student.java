@@ -20,15 +20,15 @@ public class Student {
 		
 	}
 
-	// 수강생 로그인시 사용
-	public Student(String student_name, String student_pw) {
-		this.student_name = student_name;
+	// 수강생 비밀번호 초기화시 사용
+	public Student(String student_id, String student_pw) {
+		this.student_id = student_id;
 		this.student_pw = student_pw;
 	}
 
+	// 수강생 로그인시 사용
 	// 비밀번호 수정시 사용
 	public Student(String student_name, String student_pw, String student_new_pw) {
-		super();
 		this.student_name = student_name;
 		this.student_pw = student_pw;
 		this.student_new_pw = student_new_pw;
