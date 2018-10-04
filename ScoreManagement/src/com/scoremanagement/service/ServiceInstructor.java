@@ -113,7 +113,7 @@ public class ServiceInstructor {
 					System.out.printf("수강생 등록 인원 : %d명\n", os.getStudent_count());
 					System.out.println();
 					
-					List<Student> list3 = stDAO.print4(open_subject_id, instructor_id);
+					List<Student> list3 = stDAO.print4("open_subject_id", open_subject_id, instructor_id);
 					if(list3.size() > 0) {
 						System.out.println("** 수강생 정보 **");
 						System.out.println("수강생번호 / 이름 / 전화번호 / 등록일 / 수료여부 / 날짜");
