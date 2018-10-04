@@ -186,22 +186,46 @@ public class StudentDAO {
 	
 	// 수강생 출력 메소드(4)
 	// 수강생 번호 / 수강생 이름 / 수강생 휴대폰번호 / 수강생 등록일 / 수료여부 / 날짜
-	public List<Student> print4(String open_subject_id, String instructor_id) {
+	public List<Student> print4(String key, String value1, String value2) {
 		List<Student> list = new ArrayList<Student>();
-		
+
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
 			conn = OracleConnection.connect();
-			String sql = "SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date\r\n" + 
-					"    FROM student_info_view3\r\n" + 
-					"    WHERE open_subject_id = ?\r\n" + 
-					"    AND instructor_id = ?";
 			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, open_subject_id);
-			pstmt.setString(2, instructor_id);
+			if(key.equals("open_course_id")) {
+				
+				String sql = "SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date\r\n" + 
+						"    FROM student_infoo3\r\n" + 
+						"    WHERE UPPER(open_course_id) = UPPER(?)\r\n" + 
+						"    ORDER BY student_id";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value1);
+			}
+			
+			else if(key.equals("course_name")) {
+				String sql = "SELECT student_id, student_name, student_phone, student_regdate, completion, completion_date\r\n" + 
+						"    FROM student_infoo3\r\n" + 
+						"    WHERE INSTR(course_name, ?) > 0\r\n" + 
+						"    ORDER BY student_id;";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value1);
+			}
+			
+			else if(key.equals("open_subject_id")) {
+				String sql = "SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date\r\n" + 
+						"    FROM student_info_view3\r\n" + 
+						"    WHERE open_subject_id = ?\r\n" + 
+						"    AND instructor_id = ?";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value1);
+				pstmt.setString(2, value2);
+			}
 			
 			ResultSet rs = pstmt.executeQuery();
 			
@@ -234,17 +258,9 @@ public class StudentDAO {
                 se.printStackTrace();
             }
         }
-
+		
 		return list;
 	}
-	
-
-	public List<Student> print4() {
-		List<Student> list = new ArrayList<Student>();
-
-		return list;
-	}
-	
 	// 수강생 검색 메소드
 	// 1. 수강생 번호  2. 수강생 이름
 	public List<Student> search(String key, String value) {
