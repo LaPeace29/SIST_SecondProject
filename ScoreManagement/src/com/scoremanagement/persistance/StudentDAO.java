@@ -123,7 +123,7 @@ public class StudentDAO {
 	
 	// 수강생 출력 메소드(2)
 	// 수강생 번호 / 수강생 이름 / 수강생 휴대폰번호 / 수강생 등록일
-	public List<Student> print2(String student_id) {
+	public List<Student> print2(String key, String value) {
 		List<Student> list = new ArrayList<Student>();
 		
 		Connection conn = null;
@@ -131,13 +131,16 @@ public class StudentDAO {
 		
 		try {
 			conn = OracleConnection.connect();
-			String sql = "SELECT student_id, student_name, student_phone, student_regDate\r\n" + 
-					"    FROM student\r\n" + 
-					"    WHERE student_id = UPPER(?)";
 			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, student_id);
-			
+			if(key.equals("student_id")) {
+				String sql = "SELECT student_id, student_name, student_phone, student_regDate\r\n" + 
+						"    FROM student\r\n" + 
+						"    WHERE student_id = UPPER(?)";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, student_id);
+			}
+
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -169,18 +172,55 @@ public class StudentDAO {
 		return list;
 	}
 	
-	public List<Student> print2() {
-		List<Student> list = new ArrayList<Student>();
-	
-		
-		return list;
-	}
-	
 	// 수강생 출력 메소드(3)
 	// 수강생 번호 / 수강생 이름 / 수강생 휴대폰번호 / 수강생 등록일 / 수강 횟수
-	public List<Student> print3() {
+	public List<Student> print3(String key, String value) {
 		List<Student> list = new ArrayList<Student>();
 		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			
+			if(key.equals("all")) {
+				String sql = "SELECT student_id, student_name, student_phone, student_regdate, count_\r\n" + 
+						"    FROM student_info_view1\r\n" + 
+						"        ORDER BY student_id";
+				
+				pstmt = conn.prepareStatement(sql);
+			}
+
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String student_id1 = rs.getString("student_id");
+				String student_name = rs.getString("student_name");
+				String student_phone = rs.getString("student_phone");
+				Date student_regDate = rs.getDate("student_regDate");
+				int count_ = rs.getInt("count_");
+				
+				Student s = new Student(student_id1, student_name, student_phone, student_regDate, count_);
+				list.add(s);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+
 		return list;
 	}
 	
@@ -266,6 +306,59 @@ public class StudentDAO {
 	public List<Student> search(String key, String value) {
 		List<Student> list = new ArrayList<Student>();
 		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			
+			if(key.equals("student_id")) {
+				String sql = "SELECT student_id, student_name, student_phone, student_regDate\r\n" + 
+						"    FROM student\r\n" + 
+						"    WHERE UPPER(student_id) = UPPER(?)";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value);
+			}
+			
+			else if(key.equals("student_name")) {
+				String sql = "SELECT student_id, student_name, student_phone, student_regDate\r\n" + 
+						"    FROM student\r\n" + 
+						"    WHERE INSTR(student_name, ?) > 0";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value);
+			}
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String student_id = rs.getString("student_id");
+				String student_name = rs.getString("student_name");
+				String student_phone = rs.getString("student_phone");
+				Date student_regDate = rs.getDate("student_regDate");
+				
+				Student s = new Student(student_id, student_name, student_phone, student_regDate);
+				list.add(s);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+		
 		return list;
 	}
 	
@@ -319,6 +412,38 @@ public class StudentDAO {
 	// 수강생 비밀번호 초기화 메소드
 	public int reset(Student s) {
 		int result = 0;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "UPDATE student\r\n" + 
+					"    SET student_pw = ?\r\n" + 
+					"    WHERE UPPER(student_id) = UPPER(?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, s.getStudent_pw());
+			pstmt.setString(2, s.getStudent_id());
+			
+			result = pstmt.executeUpdate();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
 		
 		return result;
 	}
