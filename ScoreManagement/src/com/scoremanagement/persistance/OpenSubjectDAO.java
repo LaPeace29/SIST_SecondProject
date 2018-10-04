@@ -22,7 +22,7 @@ public class OpenSubjectDAO {
 	
 	// 개설 과목 출력 메소드(1)
 	// 개설 과목 번호 / 과목명 / 개설 과목 기간 / 교재명 / 강사명 / 과정명 / 개설 과정 기간 / 강의실명
-	public List<OpenSubject> print1() {
+	public List<OpenSubject> print1(String key, String value) {
 		List<OpenSubject> list = new ArrayList<OpenSubject>();
 		
 		Connection conn = null;
@@ -30,12 +30,39 @@ public class OpenSubjectDAO {
 		
 		try {
 			conn = OracleConnection.connect();
-			String sql = "SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_name\r\n" + 
-					"    , instructor_name,  course_name , open_course_start_date,  open_course_end_date, class_room_name\r\n" + 
-					"    FROM open_subject_all_view2\r\n" + 
-					"    ORDER BY open_subject_id";
 			
-			pstmt = conn.prepareStatement(sql);
+			if(key.equals("all")) {
+				String sql = "SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_name\r\n" + 
+						"    , instructor_name,  course_name , open_course_start_date,  open_course_end_date, class_room_name\r\n" + 
+						"    FROM open_subject_all_view2\r\n" + 
+						"    ORDER BY open_subject_id";
+				
+				pstmt = conn.prepareStatement(sql);
+			}
+			
+			else if(key.equals("open_course_id")){
+				String sql = "SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,\r\n" + 
+						"            subjectbook_name, instructor_name, course_name, open_course_start_date\r\n" + 
+						"            , open_course_end_date, class_room_name\r\n" + 
+						"                FROM open_course_info_join_view\r\n" + 
+						"                WHERE UPPER(open_subject_id)=UPPER(?)\r\n" + 
+						"                ORDER BY open_subject_id";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value);
+			}
+			
+			else if(key.equals("subject_name")){
+				String sql = "SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,\r\n" + 
+						"            subjectbook_name, instructor_name, course_name, open_course_start_date\r\n" + 
+						"            , open_course_end_date, class_room_name\r\n" + 
+						"                FROM open_course_info_join_view\r\n" + 
+						"                WHERE INSTR(subject_name, ?) > 0\r\n" + 
+						"                ORDER BY open_subject_id";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value);
+			}
 			
 			ResultSet rs = pstmt.executeQuery();
 			
