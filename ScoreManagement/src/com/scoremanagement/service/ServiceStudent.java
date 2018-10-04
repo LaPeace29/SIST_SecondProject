@@ -30,7 +30,7 @@ public class ServiceStudent {
 		System.out.print("비밀번호 > ");
 		String student_pw = sc.nextLine();
 		
-		Student s = new Student(student_name, student_pw);
+		Student s = new Student(student_name, student_pw, "");
 		student_id = this.stDAO.login(s);
 		
 		if(student_id != null) {
@@ -104,7 +104,7 @@ public class ServiceStudent {
 		System.out.print("수료 여부 : ");
 		System.out.print("중도탈락 날짜 : ");
 		/* OpenCourse print5() */
-		this.ocDAO.print5(this.student_id);
+		this.ocDAO.print5("", this.student_id);
 
 		System.out.println("-------------------------------");
 		System.out.println("개설 과목 번호 / 개설 과목명 / 개설 과목 기간");
@@ -176,7 +176,7 @@ public class ServiceStudent {
 	private void m2_s1() {
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (수강생 : %s) > 2. 개인 정보 > 1. 개인 정보 조회\n", this.student_name);
-		List<Student> list = this.stDAO.print2(this.student_id);
+		List<Student> list = this.stDAO.print2("student_id", this.student_id);
 		for(Student s : list) {
 			System.out.printf("수강생 번호 : %s\n", s.getStudent_id());
 			System.out.printf("이름 : %s\n", s.getStudent_name());
@@ -185,7 +185,7 @@ public class ServiceStudent {
 			System.out.println();
 		}
 		
-		List<OpenCourse> list2 = this.ocDAO.print5(this.student_id);
+		List<OpenCourse> list2 = this.ocDAO.print5("student_id", this.student_id);
 		
 		if(list2.size() > 0) {
 			System.out.println("-------------------------------");
