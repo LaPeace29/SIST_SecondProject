@@ -659,39 +659,46 @@ public class ServiceAdmin {
 	// 성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리
 	private void m2(Scanner sc) {
 
-		while (true) {
-			System.out.println("성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리");
+		boolean run = true;
+		while (run) {
+			System.out.println("---------------------------------------------------------------");
+			System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 2. 강사 계정 관리\n", this.admin_id);
 			System.out.println("1. 강사 입력 2. 강사 검색 및 출력 3. 강사 삭제 4. 비밀번호 초기화 5. 강의 가능 과목 관리");
 			System.out.print("선택 > ");
-			System.out.println("-------------------------------");
 
-			int select = sc.nextInt();
+			int selectNum = sc.nextInt();
 			sc.nextLine();
 
-			if (select == 0) {
+			switch (selectNum) {
+
+			case 0:
+				run = false;
 				break;
-			}
-
-			switch (select) {
-
+				
 			case 1:
 				this.m2_s1(sc);
 				break;
+				
 			case 2:
 				this.m2_s2(sc);
 				break;
+				
 			case 3:
 				this.m2_s3(sc);
 				break;
+				
 			case 4:
 				this.m2_s4(sc);
 				break;
+				
 			case 5:
 				this.m2_s5(sc);
 				break;
 
+			default:
+				System.out.println("없는 번호입니다.");
+				break;
 			}
-
 		}
 	}
 
@@ -1245,6 +1252,7 @@ public class ServiceAdmin {
 
 	// 성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리
 	private void m4(Scanner sc) {
+		
 		boolean run = true;
 		while (run) {
 			System.out.println("---------------------------------------------------------------");
@@ -1260,12 +1268,15 @@ public class ServiceAdmin {
 			case 1:
 				this.m4_s1(sc);
 				break;
+				
 			case 2:
 				this.m4_s2(sc);
 				break;
+				
 			case 3:
 				this.m4_s3(sc);
 				break;
+				
 			case 0:
 				run = false;
 				break;
@@ -1323,11 +1334,11 @@ public class ServiceAdmin {
 
 	// 성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리 > 2. 개설 과목 검색 및 출력
 	private void m4_s2(Scanner sc) {
+		
 		boolean run = true;
 		while (run) {
-			System.out.println("--------------");
-			System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 4. 개설 과목 관리 > 2. 개설 과목 검색 및 출력");
-			System.out.println("--------------");
+			System.out.println("---------------------------------------------------------------");
+			System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 4. 개설 과목 관리 > 2. 개설 과목 검색 및 출력\n", this.admin_id);
 			System.out.println("1. 개설 과목 번호  2. 개설 과목명  3. 개설 과목 전체 출력");
 			System.out.print("선택 > ");
 
@@ -1339,12 +1350,15 @@ public class ServiceAdmin {
 			case 1:
 				this.m4_s2_s1(sc);
 				break;
+				
 			case 2:
 				this.m4_s2_s2(sc);
 				break;
+				
 			case 3:
 				this.m4_s2_s3();
 				break;
+				
 			case 0:
 				run = false;
 				break;
@@ -1358,37 +1372,45 @@ public class ServiceAdmin {
 
 	// 성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리 > 2. 개설 과목 검색 및 출력 > 1. 개설 과목 번호
 	private void m4_s2_s1(Scanner sc) {
+		
 		String open_course_id = sc.nextLine();
-		sc.nextInt();
 
 		System.out.println("-------------------------------");
 		System.out.println("개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명 / 개설 과정명 / 개설 과정 기간 / 강의실");
 		List<OpenSubject> list1 = this.osDAO.print1();
 		System.out.println("-------------------------------");
-		System.out.printf("총 %s건", list1.size());
+		System.out.printf("총 %d건\n", list1.size());
 	}
 
 	// 성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리 > 2. 개설 과목 검색 및 출력 > 2. 개설 과목명
 	private void m4_s2_s2(Scanner sc) {
 
 		String course_name = sc.nextLine();
-		sc.nextInt();
 
 		System.out.println("-------------------------------");
 		System.out.println("개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명 / 개설 과정명 / 개설 과정 기간 / 강의실");
 		List<OpenSubject> list1 = this.osDAO.print1();
 		System.out.println("-------------------------------");
-		System.out.printf("총 %s건", list1.size());
+		System.out.printf("총 %d건\n", list1.size());
 	}
 
 	// 성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리 > 2. 개설 과목 검색 및 출력 > 3. 개설 과목 전체
 	// 출력
 	private void m4_s2_s3() {
-		System.out.println("-------------------------------");
-		System.out.println("개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명 / 개설 과정명 / 개설 과정 기간 / 강의실");
+		
 		List<OpenSubject> list1 = this.osDAO.print1();
-		System.out.println("-------------------------------");
-		System.out.printf("총 %s건", list1.size());
+		if(list1.size() > 0) {
+			System.out.println("--------------------");
+			System.out.println("개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명 / 개설 과정명 / 개설 과정 기간 / 강의실");
+			for(OpenSubject os : list1) {
+				System.out.printf("%s / %s / %s ~ %s / %s / %s / %s / %s ~ %s / %s\n",
+						os.getOpen_subject_id(), os.getSubject_name(), os.getSubject_start_date(), os.getSubject_end_date(),
+						os.getSubjectbook_name(), os.getInstructor_name(), os.getCourse_name(),
+						os.getOpen_course_start_date(), os.getOpen_course_end_date(), os.getClass_room_name());
+			}
+			System.out.println("--------------------");
+			System.out.printf("총 %d건\n", list1.size());
+		}
 	}
 
 	// 성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리 > 3. 개설 과목 삭제
@@ -1413,7 +1435,48 @@ public class ServiceAdmin {
 
 	// 성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리
 	private void m5(Scanner sc) {
+		
+		boolean run = true;
+		while (run) {
+			System.out.println("---------------------------------------------------------------");
+			System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 5. 수강생 관리\n", this.admin_id);
+			System.out.println("1. 수강생 입력  2. 수강생 검색 및 출력  3. 수강생 삭제  4. 비밀번호 초기화  5. 수강생 과정 관리");
+			System.out.print("선택 > ");
 
+			int selectNum = sc.nextInt();
+			sc.nextLine();
+
+			switch (selectNum) {
+
+			case 0:
+				run = false;
+				break;
+				
+			case 1:
+				this.m5_s1(sc);
+				break;
+				
+			case 2:
+				this.m5_s2(sc);
+				break;
+				
+			case 3:
+				this.m5_s3(sc);
+				break;
+				
+			case 4:
+				this.m5_s4(sc);
+				break;
+				
+			case 5:
+				this.m5_s4(sc);
+				break;
+				
+			default:
+				System.out.println("없는 번호입니다.");
+				break;
+			}
+		}
 	}
 
 	// 성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 1. 수강생 입력
@@ -1654,6 +1717,36 @@ public class ServiceAdmin {
 
 	// 성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회
 	private void m6(Scanner sc) {
+		
+		boolean run = true;
+		while (run) {
+			System.out.println("---------------------------------------------------------------");
+			System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > > 6. 성적 조회\n", this.admin_id);
+			System.out.println("1. 개설 과목 성적 조회  2. 수강생 개인 성적 조회");
+			System.out.print("선택 > ");
+
+			int selectNum = sc.nextInt();
+			sc.nextLine();
+
+			switch (selectNum) {
+
+			case 0:
+				run = false;
+				break;
+				
+			case 1:
+				this.m6_s1(sc);
+				break;
+				
+			case 2:
+				this.m6_s2(sc);
+				break;
+
+			default:
+				System.out.println("없는 번호입니다.");
+				break;
+			}
+		}
 		System.out.println("---------------------------------------------------------------");
 		System.out.println("성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회");
 		System.out.println("---------------------------------------------------------------");
