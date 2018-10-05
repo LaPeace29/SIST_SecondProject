@@ -90,7 +90,7 @@ public class StudentDAO {
 				String student_name = rs.getString("student_name");
 				String student_phone = rs.getString("student_phone");
 				
-				Student s = new Student(student_name, student_phone);
+				Student s = new Student(null, student_name, student_phone, null);
 				list.add(s);
 			}
 		} catch (ClassNotFoundException e) {

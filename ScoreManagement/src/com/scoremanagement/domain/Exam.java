@@ -353,7 +353,7 @@ public class Exam {
 	// 2018-10-04 은미 수정
 	public String print1() {
 	      String result = "";
-	      result = String.format("%s / %s / %s / %d / %d / %d / %d%n", 
+	      result = String.format("%s / %s / %s / %d / %d / %d / %d", 
 	            this.getStudent_id(), this.getStudent_name(), this.getStudent_phone()
 	            , this.getAttendance_score(), this.getWrite_score(),this.getSkill_score()
 	            , this.getTotal_score());

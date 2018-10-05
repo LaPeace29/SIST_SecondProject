@@ -312,7 +312,7 @@ public class OpenSubjectDAO {
 		try {
 			conn = OracleConnection.connect();
 			
-			if(key.equals("open_subject_id")) {
+			if(key.equals("open_course_id")) {
 				String sql = "SELECT open_subject_id, subject_name, subject_start_date, subject_end_date\r\n" + 
 						"       , subjectbook_name, instructor_name\r\n" + 
 						"    FROM os_search2\r\n" + 
@@ -322,8 +322,17 @@ public class OpenSubjectDAO {
 				pstmt.setString(1, value);
 			}
 			
+			else if(key.equals("open_subject_id")) {
+				String sql = "SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name\r\n" + 
+						"    FROM os_search_view2 \r\n" +
+						"	 WHERE UPPER(open_subject_id) = UPPER(?)";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value);
+			}
+			
 			else if(key.equals("subject_id")) {
-				String sql = "SELECT subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name\r\n" + 
+				String sql = "SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name\r\n" + 
 						"    FROM os_search_view2 \r\n" +
 						"	 WHERE UPPER(open_subject_id) = UPPER(?)";
 				
@@ -332,13 +341,14 @@ public class OpenSubjectDAO {
 			}
 			
 			else if(key.equals("subject_name")) {
-				String sql = "SELECT subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name\r\n" + 
+				String sql = "SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name\r\n" + 
 						"    FROM os_search_view2 \r\n" +
 						"    WHERE INSTR(subject_name, ?) > 0";
 				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, value);
 			}
+			
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -350,7 +360,7 @@ public class OpenSubjectDAO {
 				String instructor_name = rs.getString("instructor_name");
 				
 				OpenSubject os = new OpenSubject(open_subject_id, subject_name, subjectbook_name, instructor_name,
-						"", subject_start_date, subject_end_date, null, null, null);
+						null, subject_start_date, subject_end_date, null, null, null);
 				list.add(os);
 			}
 		} catch (ClassNotFoundException e) {

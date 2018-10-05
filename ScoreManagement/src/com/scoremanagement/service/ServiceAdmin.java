@@ -2307,7 +2307,7 @@ public class ServiceAdmin {
 						oc.getOpen_course_end_date());
 				System.out.printf("강의실명 : %s\n", oc.getClass_room_name());
 			}
-			List<OpenSubject> list2 = this.osDAO.print4("course", open_course_id);
+			List<OpenSubject> list2 = this.osDAO.print4("open_course_id", open_course_id);
 		
 			if(list2.size() > 0) {
 				System.out.println("---------------------------");
@@ -2323,7 +2323,7 @@ public class ServiceAdmin {
 				System.out.print("개설 과목 번호 > ");
 				String open_subject_id = sc.nextLine();
 
-				List<OpenSubject> list3 = this.osDAO.print4("subject", open_subject_id);
+				List<OpenSubject> list3 = this.osDAO.print4("open_subject_id", open_subject_id);
 
 				if (list3.size() > 0) {
 					for (OpenSubject os : list3) {
@@ -2403,33 +2403,34 @@ public class ServiceAdmin {
 		System.out.println();
 		
 		System.out.println(" ** 수강생 정보 **");
-		List<Student> s = this.stDAO.print1(student_id);
-		if (s.size() > 0) {
-			for (Student s2 : s) {
-				System.out.printf("수강생 이름 : %s%n", s2.getStudent_name());
-				System.out.printf("수강생 전화번호 : %s%n", s2.getStudent_phone());
+		List<Student> list1 = this.stDAO.print1(student_id);
+		if (list1.size() > 0) {
+			for (Student s : list1) {
+				System.out.printf("수강생 이름 : %s%n", s.getStudent_name());
+				System.out.printf("수강생 전화번호 : %s%n", s.getStudent_phone());
+			}
+			System.out.println();
+			System.out.println(" ** 개설 과정 정보 **");
+			
+			List<OpenCourse> list2 = this.ocDAO.print6(student_id);
+			if (list2.size() > 0) {
+				for (OpenCourse oc : list2) {
+					System.out.printf("개설 과정명 : %s%n", oc.getCourse_name());
+					System.out.printf("개설 과정기간 : %tF ~ %tF %n", oc.getOpen_course_start_date(), oc.getOpen_course_end_date());
+					System.out.printf("강의실명 : %s%n", oc.getClass_room_name());
+				}
+				
+				System.out.println();
+				System.out.println(" ** 개설 과목 성적 정보 **");
+				List<Exam> list3 = this.eDAO.print3(student_id);
+				if (list3.size() > 0) {
+					for (Exam e : list3) {
+						System.out.println(e.print2());
+					}
+				}
+				System.out.println();
 			}
 		}
-		
-		System.out.println();
-		System.out.println(" ** 개설 과정 정보 **");
-		List<OpenCourse> oc = this.ocDAO.print6(student_id);
-		if (oc.size() > 0) {
-			for (OpenCourse oc2 : oc) {
-				System.out.printf("개설 과정명 : %s%n", oc2.getCourse_name());
-				System.out.printf("개설 과정기간 : %tF ~ %tF %n", oc2.getOpen_course_start_date(), oc2.getOpen_course_end_date());
-				System.out.printf("강의실명 : %s%n", oc2.getClass_room_name());
-			}
-		}
-		System.out.println();
-		System.out.println(" ** 개설 과목 성적 정보 **");
-		List<Exam> e = this.eDAO.print3(student_id);
-		if (e.size() > 0) {
-			for (Exam e2 : e) {
-				System.out.println(e2.print2());
-			}
-		}
-		System.out.println();
 	}
 
 	// 성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회 > 2. 수강생 개인 성적 조회 > 2. 수강생 이름
@@ -2440,60 +2441,51 @@ public class ServiceAdmin {
 		String student_name = sc.nextLine();
 		System.out.println();
 		
-		System.out.println("수강생 번호 / 수강생 이름 / 수강생 휴대폰 번호 / 수강생 등록일");
-		List<Student> s = this.stDAO.print2("student2", student_name);
-		
-		String studentId = null;
-		
-		if (s.size() > 0) {
-			for (Student s2 : s) {
-				System.out.println(s2.print1());
-				studentId = s2.getStudent_id();
-			}
-		}
-		System.out.println("----------------------");
-		System.out.printf("총 %s건%n", s.size());
-		System.out.println();
-		
-		if(s.size() > 1) {
-			System.out.println("검색 결과가 여러건 입니다.");
-			System.out.println();
-			System.out.print("수강생 번호 > ");
-			studentId = sc.nextLine();
+		List<Student> list1 = this.stDAO.print2("student_name", student_name);
 			
-			System.out.println();
-			System.out.println(" ** 수강생 정보 **");
-			List<Student> s2 = this.stDAO.print1(studentId);
-			if (s.size() > 0) {
-				for (Student s3 : s2) {
-					System.out.printf("수강생 이름 : %s%n", s3.getStudent_name());
-					System.out.printf("수강생 전화번호 : %s%n", s3.getStudent_phone());
-				}
-			}
-			
-		}
-		
-		System.out.println();
-		System.out.println(" ** 개설 과정 정보 **");
-		List<OpenCourse> oc = this.ocDAO.print6(studentId);
-		if (oc.size() > 0) {
-			for (OpenCourse oc2 : oc) {
-				System.out.printf("개설 과정명 : %s%n", oc2.getCourse_name());
-				System.out.printf("개설 과정기간 : %tF ~ %tF %n", oc2.getOpen_course_start_date(), oc2.getOpen_course_end_date());
-				System.out.printf("강의실명 : %s%n", oc2.getClass_room_name());
-			}
-		}
-		System.out.println();
-		System.out.println(" ** 개설 과목 성적 정보 **");
-		List<Exam> e = this.eDAO.print3(studentId);
-		if (e.size() > 0) {
-			for (Exam e2 : e) {
-				System.out.println(e2.print2());
-			}
-		}
-		System.out.println();
-		
+		if (list1.size() > 0) {
 
+			if(list1.size() > 1) {
+				System.out.println("수강생 번호 / 수강생 이름 / 수강생 휴대폰 번호 / 수강생 등록일");
+				System.out.println("----------------------");
+				for (Student s : list1) {
+					System.out.println(s.print1());
+				}
+				System.out.println("----------------------");
+				System.out.printf("총 %s건%n", list1.size());
+				System.out.println();
+				System.out.println("검색 결과가 여러건 입니다.");
+				this.m6_s2_s1(sc);
+			} else {
+				String student_id = null;
+				for (Student s : list1) {
+					System.out.printf("수강생 이름 : %s%n", s.getStudent_name());
+					System.out.printf("수강생 전화번호 : %s%n", s.getStudent_phone());
+					student_id = s.getStudent_id();
+				}
+				
+				System.out.println();
+				System.out.println(" ** 개설 과정 정보 **");
+				List<OpenCourse> list2 = this.ocDAO.print6(student_id);
+				if (list2.size() > 0) {
+					for (OpenCourse oc : list2) {
+						System.out.printf("개설 과정명 : %s%n", oc.getCourse_name());
+						System.out.printf("개설 과정기간 : %tF ~ %tF %n", oc.getOpen_course_start_date(), oc.getOpen_course_end_date());
+						System.out.printf("강의실명 : %s%n", oc.getClass_room_name());
+					}
+					
+					System.out.println();
+					System.out.println(" ** 개설 과목 성적 정보 **");
+					List<Exam> list3 = this.eDAO.print3(student_id);
+					if (list3.size() > 0) {
+						for (Exam e : list3) {
+							System.out.println(e.print2());
+						}
+					}
+					System.out.println();
+				}	
+			}
+		}
 	}
 
 	// 성적 처리 시스템 v6.0 (관리자 : admin) > 7. 비밀번호 변경
