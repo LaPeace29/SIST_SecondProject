@@ -16,6 +16,38 @@ public class InstructorPossibleDAO {
 	public int subjectPossibleAdd(InstructorPossible ip) {
 		int result = 0;
 		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "INSERT INTO instructor_possible (instructor_id, subject_id)\r\n" + 
+					"    VALUES (?, ?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, ip.getInstructor_id());
+			pstmt.setString(2, ip.getSubject_id());
+			
+			result = pstmt.executeUpdate();			
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+		
 		return result;
 	}
 	
@@ -69,6 +101,38 @@ public class InstructorPossibleDAO {
 	// 강의 가능 과목 삭제 메소드
 	public int subjectPossibleRemove(InstructorPossible ip) {
 		int result = 0;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "DELETE FROM instructor_possible \r\n" + 
+					"        WHERE UPPER(instructor_id)=UPPER(?) AND UPPER(subject_id)=UPPER(?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, ip.getInstructor_id());
+			pstmt.setString(2, ip.getSubject_id());
+			
+			result = pstmt.executeUpdate();			
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
 		
 		return result;
 	}
