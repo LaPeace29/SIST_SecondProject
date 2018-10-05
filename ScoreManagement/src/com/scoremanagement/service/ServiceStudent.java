@@ -103,11 +103,11 @@ public class ServiceStudent {
 		
 		System.out.print("개설 과정 번호 > ");
 		String open_course_id = sc.nextLine();
-		List<OpenCourse> list1 = this.ocDAO.print5("two", this.student_id, open_course_id);
 		
-		
+		List<OpenCourse> list1 = this.ocDAO.print5("open_course_id", this.student_id, open_course_id);		
 
 		if(list1.size() > 0) {
+			
 			for (OpenCourse oc : list1) {
 				System.out.println("---------------------------------------------------------------");
 				System.out.printf("성적 처리 시스템 v6.0 (수강생 : 조인성) > 1. 성적 조회 > %s", oc.getCourse_name());
@@ -116,9 +116,7 @@ public class ServiceStudent {
 				System.out.printf("개설 과정 기간 : %s ~ %s %n", oc.getOpen_course_start_date(), oc.getOpen_course_end_date());
 				System.out.printf("강의실 : %s%n", oc.getClass_room_name());
 				System.out.printf("수료 여부 : %s%n", oc.getCompletion_status());
-				System.out.printf("중도탈락 날짜 : %s%n%n", oc.getDropout_date());
-				
-				
+				System.out.printf("중도탈락 날짜 : %s%n%n", oc.getDropout_date());	
 			}
 		
 		/* OpenCourse print5() */
@@ -216,7 +214,7 @@ public class ServiceStudent {
 			System.out.println();
 		}
 		
-		List<OpenCourse> list2 = this.ocDAO.print5("student_id", this.student_id, "");
+		List<OpenCourse> list2 = this.ocDAO.print5("student_id", this.student_id, null);
 		
 		if(list2.size() > 0) {
 			System.out.println("-------------------------------");
