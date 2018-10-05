@@ -315,7 +315,7 @@ public class StudentDAO {
 	}
 	// 수강생 검색 메소드
 	// 1. 수강생 번호  2. 수강생 이름
-	public List<Student> search(String key, String value) {
+	public List<Student> search(String key, Student value) {
 		List<Student> list = new ArrayList<Student>();
 		
 		Connection conn = null;
@@ -330,7 +330,7 @@ public class StudentDAO {
 						"    WHERE UPPER(student_id) = UPPER(?)";
 				
 				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, value);
+				pstmt.setString(1, value.getStudent_id());
 			}
 			
 			else if(key.equals("student_name")) {
@@ -339,7 +339,7 @@ public class StudentDAO {
 						"    WHERE INSTR(student_name, ?) > 0";
 				
 				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, value);
+				pstmt.setString(1, value.getStudent_name());
 			}
 			
 			ResultSet rs = pstmt.executeQuery();
