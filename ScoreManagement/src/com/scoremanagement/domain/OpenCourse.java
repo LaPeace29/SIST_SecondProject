@@ -26,6 +26,7 @@ public class OpenCourse {
 	
 	
 	// 개설 과정 삭제할 때 사용
+	// 개설 과정 검색 시 사용
 	public OpenCourse(String open_course_id, String course_name) {
 		this.open_course_id = open_course_id;
 		this.course_name = course_name;
