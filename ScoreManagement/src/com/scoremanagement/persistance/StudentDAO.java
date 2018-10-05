@@ -378,6 +378,36 @@ public class StudentDAO {
 	public int remove(Student s) {
 		int result = 0;
 		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			String sql = "DELETE FROM student WHERE UPPER(student_id) = UPPER(?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, s.getStudent_id());
+			
+			result = pstmt.executeUpdate();			
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+		
 		return result;
 	}
 	
@@ -542,7 +572,7 @@ public class StudentDAO {
 		try {
 			conn = OracleConnection.connect();
 
-			String sql = "INSERT INTO StudentHistory (open_course_id, student_id, dropout_date)\r\n"
+			String sql = "INSERT INTO Student_History (open_course_id, student_id, dropout_date)\r\n"
 					+ "    VALUES (?, ?, ?)";
 
 			pstmt = conn.prepareStatement(sql);
