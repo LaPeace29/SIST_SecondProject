@@ -446,7 +446,7 @@ public class OpenCourseDAO {
 	
 	// 개설 과정 검색 메소드
 	// 1. 개설 과정 번호 2. 과정명
-	public List<OpenCourse> search(String key, String value) {
+	public List<OpenCourse> search(String key, OpenCourse value) {
 		List<OpenCourse> list = new ArrayList<OpenCourse>();
 		
 		Connection conn = null;
@@ -463,7 +463,7 @@ public class OpenCourseDAO {
 						"    WHERE UPPER(open_course_id) = UPPER(?)";
 				
 				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, value);
+				pstmt.setString(1, value.getOpen_course_id());
 			}
 			
 			else if(key.equals("course_name")) {
@@ -472,7 +472,7 @@ public class OpenCourseDAO {
 						"    WHERE INSTR(course_name, ?) > 0";
 				
 				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, value);
+				pstmt.setString(1, value.getCourse_name());
 			}
 			
 			ResultSet rs = pstmt.executeQuery();
