@@ -1310,7 +1310,7 @@ public class ServiceAdmin {
 		System.out.print("개설 과정 번호 > ");
 		String open_course_id = sc.nextLine();
 
-		List<OpenCourse> list1 = this.ocDAO.search("open_course_id", open_course_id);
+		List<OpenCourse> list1 = this.ocDAO.search("open_course_id", new OpenCourse(open_course_id, null));
 		if(list1.size() > 0) {
 			System.out.println("--------------------");
 			for(OpenCourse oc : list1) {
@@ -1366,7 +1366,7 @@ public class ServiceAdmin {
 		System.out.print("개설 과정명 > ");
 		String course_name = sc.nextLine();
 		
-		List<OpenCourse> list1 = this.ocDAO.search("course_name", course_name);
+		List<OpenCourse> list1 = this.ocDAO.search("course_name", new OpenCourse(null, course_name));
 		if(list1.size() > 0) {
 			System.out.println("--------------------");
 			System.out.println("개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명");
@@ -1466,7 +1466,7 @@ public class ServiceAdmin {
 			String open_course_id = sc.nextLine();
 			
 			// 개설 과정 번호에 따른 개설 과정명, 개설 과정 기간, 강의실명 출력
-			List<OpenCourse> list2 = this.ocDAO.search("open_course_id", open_course_id);
+			List<OpenCourse> list2 = this.ocDAO.search("open_course_id", new OpenCourse(open_course_id, null));
 			
 			if(list2.size() > 0) {
 				System.out.println("--------------------");
@@ -1912,7 +1912,7 @@ public class ServiceAdmin {
 					System.out.println("개설 과정 번호 >");
 					String open_course_id = sc.nextLine();
 
-					List<OpenCourse> list3 = this.ocDAO.search("open_course_id", open_course_id);
+					List<OpenCourse> list3 = this.ocDAO.search("open_course_id", new OpenCourse(open_course_id, null));
 					if (list3.size() > 0) {
 						for (OpenCourse oc : list3) {
 							System.out.printf("개설 과정 번호 : %s", open_course_id);
@@ -1988,7 +1988,7 @@ public class ServiceAdmin {
 		System.out.print("수강생 번호 > ");
 		String student_id = sc.nextLine();
 		
-		List<Student> list1 = this.stDAO.search("student_id", student_id);
+		List<Student> list1 = this.stDAO.search("student_id", new Student(student_id, null, null, null));
 		
 		if (list1.size() > 0) {
 		
@@ -2026,7 +2026,7 @@ public class ServiceAdmin {
 		System.out.print("수강생 이름 > ");
 		String student_name = sc.nextLine();
 		
-		List<Student> list1 = this.stDAO.search("student_name", student_name);
+		List<Student> list1 = this.stDAO.search("student_name", new Student(null, student_name, null, null));
 		
 		if(list1.size() > 0) {
 			
@@ -2104,7 +2104,7 @@ public class ServiceAdmin {
 			System.out.print("수강생 번호 > ");
 			String student_id = sc.nextLine();
 			
-			List<Student> list2 = this.stDAO.search("student_id", student_id);
+			List<Student> list2 = this.stDAO.search("student_id", new Student(student_id, null, null, null));
 			
 			if(list2.size() > 0) {
 				for(Student s : list2) {
@@ -2149,7 +2149,7 @@ public class ServiceAdmin {
 
 		System.out.print("수강생 번호 > ");
 		String student_id = sc.nextLine();
-		List<Student> list2 = this.stDAO.search("student_id", student_id);
+		List<Student> list2 = this.stDAO.search("student_id", new Student(student_id, null, null, null));
 		
 		if (list2.size() > 0) {
 			
@@ -2249,7 +2249,7 @@ public class ServiceAdmin {
 				System.out.print("개설 과정 번호 >");
 				String open_course_id = sc.nextLine();
 
-				List<OpenCourse> list3 = this.ocDAO.search("open_course_id", open_course_id);
+				List<OpenCourse> list3 = this.ocDAO.search("open_course_id", new OpenCourse(open_course_id, null));
 				if (list3.size() > 0) {
 					for (OpenCourse oc : list3) {
 						System.out.printf("개설 과정 번호 : %s\n", open_course_id);
@@ -2291,7 +2291,7 @@ public class ServiceAdmin {
 		System.out.print("수강생 번호 > ");
 		String student_id = sc.nextLine();
 
-		List<Student> list = this.stDAO.search("student_id", student_id);
+		List<Student> list = this.stDAO.search("student_id", new Student(student_id, null, null, null));
 		
 		if (list.size() > 0) {
 			System.out.println("-------------------------------");
@@ -2320,7 +2320,7 @@ public class ServiceAdmin {
 				
 				System.out.print("개설 과정 번호 > ");
 				String open_course_id = sc.nextLine();
-				List<OpenCourse> list3 = this.ocDAO.search("open_course_id", open_course_id);
+				List<OpenCourse> list3 = this.ocDAO.search("open_course_id", new OpenCourse(open_course_id, null));
 				if (list3.size() > 0) {
 					for (OpenCourse oc : list3) {
 						System.out.printf("개설 과정 번호 : %s\n", open_course_id);
@@ -2362,7 +2362,7 @@ public class ServiceAdmin {
 		System.out.print("수강생 번호 > ");
 		String student_id = sc.nextLine();
 
-		List<Student> list = this.stDAO.search("student_id", student_id);
+		List<Student> list = this.stDAO.search("student_id", new Student(student_id, null, null, null));
 		if (list.size() > 0) {
 			System.out.println("-------------------------------");
 			System.out.println("수강생 번호 / 수강생 이름 / 수강생 전화번호 / 수강생 등록일 / 수강 횟수");
@@ -2390,7 +2390,7 @@ public class ServiceAdmin {
 				
 				System.out.print("개설 과정 번호 > ");
 				String open_course_id = sc.nextLine();
-				List<OpenCourse> list3 = this.ocDAO.search("open_course_id", open_course_id);
+				List<OpenCourse> list3 = this.ocDAO.search("open_course_id", new OpenCourse(open_course_id, null));
 				if (list3.size() > 0) {
 					for (OpenCourse oc : list3) {
 						System.out.printf("개설 과정 번호 : %s\n", open_course_id);
