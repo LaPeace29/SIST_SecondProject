@@ -942,7 +942,7 @@ SELECT subject_id, subject_name
     ORDER BY subject_id;
 */
 
-삭제할 강의 번호 > SUB020
+삭제할 과목 번호 > SUB020
 
 과목 번호 : SUB020
 과목명 : AOP
@@ -2568,8 +2568,8 @@ SELECT s.subject_name, os.subject_start_date, os.subject_end_date, i.instructor_
     AND e.open_subject_id = os.open_subject_id
     AND ss.exam_id = e.exam_id
     AND st.student_id = ss.student_id;
-    
-    
+
+
 SELECT subject_name, subject_start_date, subject_end_date, instructor_name, attendance_point
     , write_point, skill_point, attendance_score, write_score, skill_score, exam_date
     FROM score_search_view
