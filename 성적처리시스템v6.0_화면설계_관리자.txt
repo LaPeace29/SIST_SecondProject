@@ -1662,11 +1662,20 @@ OS0036 ........... / O
 -- 42번 쿼리문. 개설 과목 전체를 출력하는 쿼리문.
 -- 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명, 개설과정명, 개설과정기간, 강의실을 출력하는 테이블
 -- 참조하여 삭제가능여부를 확인하여 삭제 가능 여부 포함.
+CREATE OR REPLACE VIEW open_subject_all_view3
+AS
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_name
+    , instructor_name,  course_name , open_course_start_date,  open_course_end_date, class_room_name
+    ,(SELECT COUNT(*) FROM exam
+                WHERE open_subject_id = v.open_subject_id) count_
+    FROM open_subject_all_view1 v, subjectbook sb
+    WHERE v.subjectbook_id = sb.subjectbook_id(+);
+
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,
             subjectbook_name, instructor_name, course_name, open_course_start_date
             , open_course_end_date, class_room_name
             , count_
-                FROM open_course_info_view1
+                FROM open_subject_all_view3
                 ORDER BY open_subject_id;
 */
 
