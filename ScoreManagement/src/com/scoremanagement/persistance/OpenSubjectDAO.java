@@ -207,7 +207,7 @@ public class OpenSubjectDAO {
 	
 	// 개설 과목 출력 메소드(3)
 	// 과목명 / 개설 과목 기간
-	public List<OpenSubject> print3(String student_id, String open_course_id) {
+	public List<OpenSubject> print3(String student_id, String open_subject_id) {
 		List<OpenSubject> list = new ArrayList<OpenSubject>();
 		
 		Connection conn = null;
@@ -222,7 +222,7 @@ public class OpenSubjectDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, student_id);
-			pstmt.setString(2, open_course_id);
+			pstmt.setString(2, open_subject_id);
 			
 			ResultSet rs = pstmt.executeQuery();
 			

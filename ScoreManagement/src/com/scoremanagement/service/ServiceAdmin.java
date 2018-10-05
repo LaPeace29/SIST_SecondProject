@@ -1860,7 +1860,86 @@ public class ServiceAdmin {
 
 	// 성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 1. 수강생 입력
 	private void m5_s1(Scanner sc) {
+		
+		System.out.println("---------------------------------------------------------------");
+		System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 5. 수강생 관리 > 1. 수강생 입력\n", this.admin_id);
 
+		System.out.print("수강생 이름 > ");
+		String student_name = sc.nextLine();
+		
+		System.out.print("수강생 전화번호 > ");
+		String student_phone = sc.nextLine();
+		
+		System.out.println("수강생 등록일 > ");
+		Date student_regdate = Date.valueOf(sc.nextLine());
+		
+		System.out.print("수강생 비밀번호 > ");
+		String student_pw = sc.nextLine();
+
+		Student s1 = new Student(null, student_name, student_phone, student_regdate, student_pw);
+
+		System.out.print("등록하시겠습니까? (0/1) > ");
+		int check = sc.nextInt();
+		sc.nextLine();
+		
+		if (check == 1) {
+
+			List<Student> list = this.stDAO.search2("null", student_name, student_phone);
+			if (list.size() == 0) {
+				this.stDAO.insert(s1);
+				System.out.println("등록되었습니다.");
+				
+				System.out.println("기존 개설 과정에 같이 등록하시겠습니까? (0/1) > ");
+				int check2 = sc.nextInt();
+				sc.nextLine();
+				if (check2 == 1) {
+
+					List<OpenCourse> list2 = this.ocDAO.print2();
+					if (list2.size() > 0) {
+						System.out.println("-------------------------------");
+						System.out.println("개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 / 개설 과목 등록 갯수 / 수강생 등록 인원");
+						for (OpenCourse oc : list2) {
+							System.out.println(oc.getOpen_course_id() + "/" + oc.getCourse_name() + "/"
+									+ oc.getOpen_course_start_date() + "~" + oc.getOpen_course_end_date() + "/"
+									+ oc.getClass_room_name() + "/" + oc.getOpen_subject_count() + "개" + "/"
+									+ oc.getStudent_count() + "명");
+
+						}
+						System.out.println("--------------");
+						System.out.printf("총 %d건 \n", list.size());
+					}
+
+					System.out.println("개설 과정 번호 >");
+					String open_course_id = sc.nextLine();
+
+					List<OpenCourse> list3 = this.ocDAO.search("open_course_id", open_course_id);
+					if (list3.size() > 0) {
+						for (OpenCourse oc : list3) {
+							System.out.printf("개설 과정 번호 : %s", open_course_id);
+							System.out.printf("개설 과정명 : %s", oc.getCourse_name());
+							System.out.printf("개설 과정 기간 : %tF ~ %tF ", oc.getOpen_course_start_date(),
+									oc.getOpen_course_end_date());
+							System.out.printf("강의실명 : %s", oc.getClass_room_name());
+						}
+					}
+
+					System.out.println("등록하시겠습니까? (0/1) > ");
+					int check4 = sc.nextInt();
+					sc.nextLine();
+					if (check4 == 1) {
+						List<Student> list4 = this.stDAO.search2("null", student_name, student_phone);
+						String student_id = null;
+						for (Student s : list4) {
+							student_id = s.getStudent_id();
+						}
+						StudentHistory s = new StudentHistory(student_id, open_course_id);
+						stDAO.studentHistoryAdd(s);
+						System.out.println("등록되었습니다.");
+					}
+				}
+
+			}
+		}
 	}
 
 	// 성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 2. 수강생 검색 및 출력

@@ -335,15 +335,62 @@ public class ExamDAO {
 	
 	// 시험 출력 메소드(6)
 	// 교재명 / 강사명 / 출결 배점 / 필기 배점 / 실기 배점 / 출결 점수 / 필기 점수 / 실기 점수 / 시험 날짜 / 시험문제 파일
-	public List<Exam> print6() {
+	public List<Exam> print6(String open_subject_id, String student_id) {
 		List<Exam> list = new ArrayList<Exam>();
-		/*SELECT course_name, subject_name, subject_start_date, subject_end_date, subjectbook_name, instructor_name, 
-		attendance_point, write_point, skill_point, attendance_score, write_score, skill_score, student_id, exam_date, exam_file
-	    FROM s_score_detail_view2
-	    WHERE open_subject_id = 'OS0032'
-	    AND student_id = 'ST00031';*/
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = OracleConnection.connect();
+			String sql = "SELECT course_name, subject_name, subject_start_date, subject_end_date, subjectbook_name, instructor_name, \r\n"
+					+ "      attendance_point, write_point, skill_point, attendance_score, write_score, skill_score, exam_date, exam_file\r\n"
+					+ "       FROM s_score_detail_view2\r\n" + "       WHERE open_subject_id = UPPER(?)\r\n"
+					+ "       AND student_id = UPPER(?)";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, open_subject_id);
+			pstmt.setString(2, student_id);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				String subjectbook_name = rs.getString("subjectbook_name");
+				String instructor_name = rs.getString("instructor_name");
+				int attendance_point = rs.getInt("attendance_point");
+				int write_point = rs.getInt("write_point");
+				int skill_point = rs.getInt("skill_point");
+				int attendance_score = rs.getInt("attendance_score");
+				int write_score = rs.getInt("write_score");
+				int skill_score = rs.getInt("skill_score");
+				Date exam_date = rs.getDate("exam_date");
+				String exam_file = rs.getString("exam_file");
+
+				Exam e = new Exam(subjectbook_name, instructor_name, attendance_point, write_point, skill_point,
+						exam_date, exam_file, attendance_score, write_score, skill_score);
+				list.add(e);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+			try {
+				OracleConnection.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+
 		return list;
 	}
+
 	
 	// 시험 배점 입력 메소드
 	public int insertPoint(Exam e) {

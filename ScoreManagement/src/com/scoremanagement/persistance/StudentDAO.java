@@ -374,6 +374,55 @@ public class StudentDAO {
 		return list;
 	}
 	
+	// 수강생 검색 메소드2
+	public List<Student> search2(String key, String value1, String value2) {
+		List<Student> list = new ArrayList<Student>();
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = OracleConnection.connect();
+
+			String sql = "SELECT student_id, student_name, student_phone, student_regDate\r\n" + "    FROM student\r\n"
+					+ "    WHERE UPPER(student_name) = UPPER(?)\r\n" + "AND student_phone = ?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, value1);
+			pstmt.setString(2, value2);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				String student_id = rs.getString("student_id");
+				String student_name = rs.getString("student_name");
+				String student_phone = rs.getString("student_phone");
+				Date student_regDate = rs.getDate("student_regDate");
+
+				Student s = new Student(student_id, student_name, student_phone, student_regDate);
+				list.add(s);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+			try {
+				OracleConnection.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+
+		return list;
+	}
+	
 	// 수강생 삭제 메소드
 	public int remove(Student s) {
 		int result = 0;

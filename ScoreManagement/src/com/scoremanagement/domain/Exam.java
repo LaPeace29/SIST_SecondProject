@@ -129,19 +129,19 @@ public class Exam {
 
 	// 교재명 / 강사명 / 출결배점 / 필기배점 / 실기배점 / 출결점수 / 필기점수 / 실기점수 / 시험날짜 / 시험문제
 	public Exam(String subjectbook_name, String instructor_name, int attendance_point, int write_point, int skill_point,
-			Date exam_date, String exam_file, int write_score, int skill_score, int total_score) {
-		super();
-		this.subjectbook_name = subjectbook_name;
-		this.instructor_name = instructor_name;
-		this.attendance_point = attendance_point;
-		this.write_point = write_point;
-		this.skill_point = skill_point;
-		this.exam_date = exam_date;
-		this.exam_file = exam_file;
-		this.write_score = write_score;
-		this.skill_score = skill_score;
-		this.total_score = total_score;
-	}
+	         Date exam_date, String exam_file, int attendance_score, int write_score, int skill_score) {
+	      this.subjectbook_name = subjectbook_name;
+	      this.instructor_name = instructor_name;
+	      this.attendance_point = attendance_point;
+	      this.write_point = write_point;
+	      this.skill_point = skill_point;
+	      this.exam_date = exam_date;
+	      this.exam_file = exam_file;
+	      this.attendance_score = attendance_score;
+	      this.write_score = write_score;
+	      this.skill_score = skill_score;
+	     
+   }
 
 	// Getter
 	public String getExam_id() {
