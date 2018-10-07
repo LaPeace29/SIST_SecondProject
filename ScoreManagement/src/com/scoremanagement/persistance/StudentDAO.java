@@ -67,53 +67,6 @@ public class StudentDAO {
 		return result;
 	}
 	
-	// 수강생 출력 메소드(1)
-	// 수강생 이름 / 수강생 휴대폰번호
-	public List<Student> print1(String student_id) {
-		List<Student> list = new ArrayList<Student>();
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			conn = OracleConnection.connect();
-			String sql = "SELECT student_name, student_phone\r\n" + 
-					"    FROM student\r\n" + 
-					"    WHERE UPPER(student_id) = UPPER(?)";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, student_id);
-			
-			ResultSet rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				String student_name = rs.getString("student_name");
-				String student_phone = rs.getString("student_phone");
-				
-				Student s = new Student(null, student_name, student_phone, null);
-				list.add(s);
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-            try {
-                if (pstmt != null)
-                    pstmt.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
-            try {
-                OracleConnection.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
-        }
-		
-		return list;
-	}
-	
 	// 수강생 출력 메소드(2)
 	// 수강생 번호 / 수강생 이름 / 수강생 휴대폰번호 / 수강생 등록일
 	public List<Student> print2(String key, String value) {
@@ -174,6 +127,14 @@ public class StudentDAO {
 		return list;
 	}
 	
+	/*
+	CREATE OR REPLACE VIEW student_print3_view
+	AS
+	SELECT student_id, student_name, student_phone, student_regdate,
+        (SELECT COUNT(*) FROM student_history
+                WHERE student_id = s.student_id) count_
+                FROM student s;
+	 */
 	// 수강생 출력 메소드(3)
 	// 수강생 번호 / 수강생 이름 / 수강생 휴대폰번호 / 수강생 등록일 / 수강 횟수
 	public List<Student> print3(String key, String value) {
@@ -187,7 +148,7 @@ public class StudentDAO {
 			
 			if(key.equals("all")) {
 				String sql = "SELECT student_id, student_name, student_phone, student_regDate, count_\r\n" + 
-						"    FROM student_info_view1\r\n" + 
+						"    FROM student_print3_view\r\n" + 
 						"        ORDER BY student_id";
 				
 				pstmt = conn.prepareStatement(sql);
@@ -195,7 +156,7 @@ public class StudentDAO {
 			
 			else if(key.equals("student_id")) {
 				String sql = "SELECT student_id, student_name, student_phone, student_regDate, count_\r\n" + 
-						"    FROM student_info_view1\r\n" + 
+						"    FROM student_print3_view\r\n" + 
 						"    WHERE UPPER(student_id) = UPPER(?)\r\n" + 
 						"        ORDER BY student_id";
 				
@@ -236,6 +197,36 @@ public class StudentDAO {
 		return list;
 	}
 	
+	/*
+	CREATE OR REPLACE VIEW student_print4_view1
+	AS
+	SELECT oc.class_room_id, oc.open_course_id, oc.course_id, oc.open_course_start_date,
+	oc.open_course_end_date, s.student_id, s.student_name, s.student_phone, s.student_regdate, c.course_name, os.instructor_id, os.open_subject_id
+    FROM open_course oc, student_history sh, student s, course c, open_subject os
+    WHERE oc.open_course_id = sh.open_course_id
+    AND s.student_id = sh.student_id
+    AND c.course_id = oc.course_id
+    AND oc.open_course_id = os.open_course_id;
+
+	CREATE OR REPLACE VIEW student_print4_view2
+	AS
+	SELECT v1.class_room_id, v1.course_id, v1.open_course_end_date, v1.open_course_id,
+ v1.open_course_start_date, v1.student_id, v1.student_name, v1.student_phone, v1.student_regdate, v1.instructor_id, v1.open_subject_id
+, pc.dropout_date, course_name
+    FROM student_print4_view1 v1, process_complete pc
+    WHERE v1.open_course_id = pc.open_course_id(+)
+    AND v1.student_id = pc.student_id(+);
+
+	CREATE OR REPLACE VIEW student_print4_view3
+	AS
+	SELECT student_id, student_name, student_phone, student_regdate, 
+ CASE WHEN SYSDATE < open_course_start_date AND dropout_date is null THEN '수료예정'
+  WHEN SYSDATE > open_course_end_date AND dropout_date is null THEN '수료완료'
+  WHEN dropout_date IS NOT NULL THEN '중도탈락'
+  else '진행중'
+  END completion, NVL2(dropout_date, dropout_date,open_course_end_date) completion_date, open_course_id, course_name, instructor_id, open_subject_id
+    FROM student_print4_view2;
+	 */
 	// 수강생 출력 메소드(4)
 	// 수강생 번호 / 수강생 이름 / 수강생 휴대폰번호 / 수강생 등록일 / 수료여부 / 날짜
 	public List<Student> print4(String key, String value1, String value2) {
@@ -249,30 +240,34 @@ public class StudentDAO {
 			
 			if(key.equals("open_course_id")) {
 				
-				String sql = "SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date\r\n" + 
-						"    FROM student_infoo3\r\n" + 
+				String sql = "SELECT student_id, student_name, student_phone, student_regdate, completion, completion_date\r\n" + 
+						"    FROM student_print4_view3\r\n" + 
 						"    WHERE UPPER(open_course_id) = UPPER(?)\r\n" + 
+						"    AND UPPER(open_subject_id) = UPPER(?)\r\n" + 
 						"    ORDER BY student_id";
 				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, value1);
+				pstmt.setString(2, value2);
 			}
 			
 			else if(key.equals("course_name")) {
 				String sql = "SELECT student_id, student_name, student_phone, student_regdate, completion, completion_date\r\n" + 
-						"    FROM student_infoo3\r\n" + 
+						"    FROM student_print4_view3\r\n" + 
 						"    WHERE INSTR(course_name, ?) > 0\r\n" + 
+						"    AND UPPER(open_subject_id) = UPPER(?)\r\n" + 
 						"    ORDER BY student_id;";
 				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, value1);
+				pstmt.setString(2, value2);
 			}
 			
 			else if(key.equals("open_subject_id")) {
 				String sql = "SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date\r\n" + 
-						"    FROM student_info_view3\r\n" + 
-						"    WHERE open_subject_id = ?\r\n" + 
-						"    AND instructor_id = ?";
+						"    FROM student_print4_view3\r\n" + 
+						"    WHERE UPPER(open_subject_id) = UPPER(?)\r\n" + 
+						"    AND UPPER(instructor_id) = UPPER(?)";
 				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, value1);
@@ -313,6 +308,7 @@ public class StudentDAO {
 		
 		return list;
 	}
+	
 	// 수강생 검색 메소드
 	// 1. 수강생 번호  2. 수강생 이름
 	public List<Student> search(String key, Student value) {
@@ -340,6 +336,17 @@ public class StudentDAO {
 				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, value.getStudent_name());
+			}
+			
+			else if(key.equals("student_idANDstudent_phone")) {
+				String sql = "SELECT student_id, student_name, student_phone, student_regDate\r\n" + 
+						"    FROM student\r\n" + 
+						"    WHERE UPPER(student_name) = UPPER(?)\r\n" + 
+						"    AND student_phone = ?";
+
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value.getStudent_name());
+				pstmt.setString(2, value.getStudent_phone());
 			}
 			
 			ResultSet rs = pstmt.executeQuery();
