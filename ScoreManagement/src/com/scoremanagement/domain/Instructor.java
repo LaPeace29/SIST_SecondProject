@@ -120,5 +120,27 @@ public class Instructor {
 	public void setInstructor_new_pw(String instructor_new_pw) {
 		this.instructor_new_pw = instructor_new_pw;
 	}	
+	
 	// print method
+	public String print2() {
+		String result = "";
+		result = String.format("%s / %s / %s / %s", this.getInstructor_id(), this.getInstructor_name(),
+				this.getInstructor_phone(), this.getInstructor_regDate());
+		return result;
+	}
+	
+	public String print3() {
+		String result = "";
+		result = String.format("%s / %s / %s / %s / %s", this.getInstructor_id(), this.getInstructor_name(),
+				this.getInstructor_phone(), this.getInstructor_regDate(), this.getInstructor_possible());
+		return result;
+	}
+
+	public String print4() {
+		String result = "";
+		result = String.format("%s / %s / %s / %s / %s / %s", this.getInstructor_id(), this.getInstructor_name(),
+				this.getInstructor_phone(), this.getInstructor_regDate(), this.getInstructor_possible(), 
+				(this.getCount_() > 0 ? 'X' : 'O'));
+		return result;
+	}
 }
