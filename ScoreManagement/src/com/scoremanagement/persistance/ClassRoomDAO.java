@@ -55,7 +55,7 @@ public class ClassRoomDAO {
 		return result;
 	}
 	
-	// 강의실 출력메소드
+	// 강의실 출력 리스트 메소드(1)
 	// 강의실번호 / 강의실이름 / 최대정원
 	public List<ClassRoom> list1() {
 		List<ClassRoom> list = new ArrayList<ClassRoom>();
@@ -106,7 +106,7 @@ public class ClassRoomDAO {
 		return list;
 	}
 	
-	// 강의실 출력메소드
+	// 강의실 출력 리스트 메소드(2)
 	// 강의실번호 / 강의실이름 / 최대정원 / 삭제가능여부
 	public List<ClassRoom> list2() {
 		List<ClassRoom> list = new ArrayList<ClassRoom>();
@@ -160,7 +160,8 @@ public class ClassRoomDAO {
 		return list;
 	}
 	
-	// 과정 검색 메소드
+	// 강의실 검색 메소드
+	// 1. 강의실 번호
 	public List<ClassRoom> search(String key, String value) {
 		List<ClassRoom> list = new ArrayList<ClassRoom>();
 		
