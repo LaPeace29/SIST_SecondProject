@@ -38,10 +38,11 @@ public class Exam {
 	public Exam() {
 		
 	}
-
-	// 배점 삭제, 성적 삭제시 사용
-	public Exam(String exam_id, String student_id, String instructor_id) {
+	
+	// 검색 시 사용
+	public Exam(String exam_id, String open_subject_id, String student_id, String instructor_id) {
 		this.exam_id = exam_id;
+		this.open_subject_id = open_subject_id;
 		this.student_id = student_id;
 		this.instructor_id = instructor_id;
 	}
@@ -100,7 +101,6 @@ public class Exam {
 	// 시험번호 / 출결배점 / 필기배점 / 실기배점 / 시험날짜 / 시험문제 / 성적등록인원수 / 성적등록여부
 	public Exam(String exam_id, int attendance_point, int write_point, int skill_point, Date exam_date,
 			String exam_file, int class_count, String score_status) {
-		super();
 		this.exam_id = exam_id;
 		this.attendance_point = attendance_point;
 		this.write_point = write_point;
@@ -139,9 +139,22 @@ public class Exam {
 	      this.exam_file = exam_file;
 	      this.attendance_score = attendance_score;
 	      this.write_score = write_score;
-	      this.skill_score = skill_score;
-	     
+	      this.skill_score = skill_score;  
    }
+
+	
+	public Exam(String exam_id, int attendance_point, int write_point, int skill_point,
+			int attendance_score, int write_score, int skill_score, Date exam_date, String exam_file) {
+		this.exam_id = exam_id;
+		this.attendance_point = attendance_point;
+		this.write_point = write_point;
+		this.skill_point = skill_point;
+		this.attendance_score = attendance_score;
+		this.write_score = write_score;
+		this.skill_score = skill_score;
+		this.exam_date = exam_date;
+		this.exam_file = exam_file;
+	}
 
 	// Getter
 	public String getExam_id() {
@@ -350,24 +363,49 @@ public class Exam {
 	}
 	
 	// print method
-	// 2018-10-04 은미 수정
 	public String print1() {
+	      String result = "";
+	      result = String.format("%s / %d / %d / %d / %s / %s", 
+	            this.getExam_id(), this.getAttendance_point(), this.getWrite_point(), this.getSkill_point(), 
+	            this.getExam_date(), this.getExam_file());
+	      return result;
+	}
+	
+	// 2018-10-04 은미 수정
+	public String print2() {
 	      String result = "";
 	      result = String.format("%s / %s / %s / %d / %d / %d / %d", 
 	            this.getStudent_id(), this.getStudent_name(), this.getStudent_phone()
 	            , this.getAttendance_score(), this.getWrite_score(),this.getSkill_score()
 	            , this.getTotal_score());
 	      return result;
-	  }
+	}
 	
 	// 2018-10-04 은미 수정
-	public String print2() {
+	public String print3() {
 		String result = "";
 		result = String.format("%s / %tF ~ %tF / %s / %d(%d) / %d(%d) / %d(%d) / %s", 
 				this.getSubject_name(), this.getSubject_start_date(), this.getSubject_end_Date()
 				, this.getInstructor_name(), this.getAttendance_score(), this.getAttendance_point()
 				, this.getWrite_score(), this.getWrite_point(), this.getSkill_score()
 				, this.getSkill_point(), this.getExam_date());
+		return result;
+	}
+
+	public String print4() {
+		String result = "";
+		result = String.format("%s / %d / %d / %d / %s / %s / %d / %s", 
+				this.getExam_id(), this.getAttendance_point(), this.getWrite_point(), this.getSkill_point(), 
+				this.getExam_date(), this.getExam_file(), this.getClass_count(), this.getScore_status());
+		return result;
+	}
+
+	public String print5() {
+		String result = "";
+		result = String.format("%s / %s / %s / %s / %s / %s / %d / %d / %d / %d",
+				this.getStudent_id(), this.getStudent_name(), this.getStudent_phone(), this.getStudent_regDate(),
+				this.getCompletion_status(), this.getCompletion_date(),
+				this.getAttendance_score(), this.getWrite_score(), this.getSkill_score(), this.getTotal_score());
 		return result;
 	}
 }
