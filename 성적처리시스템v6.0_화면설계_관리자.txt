@@ -6,7 +6,7 @@
 선택 > 3
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 > 3. 관리자 로그인
-이름 > 김길동
+아이디 > admi
 비밀번호 > 1111
 이름이나 비밀번호가 틀렸습니다.
 /*
@@ -22,7 +22,7 @@ SELECT admin_id
 선택 > 3
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 > 3. 관리자 로그인
-이름 > admin
+아이디 > admin
 비밀번호 > admin
 /*
 -- 1번 쿼리문.
@@ -942,7 +942,7 @@ SELECT subject_id, subject_name
     ORDER BY subject_id;
 */
 
-삭제할 강의 번호 > SUB020
+삭제할 과목 번호 > SUB020
 
 과목 번호 : SUB020
 과목명 : AOP
@@ -1082,25 +1082,23 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17 / HTML5 웹 프로그래밍 입문 / 최
 총 3건
 /*
 -- 32번 쿼리문. 개설 과정 번호를 입력받아 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명을 출력하는 쿼리문.
-CREATE OR REPLACE VIEW os_search1
+CREATE OR REPLACE VIEW open_subject_print4_view1
 AS
-SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
-       , instructor_name, open_course_id, subjectbook_id
-    FROM open_subject os, subject s, instructor i
+    SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_id, oc.open_course_id
+    FROM subject s, open_subject os, instructor i, open_course oc
     WHERE s.subject_id = os.subject_id
-    AND i.instructor_id = os.instructor_id;
-    
-
-CREATE OR REPLACE VIEW os_search2
+    AND i.instructor_id = os.instructor_id
+    AND os.open_course_id = oc.open_course_id;
+  
+CREATE OR REPLACE VIEW open_subject_print4_view2
 AS
-SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
-       , subjectbook_name, instructor_name, open_course_id
-    FROM os_search1 os, subjectbook sb
-    WHERE os.subjectbook_id = sb.subjectbook_id(+);
+	SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name, open_course_id
+    FROM open_subject_print4_view1 v1, subjectbook sb
+    WHERE sb.subjectbook_id(+) = v1.subjectbook_id; 
 
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
        , subjectbook_name, instructor_name
-    FROM os_search2
+    FROM open_subject_print4_view2
     WHERE UPPER(open_course_id) = UPPER('OC0015');
 */
 
@@ -1113,36 +1111,39 @@ ST00032 / 김탈락 / 010-3232-3232 / 2018-06-25 / 중도 탈락 / 2018-09-10
 총 2명
 /*
 -- 33번 쿼리문. 개설 과정 번호를 입력받아 수강생번호, 수강생이름, 전화번호, 등록일, 수료여부, 날짜 등을 출력하는 쿼리문.
-CREATE OR REPLACE VIEW student_infoo
+CREATE OR REPLACE VIEW student_print4_view1
 AS
 SELECT oc.class_room_id, oc.open_course_id, oc.course_id, oc.open_course_start_date,
-oc.open_course_end_date, s.student_id, s.student_name, s.student_phone, s.student_regdate
-    FROM open_course oc, student_history sh, student s
+oc.open_course_end_date, s.student_id, s.student_name, s.student_phone, s.student_regdate, c.course_name, os.instructor_id, os.open_subject_id
+    FROM open_course oc, student_history sh, student s, course c, open_subject os
     WHERE oc.open_course_id = sh.open_course_id
-    AND s.student_id = sh.student_id;
+    AND s.student_id = sh.student_id
+    AND c.course_id = oc.course_id
+    AND oc.open_course_id = os.open_course_id;
 
-CREATE OR REPLACE VIEW student_infoo2
+CREATE OR REPLACE VIEW student_print4_view2
 AS
-SELECT si.class_room_id, si.course_id, si.open_course_end_date, si.open_course_id,
- si.open_course_start_date, si.student_id, si.student_name,si.student_phone,si.student_regdate
-, pc.dropout_date
-    FROM student_infoo si, process_complete pc
-    WHERE si.open_course_id = pc.open_course_id(+)
-    AND si.student_id = pc.student_id(+);
+SELECT v1.class_room_id, v1.course_id, v1.open_course_end_date, v1.open_course_id,
+ v1.open_course_start_date, v1.student_id, v1.student_name, v1.student_phone, v1.student_regdate, v1.instructor_id, v1.open_subject_id
+, pc.dropout_date, course_name
+    FROM student_print4_view1 v1, process_complete pc
+    WHERE v1.open_course_id = pc.open_course_id(+)
+    AND v1.student_id = pc.student_id(+);
 
-CREATE OR REPLACE VIEW student_infoo3
+CREATE OR REPLACE VIEW student_print4_view3
 AS
 SELECT student_id, student_name, student_phone, student_regdate, 
  CASE WHEN SYSDATE < open_course_start_date AND dropout_date is null THEN '수료예정'
   WHEN SYSDATE > open_course_end_date AND dropout_date is null THEN '수료완료'
   WHEN dropout_date IS NOT NULL THEN '중도탈락'
   else '진행중'
-  END completion, NVL2(dropout_date, dropout_date,open_course_end_date) s_date, open_course_id
-    FROM student_infoo2;
+  END completion, NVL2(dropout_date, dropout_date,open_course_end_date) completion_date, open_course_id, course_name, instructor_id, open_subject_id
+    FROM student_print4_view2;
     
-SELECT student_id, student_name, student_phone, student_regdate, completion, s_date
-    FROM student_infoo3
+SELECT student_id, student_name, student_phone, student_regdate, completion, completion_date
+    FROM student_print4_view3
     WHERE UPPER(open_course_id) = UPPER('OC0015')
+    AND UPPER(open_subject_id) = UPPER('OS0031')
     ORDER BY student_id;
 */
 
@@ -1205,7 +1206,7 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17 HTML5 웹 프로그래밍 입문 / 최�
 -- 위에 같은 번호 있으니 참고
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
        , subjectbook_name, instructor_name
-    FROM os_search2
+    FROM open_subject_search_view2
     WHERE UPPER(open_course_id) = UPPER('OC0015');
 */
 
@@ -1219,9 +1220,9 @@ ST00032 / 김탈락 / 010-3232-3232 / 2018-06-25 / 중도 탈락 / 2018-09-10
 /*
 -- 33번 쿼리문. 개설 과정 번호를 입력받아 수강생번호, 수강생이름, 전화번호, 등록일, 수료여부, 날짜 등을 출력하는 쿼리문.
 -- 위에 같은 번호 있으니 참고
-SELECT student_id, student_name, student_phone, student_regdate, completion, s_date
+SELECT student_id, student_name, student_phone, student_regdate, completion, completion_date
     FROM student_infoo3
-    WHERE UPPER(open_course_id) = UPPER('OC0015')
+    WHERE INSTR(course_name, '데이터베이스') > 0
     ORDER BY student_id;
 */
 
@@ -1253,7 +1254,7 @@ OC0016 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / 20
 총 16건
 /*
 -- 100번 쿼리문. 개설과정번호, 과정명, 개설과정기간, 강의실명, 개설과목등록갯수, 수강생등록인원 전체를 출력하는 쿼리문
-CREATE OR REPLACE VIEW open_course_infoo1
+CREATE OR REPLACE VIEW open_course_print2_view
 AS
     SELECT open_course_id, course_name, open_course_start_date
                 ,open_course_end_date, class_room_name
@@ -1269,7 +1270,7 @@ AS
     SELECT open_course_id, course_name, open_course_start_date
                 ,open_course_end_date, class_room_name
                 ,os_count, s_count
-                FROM open_course_infoo1
+                FROM open_course_print2_view
             ORDER BY open_course_id;
 */
 ---------------------------------------------------------------
@@ -1305,11 +1306,11 @@ OC0016 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / 20
 /*
 -- 35번 쿼리문. 개설과정번호, 과정명, 개설과정기간, 강의실명, 개설과목등록갯수, 수강생등록인원 전체를 출력하는 쿼리문
 -- 참조여부를 확인해서 삭제가능여부까지 포함하여 출력.
-SELECT oci.open_course_id, course_name, open_course_start_date
+SELECT v1.open_course_id, course_name, open_course_start_date
                 ,open_course_end_date, class_room_name
                 ,os_count, s_count,(SELECT COUNT(*) FROM student_history sh
-                    WHERE sh.open_course_id=oci.open_course_id) count_
-                FROM open_course_infoo1 oci
+                    WHERE sh.open_course_id=v1.open_course_id) count_
+                FROM open_course_print2_view v1
     ORDER BY open_course_id;
 */
 개설 과정 번호 > OC0016
@@ -1527,44 +1528,41 @@ INSERT INTO open_subject (open_subject_id, subjectbook_id, subject_id
 
 개설 과목 번호 > OS0001
 -------------------------------
-개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명 / 개설 과정명 / 개설 과정 기간 / 강의실
+개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명 / 개설 과정명 / 개설 과정 기간 / 강의실명
 OS0001 / JSTL / 2018-10-11 ~ 2019-01-23 / 은노기의 JSP 웹 프로그래밍 입문 / 정재우 / JAVA Programming 향상 과정 / 2018-10-11 ~ 2019-05-10 / 6강의실
 -------------------------------
 총 1건
 /*
 -- 39번 쿼리문. 개설 과목번호를 입력받아
 -- 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명, 개설과정명, 개설과정기간, 강의실을 출력하는 테이블
-CREATE OR REPLACE VIEW open_course_info_view1
+CREATE OR REPLACE VIEW open_course_print1_view1
 AS
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_id,
-             instructor_name, course_name, open_course_start_date
-            , open_course_end_date, class_room_name
-            ,(SELECT COUNT(*) FROM exam
-                WHERE open_subject_id = os.open_subject_id) count_
-                      
-            FROM open_subject os, subject s,  instructor i
-                    , open_course oc, class_room cr, course c
-                    
-                    WHERE os.subject_id = s.subject_id
-                    AND os.instructor_id = i.instructor_id
-                    AND os.open_course_id = oc.open_course_id
-                    AND oc.course_id = c.course_id
-                    AND oc.class_room_id = cr.class_room_id;
-
-
-CREATE OR REPLACE VIEW open_course_info_join_view
-AS     
-    SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,
-            subjectbook_name, instructor_name, course_name, open_course_start_date
-            , open_course_end_date, class_room_name
-                FROM open_course_info_view1 v, subjectbook sb
-                WHERE v.subjectbook_id = sb.subjectbook_id(+);
+             instructor_name, course_name, open_course_start_date, open_course_end_date, 
+             class_room_name, oc.open_course_id, st.student_id         
+            FROM open_subject os, subject s, instructor i, 
+            open_course oc, class_room cr, course c, student_history sh, student st
+            WHERE os.subject_id = s.subject_id
+            AND os.instructor_id = i.instructor_id
+            AND os.open_course_id = oc.open_course_id
+            AND oc.course_id = c.course_id
+            AND oc.class_room_id = cr.class_room_id
+            AND oc.open_course_id = sh.open_course_id
+            AND sh.student_id = st.student_id;
+            
+CREATE OR REPLACE VIEW open_course_print1_view2
+AS
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_name,
+             instructor_name, course_name, open_course_start_date, open_course_end_date, 
+             class_room_name, open_course_id, student_id
+            FROM open_course_print1_view1 v1, subjectbook sb
+            WHERE v1.subjectbook_id = sb.subjectbook_id(+);
                 
 
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,
             subjectbook_name, instructor_name, course_name, open_course_start_date
             , open_course_end_date, class_room_name
-                FROM open_course_info_join_view
+                FROM open_course_print1_view2
                 WHERE UPPER(open_subject_id)=UPPER('OS0022')
                 ORDER BY open_subject_id;
 */
@@ -1590,7 +1588,7 @@ OS0028 / JSTL / 2018-11-06 ~ 2018-12-25 / 은노기의 JSP 웹 프로그래밍 �
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,
             subjectbook_name, instructor_name, course_name, open_course_start_date
             , open_course_end_date, class_room_name
-                FROM open_course_info_view1
+                FROM open_course_info_join_view
                 WHERE INSTR(subject_name, 'JSTL') > 0
                 ORDER BY open_subject_id;
 */
@@ -1613,28 +1611,32 @@ OS0036 ...........
 /*
 -- 41번 쿼리문. 개설 과목 전체를 출력하는 쿼리문.
 -- 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명, 개설과정명, 개설과정기간, 강의실을 출력하는 테이블
-CREATE OR REPLACE VIEW open_subject_all_view1
-AS
-SELECT os.open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_id
-    , instructor_name,  course_name , open_course_start_date,  open_course_end_date, class_room_name
-    FROM open_subject os, subject s, instructor i, course c, open_course oc, class_room cr
-    WHERE s.subject_id = os.subject_id
-    AND i.instructor_id = os.instructor_id
-    AND oc.open_course_id = os.open_course_id
-    AND oc.course_id = c.course_id
-    AND oc.class_room_id = cr.class_room_id
-    ORDER BY os.open_subject_id;
+CREATE OR REPLACE VIEW open_subject_print1_view1
+	AS
+	SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_id,
+             instructor_name, course_name, open_course_start_date, open_course_end_date, 
+             class_room_name, oc.open_course_id, st.student_id         
+            FROM open_subject os, subject s, instructor i, 
+            open_course oc, class_room cr, course c, student_history sh, student st
+            WHERE os.subject_id = s.subject_id
+            AND os.instructor_id = i.instructor_id
+            AND os.open_course_id = oc.open_course_id
+            AND oc.course_id = c.course_id
+            AND oc.class_room_id = cr.class_room_id
+            AND oc.open_course_id = sh.open_course_id
+            AND sh.student_id = st.student_id;
+            
+	CREATE OR REPLACE VIEW open_subject_print1_view2
+	AS
+	SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_name,
+             instructor_name, course_name, open_course_start_date, open_course_end_date, 
+             class_room_name, open_course_id, student_id
+            FROM open_subject_print1_view1 v1, subjectbook sb
+            WHERE v1.subjectbook_id = sb.subjectbook_id(+);
 
-CREATE OR REPLACE VIEW open_subject_all_view2
-AS
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_name
     , instructor_name,  course_name , open_course_start_date,  open_course_end_date, class_room_name
-    FROM open_subject_all_view1 v, subjectbook sb
-    WHERE v.subjectbook_id = sb.subjectbook_id(+);
-
-SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_name
-    , instructor_name,  course_name , open_course_start_date,  open_course_end_date, class_room_name
-    FROM open_subject_all_view2
+    FROM open_subject_print1_view2
     ORDER BY open_subject_id;
 */
 
@@ -1661,11 +1663,20 @@ OS0036 ........... / O
 -- 42번 쿼리문. 개설 과목 전체를 출력하는 쿼리문.
 -- 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명, 개설과정명, 개설과정기간, 강의실을 출력하는 테이블
 -- 참조하여 삭제가능여부를 확인하여 삭제 가능 여부 포함.
+CREATE OR REPLACE VIEW open_subject_print2_view
+AS
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_name
+    , instructor_name,  course_name , open_course_start_date,  open_course_end_date, class_room_name
+    ,(SELECT COUNT(*) FROM exam
+                WHERE open_subject_id = v.open_subject_id) count_
+    FROM open_subject_print1_view2 v, subjectbook sb
+    WHERE v.subjectbook_id = sb.subjectbook_id(+);
+
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,
             subjectbook_name, instructor_name, course_name, open_course_start_date
             , open_course_end_date, class_room_name
             , count_
-                FROM open_course_info_view1
+                FROM open_subject_print2_view
                 ORDER BY open_subject_id;
 */
 
@@ -1805,7 +1816,7 @@ INSERT INTO student_history (open_course_id, student_id)
 1. 수강생 번호  2. 수강생 이름  3. 수강생 전체 출력
 선택 > 1
 ---------------------------------------------------------------
-성적 처리 시스템 v6.0 (관리자 : admin) > 2. 수강생 검색 및 출력 > 1. 수강생 번호
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 2. 수강생 검색 및 출력 > 1. 수강생 번호
 
 수강생 번호 > ST00031
 
@@ -1977,7 +1988,7 @@ ST00033 / 김수강 / 010-0000-0000 / 2018-09-13 / 1회
 /*
 -- 49번 쿼리문. 수강생 전체를 출력하는 쿼리문.
 -- 수강생번호, 수강생이름, 수강생전화번호, 수강생등록일, 수강횟수 포함하여 출력.
-CREATE OR REPLACE VIEW student_info_view1
+CREATE OR REPLACE VIEW student_print3_view
 AS
 SELECT student_id, student_name, student_phone, student_regdate,
         (SELECT COUNT(*) FROM student_history
@@ -1985,7 +1996,7 @@ SELECT student_id, student_name, student_phone, student_regdate,
                 FROM student s;
 
 SELECT student_id, student_name, student_phone, student_regdate,count_
-    FROM student_info_view1
+    FROM student_print3_view
         ORDER BY student_id;
 */
 ---------------------------------------------------------------
@@ -2108,7 +2119,7 @@ ST00032 / 김탈락 / 010-3232-3232 / 2018-06-25 / 1회
 -- 49번 쿼리문. 수강생 전체를 출력하는 쿼리문.
 -- 수강생번호, 수강생이름, 수강생전화번호, 수강생등록일, 수강횟수 포함하여 출력.
 -- 위에 같은 번호 있으니 참고
-SELECT student_id, student_name, student_phone, student_regdate,count_
+SELECT student_id, student_name, student_phone, student_regdate, count_
     FROM student_info_view1
         ORDER BY student_id;
 */
@@ -2367,7 +2378,7 @@ INSERT INTO process_complete (open_course_id, student_id, dropout_date)
 선택 > 0
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin)
-1. 기초 정보 관리  2. 강사 계정 관리  3. 개설 과정 관리  4. 개설 과목 관리  5. 수강생 관리  6. 성적 조회
+1. 기초 정보 관리  2. 강사 계정 관리  3. 개설 과정 관리  4. 개설 과목 관리  5. 수강생 관리  6. 성적 조회  7. 비밀번호 변경
 선택 > 6
 ---------------------------------------------------------------
 성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회
@@ -2404,7 +2415,7 @@ OS0033 / HTML / 2018-11-13 ~ 2019-01-17 / 최장학 / HTML5 웹 프로그래밍 
 -- 위에 같은 번호 있으니 참고
 SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
        , subjectbook_name, instructor_name
-    FROM os_search2
+    FROM open_subject_search_view2
     WHERE UPPER(open_course_id) = UPPER('OC0015');
 */
 개설 과목 번호 > OS0032
@@ -2415,21 +2426,24 @@ SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
 교재명 : 오라클SQL을 다루는 기술
 /*
 -- 56번 쿼리문. 개설 과목 번호를 입력받아 개설과목명, 개설과목기간, 강사명, 교재명을 출력하는 쿼리문.
-CREATE OR REPLACE VIEW os_search_view1
+CREATE OR REPLACE VIEW open_subject_search_view1
     AS
-    SELECT open_subject_id,subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_id, s.subject_id
-    FROM subject s, open_subject os, instructor i
+    SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_id, s.subject_id, st.student_id
+    FROM subject s, open_subject os, instructor i, open_course oc, student_history sh, student st
     WHERE s.subject_id = os.subject_id
-    AND i.instructor_id = os.instructor_id;
+    AND i.instructor_id = os.instructor_id
+    AND os.open_course_id = oc.open_course_id
+    AND oc.open_course_id = sh.open_course_id
+    AND sh.student_id = st.student_id;
   
-CREATE OR REPLACE VIEW os_search_view2
+CREATE OR REPLACE VIEW open_subject_search_view2
 AS
-SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name
-    FROM os_search_view1 osv, subjectbook sb
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name, student_id
+    FROM open_subject_search_view1 osv, subjectbook sb
     WHERE sb.subjectbook_id(+) = osv.subjectbook_id;  
 
 SELECT subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name
-    FROM os_search_view2 
+    FROM open_subject_search_view1 
     WHERE UPPER(open_subject_id) = UPPER('OS0032');
 */
 
@@ -2546,10 +2560,10 @@ AOP / 2018-03-23 ~ 2018-05-06 / 김비삼 / 20(30) / 20(25) / 40(45) / 2018-05-0
 /*
 -- 61번 쿼리문. 개설과정번호로 수강생의 개설과목 성적 정보를 출력하는 쿼리문.
 -- 개설과목명, 개설과목기간, 강사명, 출결배점, 필기배점, 실기배점, 출결점수, 필기점수, 실기점수, 시험날짜를 출력.
-CREATE OR REPLACE VIEW score_search_view
+CREATE OR REPLACE VIEW exam_print3_view
 AS
 SELECT s.subject_name, os.subject_start_date, os.subject_end_date, i.instructor_name, p.attendance_point, st.student_id
-    , p.write_point, p.skill_point, ss.attendance_score, ss.write_score, ss.skill_score, e.exam_date
+    , p.write_point, p.skill_point, ss.attendance_score, ss.write_score, ss.skill_score, e.exam_date, e.exam_file
     FROM subject s, open_subject os, instructor i, subject_point p, exam e
         , student_score ss , student st
     WHERE os.subject_id = s.subject_id
@@ -2558,11 +2572,11 @@ SELECT s.subject_name, os.subject_start_date, os.subject_end_date, i.instructor_
     AND e.open_subject_id = os.open_subject_id
     AND ss.exam_id = e.exam_id
     AND st.student_id = ss.student_id;
-    
-    
+
+
 SELECT subject_name, subject_start_date, subject_end_date, instructor_name, attendance_point
     , write_point, skill_point, attendance_score, write_score, skill_score, exam_date
-    FROM score_search_view
+    FROM exam_print3_view
     WHERE UPPER(student_id) = UPPER('ST00001');
 */
 ---------------------------------------------------------------
@@ -2623,7 +2637,7 @@ AOP / 2018-03-23 ~ 2018-05-06 / 김비삼 / 20(30) / 20(25) / 40(45) / 2018-05-0
 -- 위에 같은 번호 있으니 참고
 SELECT subject_name, subject_start_date, subject_end_date, instructor_name, attendance_point
     , write_point, skill_point, attendance_score, write_score, skill_score, exam_date
-    FROM score_search_view
+    FROM exam_print3_view
     WHERE UPPER(student_id) = UPPER('ST00001');
 */
 ---------------------------------------------------------------
