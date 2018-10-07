@@ -141,9 +141,24 @@ public class Student {
 	
 	// print method
 	public String print1() {
-	      String result = "";
-	      result = String.format("%s / %s / %s / %s", 
-	            this.getStudent_id(), this.getStudent_name(), this.getStudent_phone(), this.getStudent_regDate());
-	      return result;
-   }
+		String result = "";
+		result = String.format("%s / %s / %s / %s", this.getStudent_id(), this.getStudent_name(),
+				this.getStudent_phone(), this.getStudent_regDate());
+		return result;
+	}
+
+	public String print3() {
+		String result = "";
+		result = String.format("%s / %s / %s / %s / %dȸ", this.getStudent_id(), this.getStudent_name(),
+				this.getStudent_phone(), this.getStudent_regDate(), this.getCount_());
+		return result;
+	}
+	
+	public String print4() {
+		String result = "";
+		result = String.format("%s / %s / %s / %s / %s / %s", 
+				getStudent_id(), getStudent_name(), getStudent_phone(), getStudent_regDate(),
+				getCompletion_status(), getCompleteion_date());
+		return result;
+	}
 }
