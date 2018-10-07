@@ -54,7 +54,7 @@ public class CourseDAO {
 		return result;
 	}
 	
-	// 과정 출력 메소드
+	// 과정 출력 리스트 메소드(1)
 	// 과정번호 / 과정이름
 	public List<Course> list1() {
 		List<Course> list = new ArrayList<Course>();
@@ -104,7 +104,7 @@ public class CourseDAO {
 		return list;
 	}
 	
-	// 과정 출력 메소드
+	// 과정 출력 리스트 메소드(2)
 	// 과정번호 / 과정이름 / 삭제가능여부
 	public List<Course> list2() {
 		List<Course> list = new ArrayList<Course>();
@@ -158,6 +158,7 @@ public class CourseDAO {
 	}
 	
 	// 과정 검색 메소드
+	// 1. 과정 번호
 	public List<Course> search(String key, String value) {
 		List<Course> list = new ArrayList<Course>();
 		
