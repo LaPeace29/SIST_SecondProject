@@ -22,7 +22,7 @@ public class InstructorPossibleDAO {
 		try {
 			conn = OracleConnection.connect();
 			String sql = "INSERT INTO instructor_possible (instructor_id, subject_id)\r\n" + 
-					"    VALUES (?, ?)";
+					"    VALUES (UPPER(?), UPPER(?))";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, ip.getInstructor_id());
@@ -51,8 +51,7 @@ public class InstructorPossibleDAO {
 		return result;
 	}
 	
-	// 강의 가능 과목 출력 메소드(1)
-	
+	// 강의 가능 과목 출력 리스트 메소드(1)
 	public List<InstructorPossible> list1(String instructor_id) {
 		List<InstructorPossible> list = new ArrayList<InstructorPossible>();
 		
@@ -109,7 +108,7 @@ public class InstructorPossibleDAO {
 		try {
 			conn = OracleConnection.connect();
 			String sql = "DELETE FROM instructor_possible \r\n" + 
-					"        WHERE UPPER(instructor_id)=UPPER(?) AND UPPER(subject_id)=UPPER(?)";
+					"        WHERE UPPER(instructor_id) = UPPER(?) AND UPPER(subject_id) = UPPER(?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, ip.getInstructor_id());
