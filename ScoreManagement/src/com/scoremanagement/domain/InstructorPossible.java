@@ -50,4 +50,9 @@ public class InstructorPossible {
 	}
 	
 	// print method
+	public String print() {
+		String result = "";
+		result = String.format("%s - %s", this.getSubject_id(), this.getSubject_name());
+		return result;
+	}
 }
