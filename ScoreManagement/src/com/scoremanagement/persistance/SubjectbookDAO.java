@@ -57,7 +57,7 @@ public class SubjectbookDAO {
 	
 	// 교재 출력 메소드
 	// 교재번호 / 교재명 / 교재출판사
-	public List<Subjectbook> print1() {
+	public List<Subjectbook> list1() {
 		List<Subjectbook> list = new ArrayList<Subjectbook>();
 		
 		Connection conn = null;
@@ -108,7 +108,7 @@ public class SubjectbookDAO {
 	
 	// 교재 출력 메소드
 	// 교재번호 / 교재명 / 교재출판사 / 삭제가능여부
-	public List<Subjectbook> print2() {
+	public List<Subjectbook> list2() {
 		List<Subjectbook> list = new ArrayList<Subjectbook>();
 		
 		Connection conn = null;

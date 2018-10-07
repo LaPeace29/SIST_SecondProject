@@ -56,7 +56,7 @@ public class CourseDAO {
 	
 	// 과정 출력 메소드
 	// 과정번호 / 과정이름
-	public List<Course> print1() {
+	public List<Course> list1() {
 		List<Course> list = new ArrayList<Course>();
 		
 		Connection conn = null;
@@ -106,7 +106,7 @@ public class CourseDAO {
 	
 	// 과정 출력 메소드
 	// 과정번호 / 과정이름 / 삭제가능여부
-	public List<Course> print2() {
+	public List<Course> list2() {
 		List<Course> list = new ArrayList<Course>();
 		
 		Connection conn = null;

@@ -56,7 +56,7 @@ public class SubjectDAO {
 	
 	// 과목 출력 메소드
 	// 과목번호 / 과목이름
-	public List<Subject> print1() {
+	public List<Subject> list1() {
 		List<Subject> list = new ArrayList<Subject>();
 		
 		Connection conn = null;
@@ -106,7 +106,7 @@ public class SubjectDAO {
 	
 	// 과목 출력 메소드
 	// 과목번호 / 과목이름 / 삭제가능여부
-	public List<Subject> print2() {
+	public List<Subject> list2() {
 		List<Subject> list = new ArrayList<Subject>();
 		
 		Connection conn = null;
