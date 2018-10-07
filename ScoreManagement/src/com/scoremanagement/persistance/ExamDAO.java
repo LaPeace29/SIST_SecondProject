@@ -29,10 +29,32 @@ public class ExamDAO {
     FROM  exam_print1_view1 v1, subject_point sp
     WHERE v1.exam_id = sp.exam_id(+);
 	 */
-	// 시험 출력 메소드(1)
+	// 시험 출력 리스트 메소드(1)
 	// 시험번호 / 출결 배점 / 필기 배점 / 실기 배점 / 시험 날짜 / 시험문제 파일
-	public List<Exam> print1(String key, Exam value) {
+	public List<Exam> list1(String key, Exam value) {
+		// exam_list1_VW1
+		/*
+		CREATE OR REPLACE VIEW exam_list1_VW1
+		AS
+		SELECT os.instructor_id, os.open_course_id, os.open_subject_id, os.subject_end_date, 
+		        os.subject_id, os.subject_start_date, os.subjectbook_id, e.exam_id, e.exam_date, e.exam_file
+		    FROM open_subject os, exam e
+		    WHERE os.open_subject_id = e.open_subject_id;
+		*/
+		
+		// exam_list1_VW2
+		/*
+		CREATE OR REPLACE VIEW exam_list1_VW2
+		AS    
+		SELECT v1.exam_date, v1.exam_file, v1.instructor_id, v1.open_course_id, v1.open_subject_id, 
+		        v1.subject_end_date , v1.subject_id , v1.subject_start_date , v1.subjectbook_id, 
+		        sp.attendance_point, sp.exam_id, sp.skill_point, sp.subject_point_id, sp.write_point 
+		    FROM  exam_list1_VW1 v1, subject_point sp
+		    WHERE v1.exam_id = sp.exam_id(+);
+		*/
+		
 		List<Exam> list = new ArrayList<Exam>();
+		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -41,7 +63,7 @@ public class ExamDAO {
 			
 			if(key.equals("open_subject_id")) {
 				String sql = "SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file\r\n" + 
-						"    FROM exam_print2_view2\r\n" + 
+						"    FROM exam_list1_VW2\r\n" + 
 						"    WHERE UPPER(open_subject_id) = UPPER(?)\r\n" + 
 						"    AND UPPER(instructor_id) = UPPER(?)";
 				
@@ -52,7 +74,7 @@ public class ExamDAO {
 
 			else if(key.equals("exam")) {
 				String sql = "SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file\r\n" + 
-						"    FROM exam_print2_view2\r\n" +
+						"    FROM exam_list1_VW2\r\n" +
 						"     WHERE open_subject_id = UPPER(?)";
 				
 				pstmt = conn.prepareStatement(sql);
@@ -93,76 +115,26 @@ public class ExamDAO {
 		return list;
 	}
 	
-	// 시험 출력 메소드(2)
-	// 수강생 번호 / 수강생 이름 / 수강생 휴대폰번호 / 출결 점수 / 필기 점수 / 실기 점수 / 총점
-	public List<Exam> print2(String examId) {
-		List<Exam> list = new ArrayList<Exam>();
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			conn = OracleConnection.connect();
-			String sql = "SELECT student_id, student_name, student_phone, attendance_score, write_score, skill_score, total\r\n" + 
-					"    FROM exam_search_view\r\n" + 
-					"    WHERE UPPER(exam_id) = UPPER(?)";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, examId);
-			
-			ResultSet rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				String student_id = rs.getString("student_id");
-				String student_name = rs.getString("student_name");
-				String student_phone = rs.getString("student_phone");
-				int attendance_score = rs.getInt("attendance_score");
-				int write_score = rs.getInt("write_score");
-				int skill_score = rs.getInt("skill_score");
-				int total = rs.getInt("total");
-				
-				Exam e = new Exam(student_id, student_name, student_phone, attendance_score, write_score,
-						skill_score, total);
-				list.add(e);
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-            try {
-                if (pstmt != null)
-                    pstmt.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
-            try {
-                OracleConnection.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
-        }
-		
-		return list;
-	}
-	
-	/*
-	CREATE OR REPLACE VIEW exam_print3_view
-	AS
-	SELECT os.open_subject_id, s.subject_name, os.subject_start_date, os.subject_end_date, i.instructor_name, p.attendance_point, st.student_id
-    , p.write_point, p.skill_point, ss.attendance_score, ss.write_score, ss.skill_score, e.exam_id, e.exam_date, e.exam_file
-    FROM subject s, open_subject os, instructor i, subject_point p, exam e
-        , student_score ss , student st
-    WHERE os.subject_id = s.subject_id
-    AND i.instructor_id = os.instructor_id
-    AND e.exam_id = p.exam_id
-    AND e.open_subject_id = os.open_subject_id
-    AND ss.exam_id = e.exam_id
-    AND st.student_id = ss.student_id;
-	 */
-	// 시험 출력 메소드(3)
+	// 시험 출력 리스트 메소드(2)
 	// 시험번호 / 출결점수 / 출결배점 / 필기점수 / 필기배점 / 실기점수 / 실기배점 / 시험날짜 / 시험파일
-	public List<Exam> print3(String key, Exam value) {
+	public List<Exam> list2(String key, Exam value) {
+		// exam_list2_VW
+		/*
+		CREATE OR REPLACE VIEW exam_list2_VW
+		AS
+		SELECT os.open_subject_id, s.subject_name, os.subject_start_date, os.subject_end_date,
+		        i.instructor_name, p.attendance_point, p.write_point, p.skill_point, 
+		        ss.attendance_score, ss.write_score, ss.skill_score, 
+		        e.exam_id, e.exam_date, e.exam_file, st.student_id
+		    FROM subject s, open_subject os, instructor i, subject_point p, exam e, 
+		        student_score ss , student st
+		    WHERE os.subject_id = s.subject_id
+		        AND i.instructor_id = os.instructor_id
+		        AND e.exam_id = p.exam_id
+		        AND e.open_subject_id = os.open_subject_id
+		        AND ss.exam_id = e.exam_id
+		        AND st.student_id = ss.student_id;
+		*/
 		List<Exam> list = new ArrayList<Exam>();
 		
 		Connection conn = null;
@@ -172,9 +144,10 @@ public class ExamDAO {
 			conn = OracleConnection.connect();
 			
 			if(key.equals("student_id")) {
-				String sql = "SELECT subject_name, subject_start_date, subject_end_date, instructor_name, attendance_point\r\n" + 
-						"    , write_point, skill_point, attendance_score, write_score, skill_score, exam_date\r\n" + 
-						"    FROM exam_print3_view\r\n" + 
+				String sql = "SELECT exam_id, attendance_point, write_point, skill_point," +
+						" attendance_score, write_score, skill_score, student_id, exam_date, exam_file\r\n" + 
+						"    FROM exam_list2_VW\r\n" + 
+						"    WHERE open_subject_id = UPPER(?)\r\n" + 
 						"    WHERE UPPER(student_id) = UPPER(?)";
 				
 				pstmt = conn.prepareStatement(sql);
@@ -184,7 +157,7 @@ public class ExamDAO {
 			else if(key.equals("open_subject_idANDstudent_id")) {
 				String sql = "SELECT exam_id, attendance_point, write_point, skill_point," +
 						" attendance_score, write_score, skill_score, student_id, exam_date, exam_file\r\n" + 
-						"    FROM exam_print3_view\r\n" + 
+						"    FROM exam_list2_VW\r\n" + 
 						"    WHERE open_subject_id = UPPER(?)\r\n" + 
 						"    AND student_id = UPPER(?)";
 
@@ -230,36 +203,51 @@ public class ExamDAO {
 		
 		return list;
 	}
-	
-	/*
-	CREATE OR REPLACE VIEW exam_print4_view1
-	AS
-	SELECT e.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, os.open_course_id, instructor_id, os.open_subject_id
-    FROM exam e, subject_point sp, open_subject os, open_course oc
-    WHERE e.exam_id = sp.exam_id
-    AND e.open_subject_id = os.open_subject_id
-    AND os.open_course_id = oc.open_course_id;
 
-	CREATE OR REPLACE VIEW exam_print4_view2
-	AS
-	SELECT  v.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, instructor_id, open_subject_id
-        ,(SELECT COUNT(*) FROM student_score ss WHERE v.exam_id = ss.exam_id) count_
-        ,(SELECT COUNT(*) FROM student_history sh WHERE v.open_course_id = sh.open_course_id) score_s
-    FROM exam_print4_view1 v
-    ORDER BY v.exam_id;
-    
-	CREATE OR REPLACE VIEW exam_print4_view3
-	AS
-	SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, count_, instructor_id, open_subject_id
-    , CASE count_
-        WHEN score_s THEN '성적 입력 완료'
-        else '성적 입력 전'
-        END score_state
-    FROM exam_print4_view2 v;
-	 */
-	// 시험 출력 메소드(4)
+	// 시험 출력 리스트 메소드(3)
 	// 시험번호 / 출결 배점 / 필기 배점 / 실기 배점 / 시험 날짜 / 시험문제 파일 / 성적 등록 인원수 / 성적 등록 여부
-	public List<Exam> print4(String key, Exam value) {
+	public List<Exam> list3(String key, Exam value) {
+		// exam_list3_VW1
+		/*
+		CREATE OR REPLACE VIEW exam_list3_VW1
+		AS
+		SELECT e.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, 
+		        os.open_course_id, instructor_id, os.open_subject_id
+		    FROM exam e, subject_point sp, open_subject os, open_course oc
+		    WHERE e.exam_id = sp.exam_id
+		        AND e.open_subject_id = os.open_subject_id
+		        AND os.open_course_id = oc.open_course_id;
+		*/
+		
+		// exam_list3_VW2
+		/*
+		CREATE OR REPLACE VIEW exam_list3_VW2
+		AS
+		SELECT v1.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, 
+		        instructor_id, open_subject_id,
+		        (SELECT COUNT(*) 
+		            FROM student_score ss 
+		            WHERE v1.exam_id = ss.exam_id) count_,
+		        (SELECT COUNT(*) 
+		            FROM student_history sh 
+		            WHERE v1.open_course_id = sh.open_course_id) score_s
+		    FROM exam_list3_VW1 v1
+		    ORDER BY v1.exam_id;
+		*/
+		
+		// exam_list3_VW3
+		/*
+		CREATE OR REPLACE VIEW exam_list3_VW3
+		AS
+		SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, 
+		        count_, instructor_id, open_subject_id, 
+		        CASE count_
+		            WHEN score_s THEN '성적 입력 완료'
+		            else '성적 입력 전'
+		        END score_state
+		    FROM exam_list3_VW2 v2;
+		*/
+		
 		List<Exam> list = new ArrayList<Exam>();
 		
 		Connection conn = null;
@@ -270,7 +258,7 @@ public class ExamDAO {
 			
 			if(key.equals("open_subject_idANDinstructor_id")) {
 				String sql = "SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, count_, score_state\r\n" + 
-						"    FROM exam_print4_view3\r\n" + 
+						"    FROM exam_list3_VW3\r\n" + 
 						"    WHERE UPPER(instructor_id) = UPPER(?)\r\n" + 
 						"    AND UPPER(open_subject_id) = UPPER(?)";
 				
@@ -281,7 +269,7 @@ public class ExamDAO {
 			
 			else if(key.equals("open_subject_idANDinstructor_idANDexam_id")) {
 				String sql = "SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, count_, score_state\r\n" + 
-						"    FROM exam_print4_view3\r\n" + 
+						"    FROM exam_list3_VW3\r\n" + 
 						"    WHERE UPPER(instructor_id) = UPPER(?)\r\n" + 
 						"    AND UPPER(open_subject_id) = UPPER(?)\r\n" + 
 						"    AND UPPER(exam_id) = UPPER(?)";
@@ -329,41 +317,58 @@ public class ExamDAO {
 		return list;
 	}
 	
-	/*
-	CREATE OR REPLACE VIEW student_print5_view1
-	AS
-	SELECT s.student_id, student_name, student_phone, student_regDate
-	,(SELECT dropout_date FROM process_complete pc WHERE pc.open_course_id = sh.open_course_id AND pc.student_id = sh.student_id) drop_date, open_course_start_date, open_course_end_date
-	, attendance_score, write_score, skill_score, open_subject_id, instructor_id, exam_id
-    FROM student_score ss, student s, student_history sh, open_course oc, open_subject os
-    WHERE ss.student_id = s.student_id
-    AND s.student_id = sh.student_id
-    AND oc.open_course_id = sh.open_course_id
-    AND oc.open_course_id = os.open_course_id;
-    
-    
-	CREATE OR REPLACE VIEW student_print5_view2
-	AS
-	SELECT student_id, student_name, student_phone, student_regDate, open_subject_id, drop_date, open_course_end_date, instructor_id, exam_id
-	, CASE
-	  WHEN SYSDATE < open_course_start_date AND drop_date is null THEN '수료예정'
-	  WHEN SYSDATE > open_course_end_date AND drop_date is null THEN '수료완료'
-	  WHEN drop_date IS NOT NULL THEN '중도탈락'
-	  else '진행중'
-	  END completion
-, attendance_score, write_score, skill_score, attendance_score+write_score+skill_score AS total
-    FROM student_print5_view1;
-
-
-	CREATE OR REPLACE VIEW student_print5_view3
-	AS
-	SELECT student_id, student_name, student_phone, student_regDate, completion, CASE completion WHEN '중도탈락' THEN drop_date ELSE open_course_end_date END completion_date
-    ,attendance_score, write_score, skill_score, total, instructor_id, open_subject_id, exam_id
-    FROM student_print5_view2;
-	 */
-	// 시험 출력 메소드(5)
+	// 시험 출력 리스트 메소드(4)
 	// 수강생 번호 / 수강생 이름 / 수강생 전화번호 / 수강생 등록일 / 수료여부 / 수료날짜 / 출결 점수 / 필기 점수 / 실기 점수 / 총점
-	public List<Exam> print5(String key, Exam value) {
+	public List<Exam> list4(String key, Exam value) {
+		// exam_list4_VW1
+		/*
+		CREATE OR REPLACE VIEW exam_list4_VW1
+		AS
+		SELECT s.student_id, student_name, student_phone, student_regDate, 
+		        (SELECT dropout_date 
+		            FROM process_complete pc 
+		            WHERE pc.open_course_id = sh.open_course_id 
+		                AND pc.student_id = sh.student_id) drop_date, 
+		        open_course_start_date, open_course_end_date, 
+		        attendance_score, write_score, skill_score, open_subject_id, instructor_id, exam_id
+		    FROM student_score ss, student s, student_history sh, open_course oc, open_subject os
+		    WHERE ss.student_id = s.student_id
+		        AND s.student_id = sh.student_id
+		        AND oc.open_course_id = sh.open_course_id
+		        AND oc.open_course_id = os.open_course_id;
+		*/
+		
+		// exam_list4_VW2
+		/*
+		CREATE OR REPLACE VIEW exam_list4_VW2
+		AS
+		SELECT student_id, student_name, student_phone, student_regDate, open_subject_id, drop_date,
+		        open_course_end_date, instructor_id, exam_id, 
+		        CASE
+		            WHEN SYSDATE < open_course_start_date AND drop_date is null THEN '수료예정'
+		            WHEN SYSDATE > open_course_end_date AND drop_date is null THEN '수료완료'
+		            WHEN drop_date IS NOT NULL THEN '중도탈락'
+		            else '진행중'
+		        END completion, 
+		        attendance_score, write_score, skill_score, 
+		        attendance_score+write_score+skill_score AS total
+		    FROM exam_list4_VW1;
+		*/
+		
+		// exam_list4_VW3
+		/*
+		CREATE OR REPLACE VIEW exam_list4_VW3
+		AS
+		SELECT student_id, student_name, student_phone, student_regDate, completion, 
+		        CASE completion 
+		            WHEN '중도탈락' THEN drop_date 
+		            ELSE open_course_end_date 
+		        END completion_date,
+		        attendance_score, write_score, skill_score, total, 
+		        instructor_id, open_subject_id, exam_id
+		    FROM exam_list4_VW2;
+		*/
+		
 		List<Exam> list = new ArrayList<Exam>();
 		
 		Connection conn = null;
@@ -375,7 +380,7 @@ public class ExamDAO {
 			if(key.equals("open_subject_idANDinstructor_idANDexam_id")) {
 				String sql = "SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date\r\n" + 
 						"    ,attendance_score, write_score, skill_score, total\r\n" + 
-						"    FROM student_print5_view3\r\n" + 
+						"    FROM exam_list4_VW3\r\n" + 
 						"    WHERE UPPER(open_subject_id) = UPPER(?)\r\n" + 
 						"    AND UPPER(instructor_id) = UPPER(?)\r\n" + 
 						"    AND UPPER(exam_id) = UPPER(?)";
@@ -389,7 +394,7 @@ public class ExamDAO {
 			else if(key.equals("open_subject_idANDexam_id")) {
 				String sql = "SELECT student_id, student_name, student_phone, student_regDate, completion, completion_date \r\n" + 
 						"    ,attendance_score, write_score, skill_score, total \r\n" + 
-						"    FROM student_print5_view3 \r\n" + 
+						"    FROM exam_list4_VW3 \r\n" + 
 						"    WHERE UPPER(open_subject_id) = UPPER(?)\r\n" + 
 						"    AND UPPER(exam_id) = UPPER(?)";
 				
@@ -437,65 +442,6 @@ public class ExamDAO {
 		
 		return list;
 	}
-	
-	// 시험 출력 메소드(6)
-	// 교재명 / 강사명 / 출결 배점 / 필기 배점 / 실기 배점 / 출결 점수 / 필기 점수 / 실기 점수 / 시험 날짜 / 시험문제 파일
-	public List<Exam> print6(String open_subject_id, String student_id) {
-		List<Exam> list = new ArrayList<Exam>();
-
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-
-		try {
-			conn = OracleConnection.connect();
-			String sql = "SELECT course_name, subject_name, subject_start_date, subject_end_date, subjectbook_name, instructor_name, \r\n"
-					+ "      attendance_point, write_point, skill_point, attendance_score, write_score, skill_score, exam_date, exam_file\r\n"
-					+ "       FROM s_score_detail_view2\r\n" + "       WHERE open_subject_id = UPPER(?)\r\n"
-					+ "       AND student_id = UPPER(?)";
-
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, open_subject_id);
-			pstmt.setString(2, student_id);
-
-			ResultSet rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				String subjectbook_name = rs.getString("subjectbook_name");
-				String instructor_name = rs.getString("instructor_name");
-				int attendance_point = rs.getInt("attendance_point");
-				int write_point = rs.getInt("write_point");
-				int skill_point = rs.getInt("skill_point");
-				int attendance_score = rs.getInt("attendance_score");
-				int write_score = rs.getInt("write_score");
-				int skill_score = rs.getInt("skill_score");
-				Date exam_date = rs.getDate("exam_date");
-				String exam_file = rs.getString("exam_file");
-
-				Exam e = new Exam(subjectbook_name, instructor_name, attendance_point, write_point, skill_point,
-						exam_date, exam_file, attendance_score, write_score, skill_score);
-				list.add(e);
-			}
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (pstmt != null)
-					pstmt.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			}
-			try {
-				OracleConnection.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			}
-		}
-
-		return list;
-	}
-
 	
 	// 시험 배점 입력 메소드
 	public int insertPoint(Exam e) {
