@@ -51,8 +51,9 @@ public class InstructorPossibleDAO {
 		return result;
 	}
 	
-	// 강의 가능 과목 출력 메소드
-	public List<InstructorPossible> print(String instructor_id) {
+	// 강의 가능 과목 출력 메소드(1)
+	
+	public List<InstructorPossible> list1(String instructor_id) {
 		List<InstructorPossible> list = new ArrayList<InstructorPossible>();
 		
 		Connection conn = null;
