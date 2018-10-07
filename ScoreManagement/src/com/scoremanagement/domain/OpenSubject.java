@@ -116,8 +116,9 @@ public class OpenSubject {
 	}
 
 	// 개설과목명 / 개설과목기간 / 개설과정명 / 개설과정기간 / 강의실 / 강의진행여부
-	public OpenSubject(String subject_name, String course_name, Date subject_start_date, Date subject_end_date,
+	public OpenSubject(String open_subject_id, String subject_name, String course_name, Date subject_start_date, Date subject_end_date,
 			Date open_course_start_date, Date open_course_end_date, String class_room_name, String instructor_status) {
+		this.open_subject_id = open_subject_id;
 		this.subject_name = subject_name;
 		this.course_name = course_name;
 		this.subject_start_date = subject_start_date;
@@ -269,10 +270,9 @@ public class OpenSubject {
 	// print method
 	public String print1() {
 	      String result = "";
-	      result = String.format("%s / %s / %s ~ %s / %s / %s / %s / %s ~ %s / %s", 
+	      result = String.format("%s / %s / %s ~ %s / %s / %s", 
 	            this.getOpen_subject_id(), this.getSubject_name(), this.getSubject_start_date(), this.getSubject_end_date()
-	            , this.getSubjectbook_name(), this.getInstructor_name(), this.getCourse_name(),
-				this.getOpen_course_start_date(), this.getOpen_course_end_date(), this.getClass_room_name());
+	            , this.getSubjectbook_name(), this.getInstructor_name());
 	      return result;
     }
 	
