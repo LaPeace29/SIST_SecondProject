@@ -12,6 +12,7 @@ public class OpenSubject {
 	private String subjectbook_name;		// 교재 이름
 	private String instructor_id;			// 강사 아이디
 	private String instructor_name;			// 강사 이름
+	private String student_id;				// 수강생 아이디
 	private String open_course_id;			// 개설 과정 아이디
 	private String course_name;				// 과정 이름
 	private Date subject_start_date;		// 과목 시작일
@@ -26,6 +27,17 @@ public class OpenSubject {
 	// Constructor
 	public OpenSubject() {
 
+	}
+	
+	// 검색시 사용
+	public OpenSubject(String open_subject_id, String subject_name, String open_course_id, String course_name, 
+			String student_id, String instructor_id) {
+		this.open_subject_id = open_subject_id;
+		this.subject_name = subject_name;
+		this.open_course_id = open_course_id;
+		this.course_name = course_name;
+		this.student_id = student_id;
+		this.instructor_id = instructor_id;
 	}
 	
 	// 개설과목번호 / 과목명 / 과목기간 / 비고
@@ -145,6 +157,10 @@ public class OpenSubject {
 		return instructor_name;
 	}
 
+	public String getStudent_id() {
+		return student_id;
+	}
+
 	public String getOpen_course_id() {
 		return open_course_id;
 	}
@@ -210,6 +226,10 @@ public class OpenSubject {
 		this.instructor_name = instructor_name;
 	}
 
+	public void setStudent_id(String student_id) {
+		this.student_id = student_id;
+	}
+
 	public void setOpen_course_id(String open_course_id) {
 		this.open_course_id = open_course_id;
 	}
@@ -249,18 +269,44 @@ public class OpenSubject {
 	// print method
 	public String print1() {
 	      String result = "";
-	      result = String.format("%s / %s / %s ~ %s / %s / %s", 
+	      result = String.format("%s / %s / %s ~ %s / %s / %s / %s / %s ~ %s / %s", 
 	            this.getOpen_subject_id(), this.getSubject_name(), this.getSubject_start_date(), this.getSubject_end_date()
-	            , this.getInstructor_name(), this.getSubjectbook_name());
+	            , this.getSubjectbook_name(), this.getInstructor_name(), this.getCourse_name(),
+				this.getOpen_course_start_date(), this.getOpen_course_end_date(), this.getClass_room_name());
 	      return result;
-   }
+    }
 	
-	/*개설 과목 번호 / 개설 과목명 / 개설 과목 기간*/
+	public String print2() {
+		String result = "";
+		result = String.format("%s / %s / %s ~ %s / %s / %s / %s / %s ~ %s / %s / %s", 
+				this.getOpen_subject_id(), this.getSubject_name(), this.getSubject_start_date(), this.getSubject_end_date(),
+				this.getSubjectbook_name(), this.getInstructor_name(), this.getCourse_name(),
+				this.getOpen_course_start_date(), this.getOpen_course_end_date(), this.getClass_room_name(),
+				(this.getCount_() > 0 ? 'X' : 'O'));
+		return result;
+	}
+	
+	public String print4() {
+		String result = "";
+		result = String.format("%s / %s / %s ~ %s / %s / %s",
+							this.getOpen_subject_id(), this.getSubject_name(), 
+							this.getSubject_start_date(), this.getSubject_end_date(),
+							this.getSubjectbook_name(), this.getInstructor_name());
+		return result;
+	}
+
 	public String print8() {
 		String result = "";
 		result = String.format("%s / %s / %s ~ %s", 
 				this.getOpen_subject_id(), this.getSubject_name(), this.getSubject_start_date(),
 				this.getSubject_end_date());
+		return result;
+	}
+	
+	public String print9() {
+		String result = "";
+		result = String.format("%s / %s ~ %s / %s / %s / %s", this.getSubject_name(), this.getSubject_start_date(),
+				this.getSubject_end_date(), this.getCourse_name(), this.getClass_room_name(), this.getInstructor_status());
 		return result;
 	}
 }
