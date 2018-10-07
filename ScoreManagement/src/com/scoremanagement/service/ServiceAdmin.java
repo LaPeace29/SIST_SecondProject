@@ -802,7 +802,7 @@ public class ServiceAdmin {
 			}			
 		}
 		
-		List<OpenSubject> list2 = this.osDAO.print9("instructor_id", instructor_id);
+		List<OpenSubject> list2 = this.osDAO.list6("instructor_id", instructor_id);
 		
 		if(list2.size() > 0) {
 			System.out.println("-------------------------------");
@@ -838,7 +838,7 @@ public class ServiceAdmin {
 				System.out.println();
 			}
 
-			List<OpenSubject> list2 = this.osDAO.print9("instructor_name", instructor_name);
+			List<OpenSubject> list2 = this.osDAO.list6("instructor_name", instructor_name);
 
 			if (list2.size() > 0) {
 				System.out.println("-------------------------------");
@@ -869,7 +869,7 @@ public class ServiceAdmin {
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 2. 강사 계정 관리 > 2. 강사 검색 및 출력 > 3. 강사 전체 출력\n", this.admin_id);
 
-		List<Instructor> list1 = this.iDAO.list2("all", null);
+		List<Instructor> list1 = this.iDAO.list1("all", null);
 		
 		if(list1.size() > 0) {
 			System.out.println("--------------------");
@@ -888,7 +888,7 @@ public class ServiceAdmin {
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 2. 강사 계정 관리 > 3. 강사 삭제\n", this.admin_id);
 		
-		List<Instructor> list1 = this.iDAO.list3();
+		List<Instructor> list1 = this.iDAO.list2();
 		
 		if(list1.size() > 0) {
 			System.out.println("--------------------");
@@ -941,7 +941,7 @@ public class ServiceAdmin {
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 2. 강사 계정 관리 > 4. 비밀번호 초기화\n", this.admin_id);
 
-		List<Instructor> list1 = this.iDAO.list2("all", "");
+		List<Instructor> list1 = this.iDAO.list1("all", "");
 		if (list1.size() > 0) {
 			System.out.println("--------------------");
 			System.out.println("강사 번호 / 강사 이름 / 강사 휴대폰 번호 / 강사 등록일 / 강의 가능 과목");
@@ -1029,7 +1029,7 @@ public class ServiceAdmin {
 		System.out.print("강사 번호 > ");
 		String instructor_id = sc.nextLine();
 
-		List<Instructor> list1 = this.iDAO.list1(instructor_id);
+		List<Instructor> list1 = this.iDAO.search("instructor_id", instructor_id);
 		
 		if (list1.size() > 0) {
 			
@@ -1115,7 +1115,7 @@ public class ServiceAdmin {
 		System.out.print("강사 번호 > ");
 		String instructor_id = sc.nextLine();
 
-		List<Instructor> list1 = this.iDAO.list1(instructor_id);
+		List<Instructor> list1 = this.iDAO.search("instructor_id", instructor_id);
 		
 		if (list1.size() > 0) {
 			
@@ -1317,7 +1317,7 @@ public class ServiceAdmin {
 		System.out.print("개설 과정 번호 > ");
 		String open_course_id = sc.nextLine();
 
-		List<OpenCourse> list1 = this.ocDAO.search("open_course_id", new OpenCourse(open_course_id, null));
+		List<OpenCourse> list1 = this.ocDAO.search("open_course_id", open_course_id);
 		if(list1.size() > 0) {
 			System.out.println("--------------------");
 			for(OpenCourse oc : list1) {
@@ -1328,8 +1328,7 @@ public class ServiceAdmin {
 			}
 			System.out.println("--------------------");
 			
-			List<OpenSubject> list2 = this.osDAO.print4("open_course_id",
-					new OpenSubject(null, null, open_course_id, null, null, null));
+			List<OpenSubject> list2 = this.osDAO.search("open_course_id", open_course_id);
 			
 			if(list2.size() > 0) {
 				System.out.println("** 개설 과목 정보 **");
@@ -1343,7 +1342,7 @@ public class ServiceAdmin {
 				System.out.println("--------------------");
 				System.out.printf("총 %d건\n", list2.size());
 				
-				List<Student> list3 = this.stDAO.print4("open_course_id", open_course_id, open_subject_id);
+				List<Student> list3 = this.stDAO.list2("open_course_id", open_course_id, open_subject_id);
 				if(list3.size() > 0) {
 					System.out.println(" ** 수강생 정보 **");
 					System.out.println("--------------------");
@@ -1372,7 +1371,7 @@ public class ServiceAdmin {
 		System.out.print("개설 과정명 > ");
 		String course_name = sc.nextLine();
 		
-		List<OpenCourse> list1 = this.ocDAO.search("course_name", new OpenCourse(null, course_name));
+		List<OpenCourse> list1 = this.ocDAO.search("course_name", course_name);
 		if(list1.size() > 0) {
 			System.out.println("--------------------");
 			System.out.println("개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명");
@@ -1388,8 +1387,7 @@ public class ServiceAdmin {
 				this.m3_s2_s1(sc); // 개설 과정 번호 검색 메소드로 넘어감
 			// 검색 결과가 하나인 경우
 			} else {
-				List<OpenSubject> list2 = this.osDAO.print4("course_name", 
-						new OpenSubject(null, null, null, course_name, null, null));
+				List<OpenSubject> list2 = this.osDAO.search("course_name", course_name);
 				if(list2.size() > 0) {
 					System.out.print("** 개설 과목 정보 **");
 					System.out.println("--------------------");
@@ -1402,7 +1400,7 @@ public class ServiceAdmin {
 					System.out.println("--------------------");
 					System.out.printf("총 %d건\n", list2.size());
 					
-					List<Student> list3 = this.stDAO.print4("course_name", course_name, open_subject_id);
+					List<Student> list3 = this.stDAO.list2("course_name", course_name, open_subject_id);
 					if(list3.size() > 0) {
 						System.out.print(" ** 수강생 정보 **");
 						System.out.println("--------------------");
@@ -1430,7 +1428,7 @@ public class ServiceAdmin {
 		
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 3. 개설 과정 관리 > 2. 개설 과정 검색 및 출력 > 3. 개설 과정 전체\n", this.admin_id);
-		List<OpenCourse> list1 = this.ocDAO.print2();
+		List<OpenCourse> list1 = this.ocDAO.list2();
 		if(list1.size() > 0) {
 			System.out.println("--------------------");
 			System.out.println("개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 / 개설 과목 등록 갯수 / 수강생 등록 인원");
@@ -1449,7 +1447,7 @@ public class ServiceAdmin {
 		
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 3. 개설 과정 관리 > 3. 개설 과정 관리 > 3. 개설 과정 삭제\n", this.admin_id);
-		List<OpenCourse> list1 = this.ocDAO.print3();
+		List<OpenCourse> list1 = this.ocDAO.list3();
 		if(list1.size() > 0) {
 			System.out.println("--------------------");
 			System.out.println("개설 과정 번호 / 강의실명 / 과정명 / 개설 과정 기간 / 삭제 가능 여부");
@@ -1463,7 +1461,7 @@ public class ServiceAdmin {
 			String open_course_id = sc.nextLine();
 			
 			// 개설 과정 번호에 따른 개설 과정명, 개설 과정 기간, 강의실명 출력
-			List<OpenCourse> list2 = this.ocDAO.search("open_course_id", new OpenCourse(open_course_id, null));
+			List<OpenCourse> list2 = this.ocDAO.search("open_course_id", open_course_id);
 			
 			if(list2.size() > 0) {
 				System.out.println("--------------------");
@@ -1539,7 +1537,7 @@ public class ServiceAdmin {
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 4. 개설 과목 관리 > 1. 개설 과목 추가\n", this.admin_id);
 		
-		List<OpenCourse> list1 = this.ocDAO.print4();
+		List<OpenCourse> list1 = this.ocDAO.list4();
 		
 		if (list1.size() > 0) {
 			System.out.println("-------------------------------");
@@ -1588,7 +1586,7 @@ public class ServiceAdmin {
 					System.out.print("교재 번호 > ");
 					String subjectbook_id = sc.nextLine();
 
-					List<Instructor> list4 = this.iDAO.list2("all", null);
+					List<Instructor> list4 = this.iDAO.list1("all", null);
 					
 					if (list4.size() > 0) {
 						System.out.println("-------------------------------");
@@ -1679,8 +1677,7 @@ public class ServiceAdmin {
 		System.out.print("개설 과목 번호 > ");
 		String open_subject_id = sc.nextLine();
 
-		List<OpenSubject> list1 = this.osDAO.print1("open_subject_id", 
-				new OpenSubject(open_subject_id, null, null, null, null, null));
+		List<OpenSubject> list1 = this.osDAO.list2("open_subject_id", open_subject_id);
 		
 		if(list1.size() > 0) {
 			System.out.println("--------------------");
@@ -1704,8 +1701,7 @@ public class ServiceAdmin {
 		System.out.print("개설 과목명 > ");
 		String subject_name = sc.nextLine();
 
-		List<OpenSubject> list1 = this.osDAO.print1("subject_name", 
-				new OpenSubject(null, subject_name, null, null, null, null));
+		List<OpenSubject> list1 = this.osDAO.list2("subject_name", subject_name);
 		
 		if(list1.size() > 0) {
 			System.out.println("--------------------");
@@ -1727,7 +1723,7 @@ public class ServiceAdmin {
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 4. 개설 과목 관리 > 2. 개설 과목 검색 및 출력 > 3. 개설 과목 전체\n", this.admin_id);
 		
-		List<OpenSubject> list1 = this.osDAO.print1("all", null);
+		List<OpenSubject> list1 = this.osDAO.list2("all", null);
 		if(list1.size() > 0) {
 			System.out.println("--------------------");
 			System.out.println("개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명 / 개설 과정명 / 개설 과정 기간 / 강의실명");
@@ -1745,7 +1741,7 @@ public class ServiceAdmin {
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 4. 개설 과목 관리 > 3. 개설 과목 삭제\n", this.admin_id);
 
-		List<OpenSubject> list1 = this.osDAO.print2();
+		List<OpenSubject> list1 = this.osDAO.list3();
 		
 		if (list1.size() > 0) {
 			System.out.println("-------------------------------");
@@ -1761,8 +1757,7 @@ public class ServiceAdmin {
 			System.out.print("개설 과목 번호 > ");
 			String open_subject_id = sc.nextLine();
 
-			List<OpenSubject> list2 = this.osDAO.print4("open_subject_id", 
-					new OpenSubject(open_subject_id, null, null, null, null, null));
+			List<OpenSubject> list2 = this.osDAO.search("open_subject_id", open_subject_id);
 			if (list2.size() > 0) {
 
 				for (OpenSubject os : list2) {					
@@ -1877,7 +1872,7 @@ public class ServiceAdmin {
 					
 					if (check2 == 1) {
 
-						List<OpenCourse> list2 = this.ocDAO.print2();
+						List<OpenCourse> list2 = this.ocDAO.list2();
 						if (list2.size() > 0) {
 							System.out.println("-------------------------------");
 							System.out.println("개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 / 개설 과목 등록 갯수 / 수강생 등록 인원");
@@ -1891,7 +1886,7 @@ public class ServiceAdmin {
 						System.out.println("개설 과정 번호 >");
 						String open_course_id = sc.nextLine();
 
-						List<OpenCourse> list3 = this.ocDAO.search("open_course_id", new OpenCourse(open_course_id, null));
+						List<OpenCourse> list3 = this.ocDAO.search("open_course_id", open_course_id);
 						if (list3.size() > 0) {
 							for (OpenCourse oc : list3) {
 								System.out.printf("개설 과정 번호 : %s", oc.getOpen_course_id());
@@ -1987,7 +1982,7 @@ public class ServiceAdmin {
 				System.out.println();
 			}
 			
-			List<OpenCourse> list2 = this.ocDAO.print5("student_id", new OpenCourse(null, null, student_id, null));
+			List<OpenCourse> list2 = this.ocDAO.list5("student_id", new OpenCourse(null, null, student_id, null));
 			if(list2.size() > 0) {
 				
 				for(OpenCourse oc : list2) {
@@ -2032,7 +2027,7 @@ public class ServiceAdmin {
 				
 			} else {
 				
-				List<OpenCourse> list2 = this.ocDAO.print5("student_name", new OpenCourse(null, null, null, student_name));
+				List<OpenCourse> list2 = this.ocDAO.list5("student_name", new OpenCourse(null, null, null, student_name));
 				if(list2.size() > 0) {
 					
 					for(OpenCourse oc : list2) {
@@ -2058,7 +2053,7 @@ public class ServiceAdmin {
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 5. 수강생 관리 > 2. 수강생 검색 및 출력 > 3. 수강생 전체 출력\n", this.admin_id);
 		
-		List<Student> list1 = this.stDAO.print3("all", "");
+		List<Student> list1 = this.stDAO.list1("all", "");
 		if (list1.size() > 0) {
 			System.out.println("--------------------");
 			System.out.println("수강생 번호 / 수강생 이름 / 수강생 전화번호 / 수강생 등록일 / 수강횟수");
@@ -2076,7 +2071,7 @@ public class ServiceAdmin {
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 5. 수강생 관리 > 3. 수강생 삭제\n", this.admin_id);
 
-		List<Student> list1 = this.stDAO.print3("all", null);
+		List<Student> list1 = this.stDAO.list1("all", null);
 		
 		if(list1.size() > 0) {
 			System.out.println("-------------------------------");
@@ -2126,7 +2121,7 @@ public class ServiceAdmin {
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 5. 수강생 관리 > 4. 비밀번호 초기화\n", this.admin_id);
 				
-		List<Student> list1 = this.stDAO.print3("all", "");
+		List<Student> list1 = this.stDAO.list1("all", "");
 		if (list1.size() > 0) {
 			System.out.println("--------------------");
 			System.out.println("수강생 번호 / 수강생 이름 / 수강생 전화번호 / 수강생 등록일 / 수강횟수");
@@ -2215,7 +2210,7 @@ public class ServiceAdmin {
 		System.out.print("수강생 번호 > ");
 		String student_id = sc.nextLine();
 
-		List<Student> list = this.stDAO.print3("student_id", student_id);
+		List<Student> list = this.stDAO.list1("student_id", student_id);
 		
 		if (list.size() > 0) {
 			System.out.println("-------------------------------");
@@ -2229,7 +2224,7 @@ public class ServiceAdmin {
 			}
 			System.out.println("-------------------------------");
 			
-			List<OpenCourse> list2 = this.ocDAO.print2();
+			List<OpenCourse> list2 = this.ocDAO.list2();
 			if (list2.size() > 0) {
 				System.out.println("-------------------------------");
 				System.out.println("개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 / 개설 과목 등록 갯수 / 수강생 등록 인원");
@@ -2242,7 +2237,7 @@ public class ServiceAdmin {
 				System.out.print("개설 과정 번호 >");
 				String open_course_id = sc.nextLine();
 
-				List<OpenCourse> list3 = this.ocDAO.search("open_course_id", new OpenCourse(open_course_id, null));
+				List<OpenCourse> list3 = this.ocDAO.search("open_course_id", open_course_id);
 				if (list3.size() > 0) {
 					for (OpenCourse oc : list3) {
 						System.out.printf("개설 과정 번호 : %s\n", open_course_id);
@@ -2284,7 +2279,7 @@ public class ServiceAdmin {
 		System.out.print("수강생 번호 > ");
 		String student_id = sc.nextLine();
 
-		List<Student> list = this.stDAO.print3("student_id", student_id);
+		List<Student> list = this.stDAO.list1("student_id", student_id);
 		
 		if (list.size() > 0) {
 			System.out.println("-------------------------------");
@@ -2298,7 +2293,7 @@ public class ServiceAdmin {
 			}
 			System.out.println("-------------------------------");
 			
-			List<OpenCourse> list2 = this.ocDAO.print5("student_id", new OpenCourse(null, null, student_id, null));
+			List<OpenCourse> list2 = this.ocDAO.list5("student_id", new OpenCourse(null, null, student_id, null));
 			if (list2.size() > 0) {
 				
 				System.out.println("-------------------------------");
@@ -2315,7 +2310,7 @@ public class ServiceAdmin {
 				
 				System.out.print("개설 과정 번호 > ");
 				String open_course_id = sc.nextLine();
-				List<OpenCourse> list3 = this.ocDAO.search("open_course_id", new OpenCourse(open_course_id, null));
+				List<OpenCourse> list3 = this.ocDAO.search("open_course_id", open_course_id);
 				if (list3.size() > 0) {
 					for (OpenCourse oc : list3) {
 						System.out.printf("개설 과정 번호 : %s\n", open_course_id);
@@ -2357,7 +2352,7 @@ public class ServiceAdmin {
 		System.out.print("수강생 번호 > ");
 		String student_id = sc.nextLine();
 
-		List<Student> list = this.stDAO.print3("student_id", student_id);
+		List<Student> list = this.stDAO.list1("student_id", student_id);
 		if (list.size() > 0) {
 			System.out.println("-------------------------------");
 			for (Student s : list) {
@@ -2370,7 +2365,7 @@ public class ServiceAdmin {
 			}
 			System.out.println("-------------------------------");
 			
-			List<OpenCourse> list2 = this.ocDAO.print5("student_id", new OpenCourse(null, null, student_id, null));
+			List<OpenCourse> list2 = this.ocDAO.list5("student_id", new OpenCourse(null, null, student_id, null));
 			if (list2.size() > 0) {
 				System.out.println("-------------------------------");
 				for (OpenCourse oc : list2) {
@@ -2386,7 +2381,7 @@ public class ServiceAdmin {
 				
 				System.out.print("개설 과정 번호 > ");
 				String open_course_id = sc.nextLine();
-				List<OpenCourse> list3 = this.ocDAO.search("open_course_id", new OpenCourse(open_course_id, null));
+				List<OpenCourse> list3 = this.ocDAO.search("open_course_id", open_course_id);
 				if (list3.size() > 0) {
 					for (OpenCourse oc : list3) {
 						System.out.printf("개설 과정 번호 : %s\n", open_course_id);
@@ -2469,7 +2464,7 @@ public class ServiceAdmin {
 
 		System.out.println("---------------------------");
 		System.out.println("** 개설 과정 정보 **");
-		List<OpenCourse> list1 = this.ocDAO.print1("open_course_id", new OpenCourse(open_course_id, null));
+		List<OpenCourse> list1 = this.ocDAO.search("open_course_id", open_course_id);
 
 		if (list1.size() > 0) {
 			for (OpenCourse oc : list1) {
@@ -2479,8 +2474,7 @@ public class ServiceAdmin {
 						oc.getOpen_course_end_date());
 				System.out.printf("강의실명 : %s\n", oc.getClass_room_name());
 			}
-			List<OpenSubject> list2 = this.osDAO.print4("open_course_id", 
-					new OpenSubject(null, null, open_course_id, null, null, null));
+			List<OpenSubject> list2 = this.osDAO.search("open_course_id", open_course_id);
 		
 			if(list2.size() > 0) {
 				System.out.println("---------------------------");
@@ -2496,8 +2490,7 @@ public class ServiceAdmin {
 				System.out.print("개설 과목 번호 > ");
 				String open_subject_id = sc.nextLine();
 
-				List<OpenSubject> list3 = this.osDAO.print4("open_subject_id", 
-						new OpenSubject(open_subject_id, null, null, null, null, null));
+				List<OpenSubject> list3 = this.osDAO.search("open_subject_id", open_course_id);
 
 				if (list3.size() > 0) {
 					for (OpenSubject os : list3) {
@@ -2508,7 +2501,7 @@ public class ServiceAdmin {
 						System.out.printf("교재명 : %s%n", os.getSubjectbook_name());
 					}
 					
-					List<Exam> list4 = this.eDAO.print1("exam", new Exam(null, open_subject_id, null, null));
+					List<Exam> list4 = this.eDAO.list1("exam", new Exam(null, open_subject_id, null, null));
 
 					if (list4.size() > 0) {
 						for (Exam e1 : list4) {
@@ -2521,7 +2514,7 @@ public class ServiceAdmin {
 							System.out.printf("시험문제파일 : %s%n", e1.getExam_file());
 							System.out.println("-----------------------");
 
-							List<Exam> list5 = this.eDAO.print5("open_subject_idANDexam_id", new Exam(e1.getExam_id(), open_subject_id, null, null));
+							List<Exam> list5 = this.eDAO.list4("open_subject_idANDexam_id", new Exam(e1.getExam_id(), open_subject_id, null, null));
 							if (list5.size() > 0) {
 								System.out.println("수강생 번호 / 수강생 이름 / 전화번호 / 출결점수 / 필기점수 / 실기점수 / 총점");
 								for (Exam e2 : list5) {
@@ -2579,7 +2572,7 @@ public class ServiceAdmin {
 		System.out.println();
 		
 		System.out.println(" ** 수강생 정보 **");
-		List<Student> list1 = this.stDAO.print3("student_id", student_id);
+		List<Student> list1 = this.stDAO.list1("student_id", student_id);
 		if (list1.size() > 0) {
 			for (Student s : list1) {
 				System.out.printf("수강생 번호 : %s\n", s.getStudent_id());
@@ -2592,7 +2585,7 @@ public class ServiceAdmin {
 			System.out.println();
 			System.out.println(" ** 개설 과정 정보 **");
 			
-			List<OpenCourse> list2 = this.ocDAO.print1("student_id", new OpenCourse(null, null, student_id, null));
+			List<OpenCourse> list2 = this.ocDAO.list1(student_id);
 			if (list2.size() > 0) {
 				for (OpenCourse oc : list2) {
 					System.out.printf("개설 과정 번호 : %s%n", oc.getOpen_course_id());
@@ -2603,7 +2596,7 @@ public class ServiceAdmin {
 				
 				System.out.println();
 				System.out.println(" ** 개설 과목 성적 정보 **");
-				List<Exam> list3 = this.eDAO.print3("student_id", new Exam(null, null, student_id, null));
+				List<Exam> list3 = this.eDAO.list2("student_id", new Exam(null, null, student_id, null));
 				if (list3.size() > 0) {
 					for (Exam e : list3) {
 						System.out.println(e.print2());
@@ -2622,7 +2615,7 @@ public class ServiceAdmin {
 		String student_name = sc.nextLine();
 		System.out.println();
 		
-		List<Student> list1 = this.stDAO.print2("student_name", student_name);
+		List<Student> list1 = this.stDAO.search("student_name", new Student(null, student_name, null, null));
 			
 		if (list1.size() > 0) {
 
@@ -2651,7 +2644,7 @@ public class ServiceAdmin {
 				
 				System.out.println();
 				System.out.println(" ** 개설 과정 정보 **");
-				List<OpenCourse> list2 = this.ocDAO.print1("student_id", new OpenCourse(null, null, student_id, null));
+				List<OpenCourse> list2 = this.ocDAO.list1(student_id);
 				if (list2.size() > 0) {
 					for (OpenCourse oc : list2) {
 						System.out.printf("개설 과정 번호 : %s%n", oc.getOpen_course_id());
@@ -2662,7 +2655,7 @@ public class ServiceAdmin {
 					
 					System.out.println();
 					System.out.println(" ** 개설 과목 성적 정보 **");
-					List<Exam> list3 = this.eDAO.print3("student_id", new Exam(null, null, student_id, null));
+					List<Exam> list3 = this.eDAO.list2("student_id", new Exam(null, null, student_id, null));
 					if (list3.size() > 0) {
 						for (Exam e : list3) {
 							System.out.println(e.print2());

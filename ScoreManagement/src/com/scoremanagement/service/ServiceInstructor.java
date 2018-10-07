@@ -106,7 +106,7 @@ public class ServiceInstructor {
 			int size2 = this.open_subject_print(open_subject_id);
 			
 			if(size2 > 0) {
-				List<Student> list3 = this.stDAO.print4("open_subject_id", open_subject_id, this.instructor_id);
+				List<Student> list3 = this.stDAO.list2("open_subject_id", open_subject_id, this.instructor_id);
 				if(list3.size() > 0) {
 					System.out.println("** 수강생 정보 **");
 					System.out.println("수강생번호 / 이름 / 전화번호 / 등록일 / 수료여부 / 날짜");
@@ -346,7 +346,8 @@ public class ServiceInstructor {
 								break;
 							}
 							
-							List<Student> list = this.stDAO.print2("student_id", student_id);
+							List<Student> list = this.stDAO.search("student_id", 
+									new Student(student_id, null, null, null));
 							for(Student s : list) {								
 								System.out.printf("수강생 번호 : ", s.getStudent_id());
 								System.out.printf("수강생 이름 : ", s.getStudent_name());
@@ -440,7 +441,8 @@ public class ServiceInstructor {
 						System.out.print("수강생 번호 > ");
 						String student_id = sc.nextLine();
 						
-						List<Student> list = this.stDAO.print2("student_id", student_id);
+						List<Student> list = this.stDAO.search("student_id", 
+								new Student(student_id, null, null, null));
 						for(Student s : list) {								
 							System.out.printf("수강생 번호 : ", s.getStudent_id());
 							System.out.printf("수강생 이름 : ", s.getStudent_name());
@@ -505,7 +507,7 @@ public class ServiceInstructor {
 		
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (강사 : %s) > 4. 개인 정보 > 1. 개인 정보 조회\n", this.instructor_name);
-		List<Instructor> list = this.iDAO.list1(this.instructor_id);
+		List<Instructor> list = this.iDAO.search("instructor_id", this.instructor_id);
 		for(Instructor i : list) {
 			System.out.printf("강사번호 : %s\n", i.getInstructor_id());
 			System.out.printf("이름 : %s\n", i.getInstructor_name());
@@ -563,7 +565,7 @@ public class ServiceInstructor {
 		System.out.println("** 강의 과목 **");
 		System.out.println("오늘 날짜 : " + LocalDate.now().format(this.formatter));
 	
-		List<OpenSubject> list = this.osDAO.print6(this.instructor_id);
+		List<OpenSubject> list = this.osDAO.list4(this.instructor_id);
 		if(list.size() > 0) {
 			System.out.println("개설과목번호 / 과목명 / 과목 기간 / 비고");
 			for(OpenSubject os : list) {
@@ -581,7 +583,7 @@ public class ServiceInstructor {
 	private int open_subject_print(String open_subject_id) {
 		int size = 0;
 		
-		List<OpenSubject> list = this.osDAO.print7("open_subject_idANDinstructor_id", 
+		List<OpenSubject> list = this.osDAO.list5("open_subject_idANDinstructor_id", 
 				new OpenSubject(open_subject_id, null, null, this.instructor_id, null, null, null));
 		size = list.size();
 		if(size > 0) {
@@ -605,7 +607,7 @@ public class ServiceInstructor {
 	private int exam_print(String open_subject_id) {
 		int size = 0;
 
-		List<Exam> list = this.eDAO.print1("open_subject_id", new Exam(null, open_subject_id, null, this.instructor_id));
+		List<Exam> list = this.eDAO.list1("open_subject_id", new Exam(null, open_subject_id, null, this.instructor_id));
 		size = list.size();
 		if(size > 0) {
 			System.out.println("-------------------------------");	
@@ -625,7 +627,7 @@ public class ServiceInstructor {
 	private int exam_list_print(String open_subject_id) {
 		int size = 0;
 
-		List<Exam> list = this.eDAO.print4("open_subject_idANDinstructor_id", new Exam(null, open_subject_id, null, this.instructor_id));
+		List<Exam> list = this.eDAO.list3("open_subject_idANDinstructor_id", new Exam(null, open_subject_id, null, this.instructor_id));
 		size = list.size();
 		if(size > 0) {
 			System.out.println("-------------------------------");	
@@ -645,7 +647,7 @@ public class ServiceInstructor {
 	private int exam_detail_print(String open_subject_id, String exam_id) {
 		int size = 0;
 
-		List<Exam> list = eDAO.print4("open_subject_idANDinstructor_idANDexam_id", new Exam(exam_id, open_subject_id, null, this.instructor_id));
+		List<Exam> list = eDAO.list3("open_subject_idANDinstructor_idANDexam_id", new Exam(exam_id, open_subject_id, null, this.instructor_id));
 		size = list.size();
 		if(size > 0) {
 			System.out.println("** 시험 정보 **");
@@ -670,7 +672,7 @@ public class ServiceInstructor {
 	private int student_print(String open_subject_id, String instructor_id, String exam_id) {
 		int size = 0;
 
-		List<Exam> list = this.eDAO.print5("open_subject_idANDinstructor_idANDexam_id", new Exam(exam_id, open_subject_id, null, this.instructor_id));
+		List<Exam> list = this.eDAO.list4("open_subject_idANDinstructor_idANDexam_id", new Exam(exam_id, open_subject_id, null, this.instructor_id));
 		size = list.size();
 		
 		if(list.size() > 0) {
