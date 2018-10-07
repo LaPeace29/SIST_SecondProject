@@ -54,7 +54,7 @@ public class SubjectDAO {
 		return result;
 	}
 	
-	// 과목 출력 메소드
+	// 과목 출력 리스트 메소드(1)
 	// 과목번호 / 과목이름
 	public List<Subject> list1() {
 		List<Subject> list = new ArrayList<Subject>();
@@ -104,7 +104,7 @@ public class SubjectDAO {
 		return list;
 	}
 	
-	// 과목 출력 메소드
+	// 과목 출력 리스트 메소드(2)
 	// 과목번호 / 과목이름 / 삭제가능여부
 	public List<Subject> list2() {
 		List<Subject> list = new ArrayList<Subject>();
@@ -157,7 +157,8 @@ public class SubjectDAO {
 		return list;
 	}
 	
-	// 과정 검색 메소드
+	// 과목 검색 메소드
+	// 1. 과목 번호
 	public List<Subject> search(String key, String value) {
 		List<Subject> list = new ArrayList<Subject>();
 
