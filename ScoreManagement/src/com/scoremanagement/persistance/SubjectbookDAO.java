@@ -200,7 +200,7 @@ public class SubjectbookDAO {
 		return list;
 	}
 		
-	// 교제 삭제 메소드
+	// 교재 삭제 메소드
 	public int remove(Subjectbook sb) {
 		int result = 0;
 		
