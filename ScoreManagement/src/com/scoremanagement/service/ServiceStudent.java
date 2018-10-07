@@ -81,13 +81,13 @@ public class ServiceStudent {
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (수강생 : %s) > 1. 성적 조회\n", this.student_name);
 
-		List<OpenCourse> list1 = this.ocDAO.print7(this.student_id);
+		List<OpenCourse> list1 = this.ocDAO.print1("student_id", new OpenCourse(null, null, this.student_id, null));
 		
 		if(list1.size() > 0) {
 			System.out.println("-------------------------------");
-			System.out.println("개설 과정 번호 / 개설 과정명 / 개설 과정 기간");
-			for (OpenCourse s : list1) {
-				System.out.println(s.print7());
+			System.out.println("개설 과정 번호 / 개설 과정명 / 개설 과정 기간 / 강의실명");
+			for (OpenCourse oc : list1) {
+				System.out.println(oc.print1());
 			}
 			System.out.println("-------------------------------");
 			System.out.printf("총 %d건\n", list1.size());
@@ -95,7 +95,8 @@ public class ServiceStudent {
 			System.out.print("개설 과정 번호 > ");
 			String open_course_id = sc.nextLine();
 
-			List<OpenCourse> list2 = this.ocDAO.search("open_course_id", new OpenCourse(open_course_id, null));
+			List<OpenCourse> list2 = this.ocDAO.print5("open_course_idANDstudent_id", 
+					new OpenCourse(open_course_id, null, this.student_id,null));
 			
 			if(list2.size() > 0) {
 				for(OpenCourse oc : list2) {
@@ -122,14 +123,15 @@ public class ServiceStudent {
 		System.out.printf("수료 여부 : %s%n", oc.getCompletion_status());
 		System.out.printf("중도탈락 날짜 : %s%n%n", oc.getDropout_date());
 				
-		List<OpenSubject> list1 = this.osDAO.print8(this.student_id, oc.getOpen_course_id());
+		List<OpenSubject> list1 = this.osDAO.print4("open_course_idANDstudent_id", 
+				new OpenSubject(null, null,  oc.getOpen_course_id(), null, this.student_id, null));
 
 		if(list1.size() > 0) {
 			System.out.println("-------------------------------");
-			System.out.println("개설 과목 번호 / 개설 과목명 / 개설 과목 기간");
+			System.out.println("개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명");
 
 			for (OpenSubject os : list1) {
-				System.out.println(os.print8());
+				System.out.println(os.print1());
 			}
 
 			System.out.println("-------------------------------");
@@ -139,36 +141,37 @@ public class ServiceStudent {
 			String open_subject_id = sc.nextLine();
 
 			System.out.println("---------------------------------------------------------------");
-			List<OpenSubject> list2 = this.osDAO.print3(this.student_id, open_subject_id);
+			List<OpenSubject> list2 = this.osDAO.search("student_idANDopen_subject_id", 
+					new OpenSubject(open_subject_id, null, null, null, this.student_id, null));
 			
-			for (OpenSubject os : list2) {
-				System.out.printf("개설 과목명 : %s%n", os.getSubject_name());
-				System.out.printf("개설 과목 기간 : %s~%s%n", os.getSubject_start_date(), os.getSubject_end_date());
+			for (OpenSubject os : list2) {				
+				System.out.printf("개설 과목 번호 : %s\n", os.getOpen_subject_id());
+				System.out.printf("개설 과목명 : %s\n", os.getSubject_name());
+				System.out.printf("개설 과목 기간 : %s ~ %s\n", os.getSubject_start_date(), os.getSubject_end_date());
+				System.out.printf("교재명 : %s\n", os.getSubjectbook_name());
+				System.out.printf("강사명 : %s\n", os.getInstructor_name());
 			}
 
-			List<Exam> list3 = this.eDAO.print6(open_subject_id, this.student_id);
+			List<Exam> list3 = this.eDAO.print3("open_subject_idANDstudent_id", 
+					new Exam(null, open_subject_id, this.student_id, null));
 
 			if (list3.size() > 0) {
 
 				for (Exam e : list3) {
-
+					System.out.println("-------------------------------");					
+					System.out.printf("시험 번호 : %s%n", e.getExam_id());
+					System.out.printf("출결 배점 : %s%n", e.getAttendance_point());
+					System.out.printf("필기 배점 : %s%n", e.getWrite_point());
+					System.out.printf("실기 배점 : %s%n", e.getSkill_point());
+					System.out.printf("출결 점수 : %s%n", e.getAttendance_score());
+					System.out.printf("필기 점수 : %s%n", e.getWrite_score());
+					System.out.printf("실기 점수 : %s%n", e.getSkill_score());
+					System.out.printf("시험 날짜 : %s%n", e.getExam_date());
+					System.out.printf("시험 문제 : %s%n", e.getExam_file());
 					System.out.println("-------------------------------");
-					System.out.printf("교재명 : %s%n", e.getSubjectbook_name());
-					System.out.printf("강사명 : %s%n", e.getInstructor_name());
-					System.out.printf("출결배점 : %s%n", e.getAttendance_point());
-					System.out.printf("필기배점 : %s%n", e.getWrite_point());
-					System.out.printf("실기배점 : %s%n", e.getSkill_point());
-					System.out.printf("출결점수 : %s%n", e.getAttendance_score());
-					System.out.printf("필기점수 : %s%n", e.getWrite_score());
-					System.out.printf("실기점수 : %s%n", e.getSkill_score());
-					System.out.printf("시험날짜 : %s%n", e.getExam_date());
-					System.out.printf("시험문제 : %s%n", e.getExam_file());
-
 				}
+				System.out.printf("총 %d건\n", list3.size());
 			}
-
-			System.out.println("-------------------------------");
-			System.out.printf("총 %d건%n", list3.size());
 		}
 	}
 
@@ -219,7 +222,7 @@ public class ServiceStudent {
 			System.out.printf("등록일 : %s\n", s.getStudent_regDate());
 		}
 		
-		List<OpenCourse> list2 = this.ocDAO.print5("student_id", this.student_id, null);
+		List<OpenCourse> list2 = this.ocDAO.print5("student_id", new OpenCourse(null, null, this.student_id, null));
 		
 		if(list2.size() > 0) {
 			System.out.println("-------------------------------");
