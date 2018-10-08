@@ -12,7 +12,7 @@ public class Exam {
 	private String subject_name;		// 과목 이름
 	private String subjectbook_name;	// 교재 이름
 	private Date subject_start_date;	// 과목 시작일
-	private Date subject_end_Date;		// 과목 종료일
+	private Date subject_end_date;		// 과목 종료일
 	private String instructor_id;		// 강사 아이디
 	private String instructor_name;		// 강사 이름
 	private int attendance_point;		// 출결 배점
@@ -110,6 +110,25 @@ public class Exam {
 		this.exam_date = exam_date;
 		this.exam_file = exam_file;
 	}
+	
+	// 시험번호 / 과목명 / 과목개설기간 / 강사명 / 출결점수 / 출결배점 / 필기점수 / 필기배점 / 실기점수 / 실기배점 / 시험날짜 / 시험파일
+	public Exam(String exam_id, String subject_name, Date subject_start_date, Date subject_end_date, 
+			String instructor_name, int attendance_point, int write_point, int skill_point,
+			int attendance_score, int write_score, int skill_score, Date exam_date, String exam_file) {
+		this.exam_id = exam_id;
+		this.subject_name = subject_name;
+		this.subject_start_date = subject_start_date;
+		this.subject_end_date = subject_end_date;
+		this.instructor_name = instructor_name;
+		this.attendance_point = attendance_point;
+		this.write_point = write_point;
+		this.skill_point = skill_point;
+		this.attendance_score = attendance_score;
+		this.write_score = write_score;
+		this.skill_score = skill_score;
+		this.exam_date = exam_date;
+		this.exam_file = exam_file;
+	}
 
 	// Getter
 	public String getExam_id() {
@@ -140,8 +159,8 @@ public class Exam {
 		return subject_start_date;
 	}
 
-	public Date getSubject_end_Date() {
-		return subject_end_Date;
+	public Date getSubject_end_date() {
+		return subject_end_date;
 	}
 
 	public String getInstructor_id() {
@@ -237,8 +256,8 @@ public class Exam {
 		this.subject_start_date = subject_start_date;
 	}
 
-	public void setSubject_end_Date(Date subject_end_Date) {
-		this.subject_end_Date = subject_end_Date;
+	public void setSubject_end_date(Date subject_end_Date) {
+		this.subject_end_date = subject_end_Date;
 	}
 
 	public void getInstructor_id(String instructor_id) {
@@ -350,6 +369,18 @@ public class Exam {
 				this.getStudent_id(), this.getStudent_name(), this.getStudent_phone(), this.getStudent_regDate(),
 				this.getCompletion_status(), this.getCompletion_date(),
 				this.getAttendance_score(), this.getWrite_score(), this.getSkill_score(), this.getTotal_score());
+		return result;
+	}
+	
+	public String print5() {
+		String result = "";
+		result = String.format("%s / %s / %s ~ %s / %s / %d(%d) / %d(%d) / %d(%d) / %s / %s",
+				this.getExam_id(), this.getSubject_name(), 
+				this.getSubject_start_date(), this.getSubject_end_date(), this.getInstructor_name(), 
+				this.getAttendance_score(), this.getAttendance_point(),
+				this.getWrite_score(), this.getWrite_point(), 
+				this.getSkill_score(), this.getSkill_point(),
+				this.getExam_date(), this.getExam_file());
 		return result;
 	}
 }
