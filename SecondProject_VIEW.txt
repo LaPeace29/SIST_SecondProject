@@ -211,19 +211,20 @@ CREATE OR REPLACE VIEW open_subject_list5_VW1
 AS
 SELECT os.instructor_id, course_name, open_course_start_date, open_course_end_date,
         class_room_name,open_subject_id, subject_name, subject_start_date, subject_end_date, 
-        subjectbook_id, oc.open_course_id
-    FROM course c, open_course oc, class_room cr, open_subject os, subject s
+        subjectbook_id, oc.open_course_id, instructor_name
+    FROM course c, open_course oc, class_room cr, open_subject os, subject s, instructor i
     WHERE c.course_id = oc.course_id
         AND cr.class_room_id = oc.class_room_id
         AND oc.open_course_id = os.open_course_id
-        AND s.subject_id = os.subject_id;
+        AND s.subject_id = os.subject_id
+        AND os.instructor_id = i.instructor_id;
         
 -- open_subject_list5_VW2
 CREATE OR REPLACE VIEW open_subject_list5_VW2
 AS
 SELECT v1.instructor_id, course_name, open_course_start_date, open_course_end_date, 
         open_subject_id ,class_room_name, open_course_id, subject_name, 
-        subject_start_date, subject_end_date, subjectbook_name
+        subject_start_date, subject_end_date, subjectbook_name, instructor_name
     FROM open_subject_list5_VW1 v1, subjectbook sb
     WHERE v1.subjectbook_id = sb.subjectbook_id(+);
     
