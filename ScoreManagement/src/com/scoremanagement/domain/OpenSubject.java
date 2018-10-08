@@ -295,6 +295,15 @@ public class OpenSubject {
     }
 	
 	public String print2() {
+	      String result = "";
+	      result = String.format("%s / %s / %s ~ %s / %s / %s / %s / %s ~ %s / %s", 
+	            this.getOpen_subject_id(), this.getSubject_name(), this.getSubject_start_date(), this.getSubject_end_date()
+	            , this.getSubjectbook_name(), this.getInstructor_name(), this.getCourse_name(), 
+	            this.getOpen_course_start_date(), this.getOpen_course_end_date(), this.getClass_room_name());
+	      return result;
+	}
+	
+	public String print3() {
 		String result = "";
 		result = String.format("%s / %s / %s ~ %s / %s / %s / %s / %s ~ %s / %s / %s", 
 				this.getOpen_subject_id(), this.getSubject_name(), this.getSubject_start_date(), this.getSubject_end_date(),
@@ -306,25 +315,29 @@ public class OpenSubject {
 	
 	public String print4() {
 		String result = "";
-		result = String.format("%s / %s / %s ~ %s / %s / %s",
-							this.getOpen_subject_id(), this.getSubject_name(), 
-							this.getSubject_start_date(), this.getSubject_end_date(),
-							this.getSubjectbook_name(), this.getInstructor_name());
-		return result;
-	}
-
-	public String print8() {
-		String result = "";
-		result = String.format("%s / %s / %s ~ %s", 
-				this.getOpen_subject_id(), this.getSubject_name(), this.getSubject_start_date(),
-				this.getSubject_end_date());
+		result = String.format("%s / %s / %s ~ %s / %s", 
+				this.getOpen_subject_id(), this.getSubject_name(), this.getSubject_start_date(), this.getSubject_end_date(),
+				this.getInstructor_status());
 		return result;
 	}
 	
-	public String print9() {
+	public String print5() {
 		String result = "";
-		result = String.format("%s / %s ~ %s / %s / %s / %s", this.getSubject_name(), this.getSubject_start_date(),
-				this.getSubject_end_date(), this.getCourse_name(), this.getClass_room_name(), this.getInstructor_status());
+		result = String.format("%s / %s / %s ~ %s / %s / %s / %s ~ %s / %s / %d", 
+				this.getOpen_subject_id(), this.getCourse_name(), 
+				this.getOpen_course_start_date(), this.getOpen_course_end_date(), this.getClass_room_name(),
+				this.getSubject_name(), this.getSubject_start_date(), this.getSubject_end_date(),
+				this.getStudent_count());
+		return result;
+	}
+	
+	public String print6() {
+		String result = "";
+		result = String.format("%s / %s / %s ~ %s / %s / %s ~ %s / %s / %s", 
+				this.getOpen_subject_id(), this.getSubject_name(), 
+				this.getSubject_start_date(), this.getSubject_end_date(), 
+				this.getCourse_name(), this.getOpen_course_start_date(), this.getOpen_course_end_date(),
+				this.getClass_room_name(), this.getInstructor_status());
 		return result;
 	}
 }

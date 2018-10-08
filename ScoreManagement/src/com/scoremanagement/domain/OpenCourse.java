@@ -88,10 +88,10 @@ public class OpenCourse {
 	public OpenCourse(String open_course_id, String course_name, Date open_course_start_date,
 			Date open_course_end_date, String class_room_name, String completion_status, Date dropout_date) {
 		this.open_course_id = open_course_id;
-		this.class_room_name = class_room_name;
 		this.course_name = course_name;
 		this.open_course_start_date = open_course_start_date;
 		this.open_course_end_date = open_course_end_date;
+		this.class_room_name = class_room_name;
 		this.completion_status = completion_status;
 		this.dropout_date = dropout_date;
 	}
@@ -232,10 +232,11 @@ public class OpenCourse {
 		return result;
 	}
 	
-	public String print7() {
+	public String print5() {
 		String result = "";
-		result = String.format("%s / %s / %s ~ %s", 
-				this.getOpen_course_id(), this.getCourse_name(), this.getOpen_course_start_date(), this.getOpen_course_end_date());
+		result = String.format("%s / %s / %s ~ %s / %s / %s", 
+				this.getOpen_course_id(), this.getCourse_name(), this.getOpen_course_start_date(), this.getOpen_course_end_date(),
+				this.getCompletion_status(), this.getDropout_date());
 		return result;
 	}
 }

@@ -34,7 +34,6 @@ public class Student {
 		this.student_new_pw = student_new_pw;
 	}
 
-	
 	// 수강생 추가시 사용
 	// 수강생 삭제시 사용
 	// 수강생 검색시 사용
@@ -135,21 +134,21 @@ public class Student {
 	}
 	
 	// print method
-	public String print1() {
+	public String print() {
 		String result = "";
 		result = String.format("%s / %s / %s / %s", this.getStudent_id(), this.getStudent_name(),
 				this.getStudent_phone(), this.getStudent_regDate());
 		return result;
 	}
 
-	public String print3() {
+	public String print1() {
 		String result = "";
 		result = String.format("%s / %s / %s / %s / %d회", this.getStudent_id(), this.getStudent_name(),
 				this.getStudent_phone(), this.getStudent_regDate(), this.getCount_());
 		return result;
 	}
 	
-	public String print4() {
+	public String print2() {
 		String result = "";
 		result = String.format("%s / %s / %s / %s / %s / %s", 
 				getStudent_id(), getStudent_name(), getStudent_phone(), getStudent_regDate(),

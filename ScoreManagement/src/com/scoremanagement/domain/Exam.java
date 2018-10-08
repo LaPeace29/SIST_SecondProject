@@ -326,36 +326,25 @@ public class Exam {
 	      return result;
 	}
 	
-	// 2018-10-04 은미 수정
 	public String print2() {
 	      String result = "";
-	      result = String.format("%s / %s / %s / %d / %d / %d / %d", 
-	            this.getStudent_id(), this.getStudent_name(), this.getStudent_phone()
-	            , this.getAttendance_score(), this.getWrite_score(),this.getSkill_score()
-	            , this.getTotal_score());
+	      result = String.format("%s / %d / %d / %d / %d / %d / %d / %s / %s", 
+	            this.getExam_id(), this.getAttendance_point(), this.getAttendance_score(), 
+	            this.getWrite_point(), this.getWrite_score(), this.getSkill_point(), this.getSkill_score(),
+	            this.getExam_date(), this.getExam_file());
 	      return result;
 	}
 	
-	// 2018-10-04 은미 수정
 	public String print3() {
-		String result = "";
-		result = String.format("%s / %tF ~ %tF / %s / %d(%d) / %d(%d) / %d(%d) / %s", 
-				this.getSubject_name(), this.getSubject_start_date(), this.getSubject_end_Date()
-				, this.getInstructor_name(), this.getAttendance_score(), this.getAttendance_point()
-				, this.getWrite_score(), this.getWrite_point(), this.getSkill_score()
-				, this.getSkill_point(), this.getExam_date());
-		return result;
-	}
-
-	public String print4() {
 		String result = "";
 		result = String.format("%s / %d / %d / %d / %s / %s / %d / %s", 
 				this.getExam_id(), this.getAttendance_point(), this.getWrite_point(), this.getSkill_point(), 
 				this.getExam_date(), this.getExam_file(), this.getClass_count(), this.getScore_status());
 		return result;
 	}
+	
 
-	public String print5() {
+	public String print4() {
 		String result = "";
 		result = String.format("%s / %s / %s / %s / %s / %s / %d / %d / %d / %d",
 				this.getStudent_id(), this.getStudent_name(), this.getStudent_phone(), this.getStudent_regDate(),
