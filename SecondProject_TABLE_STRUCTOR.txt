@@ -112,10 +112,10 @@ ALTER TABLE  INSTRUCTOR
 
 ALTER TABLE INSTRUCTOR   
    ADD
-      CONSTRAINT UK_INSTRUCTOR_ID_PW	-- 강사 테이블 유니크키
+      CONSTRAINT UK_STUDENT_NAME_PHONE	-- 강사 테이블 유니크키
       UNIQUE (
-        instructor_id,  -- 강사_ID
-        instructor_pw  -- 강사_PW
+        instructor_name,  -- 강사_이름
+        instructor_phone  -- 강사_휴대폰번호
    );
 
 -- 강의 가능 과목 테이블               
@@ -216,10 +216,10 @@ ALTER TABLE  STUDENT
 
 ALTER TABLE STUDENT
    ADD
-      CONSTRAINT UK_STUDENT_ID_PW	-- 수강생 테이블 유니크키
+      CONSTRAINT UK_STUDENT_NAME_PHONE	-- 수강생 테이블 유니크키
       UNIQUE (
-        student_id,  -- 수강생_ID
-        student_pw  -- 수강생_PW
+        student_name,  -- 수강생_이름
+        student_phone  -- 수강생_휴대폰번호
    );
 
 -- 수강 히스토리 테이블
