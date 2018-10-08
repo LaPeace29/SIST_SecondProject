@@ -165,16 +165,14 @@ public class OpenSubjectDAO {
 		AS
 		SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_id,
 		        instructor_name, course_name, open_course_start_date, open_course_end_date, 
-		        class_room_name, oc.open_course_id, st.student_id         
+		        class_room_name, oc.open_course_id    
 		    FROM open_subject os, subject s, instructor i, 
-		        open_course oc, class_room cr, course c, student_history sh, student st
+		        open_course oc, class_room cr, course c
 		    WHERE os.subject_id = s.subject_id
 		        AND os.instructor_id = i.instructor_id
 		        AND os.open_course_id = oc.open_course_id
 		        AND oc.course_id = c.course_id
-		        AND oc.class_room_id = cr.class_room_id
-		        AND oc.open_course_id = sh.open_course_id
-		        AND sh.student_id = st.student_id;
+		        AND oc.class_room_id = cr.class_room_id;
 		*/
 		
 		// open_subject_list2_VW2
@@ -183,7 +181,7 @@ public class OpenSubjectDAO {
 		AS
 		SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_name,
 		        instructor_name, course_name, open_course_start_date, open_course_end_date, 
-		        class_room_name, open_course_id, student_id
+		        class_room_name, open_course_id
 		    FROM open_subject_list2_VW1 v1, subjectbook sb
 		    WHERE v1.subjectbook_id = sb.subjectbook_id(+);
 		*/
@@ -218,6 +216,16 @@ public class OpenSubjectDAO {
 				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, value);
+			}
+			
+			else if(key.equals("all")){
+				String sql = "SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,\r\n" + 
+						"            subjectbook_name, instructor_name, course_name, open_course_start_date\r\n" + 
+						"            , open_course_end_date, class_room_name\r\n" + 
+						"                FROM open_subject_list2_VW2\r\n" + 
+						"                ORDER BY open_subject_id";
+				
+				pstmt = conn.prepareStatement(sql);
 			}
 			
 			ResultSet rs = pstmt.executeQuery();
@@ -578,22 +586,6 @@ public class OpenSubjectDAO {
 		return list;
 	}
 	
-	/*
-	CREATE OR REPLACE VIEW open_subject_search_view1
-    AS
-    SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_id, s.subject_id, course_name
-    FROM subject s, open_subject os, instructor i, open_course oc, course c
-    WHERE s.subject_id = os.subject_id
-    AND i.instructor_id = os.instructor_id
-    AND os.open_course_id = oc.open_course_id
-    AND c.course_id = oc.course_id;
-  
-	CREATE OR REPLACE VIEW open_subject_search_view2
-	AS
-	SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name, course_name
-    FROM open_subject_search_view1 osv, subjectbook sb
-    WHERE sb.subjectbook_id(+) = osv.subjectbook_id; 
-	 */
 	// 개설 과목 검색 메소드
 	// 1. 개설 과목 번호  2. 과목명  3. 개설 과정 번호  4. 과정명
 	public List<OpenSubject> search(String key, String value) {
@@ -602,7 +594,7 @@ public class OpenSubjectDAO {
 		CREATE OR REPLACE VIEW open_subject_search_VW1
 		AS
 		SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, 
-		        instructor_name, subjectbook_id, s.subject_id, course_name
+		        instructor_name, subjectbook_id, s.subject_id, oc.open_course_id, course_name
 		    FROM subject s, open_subject os, instructor i, open_course oc, course c
 		    WHERE s.subject_id = os.subject_id
 		        AND i.instructor_id = os.instructor_id
@@ -615,7 +607,7 @@ public class OpenSubjectDAO {
 		CREATE OR REPLACE VIEW open_subject_search_VW2
 		AS
 		SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, 
-		        instructor_name, subjectbook_name, course_name
+		        instructor_name, subjectbook_name, open_course_id, course_name
 		    FROM open_subject_search_VW1 v1, subjectbook sb
 		    WHERE sb.subjectbook_id(+) = v1.subjectbook_id; 
 		*/
