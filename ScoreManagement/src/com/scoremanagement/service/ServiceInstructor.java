@@ -111,7 +111,7 @@ public class ServiceInstructor {
 					System.out.println("** 수강생 정보 **");
 					System.out.println("수강생번호 / 이름 / 전화번호 / 등록일 / 수료여부 / 날짜");
 					for(Student s : list3) {
-						System.out.println(s.print4());
+						System.out.println(s.print2());
 					}
 					System.out.println();
 				} else {
@@ -633,7 +633,7 @@ public class ServiceInstructor {
 			System.out.println("-------------------------------");	
 			System.out.println("시험 번호 / 출결 배점 / 필기 배점 / 실기 배점 / 시험 날짜 / 시험 문제 / 성적 등록 인원수 / 성적 입력 여부");
 			for(Exam e : list) {
-				System.out.println(e.print4());
+				System.out.println(e.print3());
 			}
 			System.out.println("-------------------------------");
 			System.out.printf("총 %d건\n", size);
@@ -679,7 +679,7 @@ public class ServiceInstructor {
 			System.out.println("-------------------------------");
 			System.out.println("수강생번호 / 이름 / 휴대폰번호 / 등록일 / 수료여부 / 날짜 / 출결점수 / 필기점수 / 실기점수 / 총점");
 			for(Exam e : list) {
-				System.out.println(e.print5());
+				System.out.println(e.print4());
 			}
 			System.out.println("-------------------------------");
 			System.out.printf("총 %d명\n", size);

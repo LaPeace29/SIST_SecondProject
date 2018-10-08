@@ -808,7 +808,7 @@ public class ServiceAdmin {
 			System.out.println("-------------------------------");
 			System.out.println("개설 과목명 / 개설 과목 기간 / 개설 과정명 / 개설 과정 기간 / 강의실 / 강의 진행 여부");
 			for (OpenSubject os : list2) {
-				System.out.println(os.print9());
+				System.out.println(os.print6());
 			}
 			System.out.println("-------------------------------");
 			System.out.printf("총 %d건\n", list2.size());
@@ -844,7 +844,7 @@ public class ServiceAdmin {
 				System.out.println("-------------------------------");
 				System.out.println("개설 과목명 / 개설 과목 기간 / 개설 과정명 / 개설 과정 기간 / 강의실 / 강의 진행 여부");
 				for (OpenSubject os : list2) {
-					System.out.println(os.print9());
+					System.out.println(os.print6());
 				}
 				System.out.println("-------------------------------");
 				System.out.printf("총 %d건\n", list2.size());
@@ -854,7 +854,7 @@ public class ServiceAdmin {
 			System.out.println("-------------------------------");
 			System.out.println("강사 번호 / 강사 이름 / 강사 휴대폰 번호 / 등록일");
 			for (Instructor i : list1) {
-				System.out.println(i.print2());
+				System.out.println(i.print());
 			}
 			System.out.println("-------------------------------");
 			System.out.printf("총 %d명\n", list1.size());
@@ -875,7 +875,7 @@ public class ServiceAdmin {
 			System.out.println("--------------------");
 			System.out.println("강사 번호 / 강사 이름 / 강사 휴대폰 번호 / 강사 등록일 / 강의 가능 과목");
 			for(Instructor i : list1) {
-				System.out.println(i.print3());
+				System.out.println(i.print2());
 			}
 			System.out.println("--------------------");
 			System.out.printf("총 %d명\n", list1.size());
@@ -894,7 +894,7 @@ public class ServiceAdmin {
 			System.out.println("--------------------");
 			System.out.println("강사 번호 / 강사 이름 / 강사 휴대폰 번호 / 강사 등록일 / 강의 가능 과목 / 삭제 가능 여부");
 			for(Instructor i : list1) {
-				System.out.println(i.print4());
+				System.out.println(i.print1());
 			}
 			System.out.println("--------------------");
 			System.out.printf("총 %d명\n", list1.size());
@@ -946,7 +946,7 @@ public class ServiceAdmin {
 			System.out.println("--------------------");
 			System.out.println("강사 번호 / 강사 이름 / 강사 휴대폰 번호 / 강사 등록일 / 강의 가능 과목");
 			for (Instructor i : list1) {
-				System.out.println(i.print3());
+				System.out.println(i.print2());
 			}
 			System.out.println("--------------------");
 			System.out.printf("총 %d명\n", list1.size());
@@ -1337,7 +1337,7 @@ public class ServiceAdmin {
 				String open_subject_id = null;
 				for(OpenSubject os : list2) {
 					open_subject_id = os.getOpen_subject_id();
-					System.out.println(os.print4());
+					System.out.println(os.print1());
 				}
 				System.out.println("--------------------");
 				System.out.printf("총 %d건\n", list2.size());
@@ -1348,7 +1348,7 @@ public class ServiceAdmin {
 					System.out.println("--------------------");
 					System.out.println("수강생 번호 / 수강생 이름 / 전화번호 / 등록일 / 수료여부 / 날짜");
 					for(Student s : list3) {
-						System.out.println(s.print4());
+						System.out.println(s.print2());
 					}
 					System.out.println("--------------------");
 					System.out.printf("총 %d건\n", list3.size());
@@ -1395,7 +1395,7 @@ public class ServiceAdmin {
 					String open_subject_id = null;
 					for(OpenSubject os : list2) {
 						open_subject_id = os.getOpen_subject_id();
-						System.out.println(os.print4());
+						System.out.println(os.print1());
 					}
 					System.out.println("--------------------");
 					System.out.printf("총 %d건\n", list2.size());
@@ -1406,7 +1406,7 @@ public class ServiceAdmin {
 						System.out.println("--------------------");
 						System.out.println("수강생 번호 / 수강생 이름 / 전화번호 / 등록일 / 수료여부 / 날짜");
 						for(Student s : list3) {
-							System.out.println(s.print4());
+							System.out.println(s.print2());
 						}
 						System.out.println("--------------------");
 						System.out.printf("총 %d건\n", list3.size());
@@ -1592,7 +1592,7 @@ public class ServiceAdmin {
 						System.out.println("-------------------------------");
 						System.out.println("강사 번호 / 강사 이름 / 강사 휴대폰 번호 / 강사 등록일 / 강의 가능 과목");
 						for (Instructor i : list4) {
-							System.out.println(i.print3());
+							System.out.println(i.print2());
 						}
 						
 						System.out.println("-------------------------------");
@@ -1748,7 +1748,7 @@ public class ServiceAdmin {
 			System.out.println("개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명 / 개설 과정명 / 개설 과정 기간 / 강의실 / 삭제 가능 여부");
 
 			for (OpenSubject os : list1) {
-				System.out.println(os.print2());
+				System.out.println(os.print3());
 			}
 
 			System.out.println("-------------------------------");
@@ -2017,7 +2017,7 @@ public class ServiceAdmin {
 			System.out.println("-------------------------------");
 			System.out.println("수강생 번호 / 수강생 이름 / 수강생 휴대폰 번호 / 수강생 등록일");
 			for (Student s : list1) {
-				System.out.println(s.print1());
+				System.out.println(s.print());
 			}
 			System.out.println("-------------------------------");
 			System.out.printf("총 %d명\n", list1.size());
@@ -2059,7 +2059,7 @@ public class ServiceAdmin {
 			System.out.println("--------------------");
 			System.out.println("수강생 번호 / 수강생 이름 / 수강생 전화번호 / 수강생 등록일 / 수강횟수");
 			for (Student s : list1) {
-				System.out.println(s.print3());
+				System.out.println(s.print1());
 			}
 			System.out.println("--------------------");
 			System.out.printf("총 %d명\n", list1.size());
@@ -2127,7 +2127,7 @@ public class ServiceAdmin {
 			System.out.println("--------------------");
 			System.out.println("수강생 번호 / 수강생 이름 / 수강생 전화번호 / 수강생 등록일 / 수강횟수");
 			for (Student s : list1) {
-				System.out.println(s.print3());
+				System.out.println(s.print1());
 			}
 			System.out.println("--------------------");
 			System.out.printf("총 %d명\n", list1.size());
@@ -2519,7 +2519,7 @@ public class ServiceAdmin {
 							if (list5.size() > 0) {
 								System.out.println("수강생 번호 / 수강생 이름 / 전화번호 / 출결점수 / 필기점수 / 실기점수 / 총점");
 								for (Exam e2 : list5) {
-									System.out.println(e2.print5());
+									System.out.println(e2.print4());
 								}
 							}
 						}
@@ -2624,7 +2624,7 @@ public class ServiceAdmin {
 				System.out.println("수강생 번호 / 수강생 이름 / 수강생 휴대폰 번호 / 수강생 등록일");
 				System.out.println("----------------------");
 				for (Student s : list1) {
-					System.out.println(s.print1());
+					System.out.println(s.print());
 				}
 				System.out.println("----------------------");
 				System.out.printf("총 %s명%n", list1.size());
