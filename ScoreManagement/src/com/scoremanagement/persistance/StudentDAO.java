@@ -564,12 +564,12 @@ public class StudentDAO {
 		try {
 			conn = OracleConnection.connect();
 
-			String sql = "INSERT INTO Student_History (open_course_id, student_id, dropout_date)\r\n"
+			String sql = "INSERT INTO Process_complete (open_course_id, student_id, dropout_date)\r\n"
 					+ "    VALUES (UPPER(?), UPPER(?), ?)";
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, sh.getStudent_id());
-			pstmt.setString(2, sh.getOpen_course_id());
+			pstmt.setString(1, sh.getOpen_course_id());
+			pstmt.setString(2, sh.getStudent_id());
 			pstmt.setDate(3, sh.getDropout_date());
 			result = pstmt.executeUpdate();
 
