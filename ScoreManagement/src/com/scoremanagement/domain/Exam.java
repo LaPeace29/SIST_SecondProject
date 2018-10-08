@@ -48,7 +48,6 @@ public class Exam {
 	}
 	
 	// 배점 등록시 사용
-	// 시험번호 / 출결배점 / 필기배점 / 실기배점 / 시험날짜 / 시험문제파일
 	public Exam(String exam_id, String open_subject_id, int attendance_point, int write_point, int skill_point,
 			Date exam_date, String exam_file) {
 		this.exam_id = exam_id;
@@ -69,35 +68,6 @@ public class Exam {
 		this.skill_score = skill_score;
 	}
 
-	// 수강생번호 / 수강생이름 / 전화번호 / 출결점수 / 필기점수 / 실기점수 / 총점
-	public Exam(String student_id, String student_name, String student_phone, int attendance_score, int write_score,
-			int skill_score, int total_score) {
-		this.student_id = student_id;
-		this.student_name = student_name;
-		this.student_phone = student_phone;
-		this.attendance_score = attendance_score;
-		this.write_score = write_score;
-		this.skill_score = skill_score;
-		this.total_score = total_score;
-	}
-
-	// 개설과목명 / 개설과목기간 / 강사명 / 출결점수 / 출결배점 / 필기점수 / 필기배점 / 실기점수 / 실기배점 / 시험날짜
-	public Exam(String subject_name, Date subject_start_date, Date subject_end_Date, String instructor_name,
-			int attendance_point, int write_point, int skill_point, Date exam_date, int attendance_score,
-			int write_score, int skill_score) {
-		this.subject_name = subject_name;
-		this.subject_start_date = subject_start_date;
-		this.subject_end_Date = subject_end_Date;
-		this.instructor_name = instructor_name;
-		this.attendance_point = attendance_point;
-		this.write_point = write_point;
-		this.skill_point = skill_point;
-		this.exam_date = exam_date;
-		this.attendance_score = attendance_score;
-		this.write_score = write_score;
-		this.skill_score = skill_score;
-	}
-
 	// 시험번호 / 출결배점 / 필기배점 / 실기배점 / 시험날짜 / 시험문제 / 성적등록인원수 / 성적등록여부
 	public Exam(String exam_id, int attendance_point, int write_point, int skill_point, Date exam_date,
 			String exam_file, int class_count, String score_status) {
@@ -111,10 +81,10 @@ public class Exam {
 		this.score_status = score_status;
 	}
 
-	// 수강생번호 / 수강생이름 / 전화번호 / 등록일 / 수료여부 / 날짜 / 출결 / 필기 / 실기 / 총점
+	// 수강생번호 / 수강생이름 / 수강생휴대폰번호 / 등록일 / 수료여부 / 날짜 / 출결점수 / 필기점수 / 실기점수 / 총점
 	public Exam(String student_id, String student_name, String student_phone, Date student_regDate,
-			int attendance_score, int write_score, int skill_score, int total_score, String completion_status,
-			Date completion_date) {
+			String completion_status, Date completion_date, 
+			int attendance_score, int write_score, int skill_score, int total_score) {
 		this.student_id = student_id;
 		this.student_name = student_name;
 		this.student_phone = student_phone;
@@ -127,22 +97,7 @@ public class Exam {
 		this.completion_date = completion_date;
 	}
 
-	// 교재명 / 강사명 / 출결배점 / 필기배점 / 실기배점 / 출결점수 / 필기점수 / 실기점수 / 시험날짜 / 시험문제
-	public Exam(String subjectbook_name, String instructor_name, int attendance_point, int write_point, int skill_point,
-	         Date exam_date, String exam_file, int attendance_score, int write_score, int skill_score) {
-	      this.subjectbook_name = subjectbook_name;
-	      this.instructor_name = instructor_name;
-	      this.attendance_point = attendance_point;
-	      this.write_point = write_point;
-	      this.skill_point = skill_point;
-	      this.exam_date = exam_date;
-	      this.exam_file = exam_file;
-	      this.attendance_score = attendance_score;
-	      this.write_score = write_score;
-	      this.skill_score = skill_score;  
-   }
-
-	
+	// 시험번호 / 출결점수 / 출결배점 / 필기점수 / 필기배점 / 실기점수 / 실기배점 / 시험날짜 / 시험파일
 	public Exam(String exam_id, int attendance_point, int write_point, int skill_point,
 			int attendance_score, int write_score, int skill_score, Date exam_date, String exam_file) {
 		this.exam_id = exam_id;

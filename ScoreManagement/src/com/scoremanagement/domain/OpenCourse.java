@@ -25,71 +25,68 @@ public class OpenCourse {
 	public OpenCourse() {
 
 	}
-	
-	// 개설 과정 삭제할 때 사용
-	public OpenCourse(String open_course_id, String course_name) {
-		this.open_course_id = open_course_id;
-		this.course_name = course_name;
-	}
 
-	// 개설 과목 검색시 사용
+	// 개설 과정과 학생 함께 검색시 사용
+	// 학생 아이디나 이름이 필요
 	public OpenCourse(String open_course_id, String course_name, String student_id, String student_name) {
 		this.open_course_id = open_course_id;
 		this.course_name = course_name;
 		this.student_id = student_id;
 		this.student_name = student_name;
 	}
-	
-	// 개설 과정 추가할 때 사용
-	public OpenCourse(String open_course_id, String class_room_id, String course_id, Date open_course_start_date,
-			Date open_course_end_date) {
-		this.open_course_id = open_course_id;
-		this.class_room_id = class_room_id;
-		this.course_id = course_id;
-		this.open_course_start_date = open_course_start_date;
-		this.open_course_end_date = open_course_end_date;
-	}
 
-	// 개설과정번호 / 과정명 / 개설과정기간 / 강의실명
-	// 과정명 / 개설 과정 기간 / 강의실명 
-	// 개설과정번호 / 과정명 / 개설과정기간
-	// 개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 / 개설 과목 등록 갯수 / 수강생 등록 인원
-	public OpenCourse(String open_course_id, String class_room_name, String course_name, Date open_course_start_date,
-			Date open_course_end_date, int open_subject_count, int student_count) {
+	// 개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 / 삭제 가능 여부
+	public OpenCourse(String open_course_id, String course_name, Date open_course_start_date,
+			Date open_course_end_date, String class_room_name, int count_) {
 		this.open_course_id = open_course_id;
-		this.class_room_name = class_room_name;
 		this.course_name = course_name;
 		this.open_course_start_date = open_course_start_date;
 		this.open_course_end_date = open_course_end_date;
-		this.open_subject_count = open_subject_count;
-		this.student_count = student_count;
-	}
-
-	// 개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 / 삭제가능여부
-	public OpenCourse(String open_course_id, String class_room_name, String course_name, Date open_course_start_date,
-			Date open_course_end_date, int count_) {
-		this.open_course_id = open_course_id;
 		this.class_room_name = class_room_name;
-		this.course_name = course_name;
-		this.open_course_start_date = open_course_start_date;
-		this.open_course_end_date = open_course_end_date;
 		this.count_ = count_;
 	}
 
 	// 개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 / 개설 과목명
-	public OpenCourse(String open_course_id, String class_room_name, String course_name, Date open_course_start_date,
-			Date open_course_end_date, String subject_list) {
+	public OpenCourse(String open_course_id, String course_name, Date open_course_start_date,
+			Date open_course_end_date, String class_room_name, String subject_list) {
 		this.open_course_id = open_course_id;
-		this.class_room_name = class_room_name;
 		this.course_name = course_name;
 		this.open_course_start_date = open_course_start_date;
 		this.open_course_end_date = open_course_end_date;
+		this.class_room_name = class_room_name;
 		this.subject_list = subject_list;
 	}
 
+	// 개설 과정 추가할 때 사용
+	// 개설 과정 삭제할 때 사용
+	// 개설 과정 검색할 때 사용
+	// 개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명
+	public OpenCourse(String open_course_id, String course_id, String course_name, Date open_course_start_date,
+			Date open_course_end_date, String class_room_id, String class_room_name) {
+		this.open_course_id = open_course_id;
+		this.course_id = course_id;
+		this.course_name = course_name;
+		this.open_course_start_date = open_course_start_date;
+		this.open_course_end_date = open_course_end_date;
+		this.class_room_id = class_room_id;
+		this.class_room_name = class_room_name;
+	}
+	
+	// 개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 / 개설 과목 등록 갯수 / 수강생 등록 인원
+	public OpenCourse(String open_course_id, String course_name, Date open_course_start_date,
+			Date open_course_end_date, String class_room_name, int open_subject_count, int student_count) {
+		this.open_course_id = open_course_id;
+		this.course_name = course_name;
+		this.open_course_start_date = open_course_start_date;
+		this.open_course_end_date = open_course_end_date;
+		this.class_room_name = class_room_name;
+		this.open_subject_count = open_subject_count;
+		this.student_count = student_count;
+	}
+
 	// 개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 / 수료여부 / 날짜
-	public OpenCourse(String open_course_id, String class_room_name, String course_name, Date open_course_start_date,
-			Date open_course_end_date, String completion_status, Date dropout_date) {
+	public OpenCourse(String open_course_id, String course_name, Date open_course_start_date,
+			Date open_course_end_date, String class_room_name, String completion_status, Date dropout_date) {
 		this.open_course_id = open_course_id;
 		this.class_room_name = class_room_name;
 		this.course_name = course_name;

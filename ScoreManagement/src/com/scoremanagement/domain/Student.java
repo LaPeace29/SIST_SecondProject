@@ -34,16 +34,11 @@ public class Student {
 		this.student_new_pw = student_new_pw;
 	}
 
-	// 수강생이름 / 수강생전화번호
-	// 수강생번호 / 수강생이름 / 수강생전화번호 / 수강생등록일
-	public Student(String student_id, String student_name, String student_phone, Date student_regDate) {
-		this.student_id = student_id;
-		this.student_name = student_name;
-		this.student_phone = student_phone;
-		this.student_regDate = student_regDate;
-	}
 	
 	// 수강생 추가시 사용
+	// 수강생 삭제시 사용
+	// 수강생 검색시 사용
+	// 수강생번호 / 수강생이름 / 수강생전화번호 / 수강생등록일
 	public Student(String student_id, String student_name, String student_phone, Date student_regDate,
 			String student_pw) {
 		this.student_id = student_id;
