@@ -732,7 +732,7 @@ public class ServiceAdmin {
 		
 		if(selectNum == 1) {
 			
-			Instructor i = new Instructor(instructor_name, instructor_phone, instructor_regDate, instructor_pw);
+			Instructor i = new Instructor(null, instructor_name, instructor_phone, instructor_regDate, instructor_pw);
 			int result = this.iDAO.insert(i);
 			
 			if(result > 0) {
@@ -918,7 +918,7 @@ public class ServiceAdmin {
 				sc.nextLine();
 				
 				if(selectNum == 1) {
-					Instructor i = new Instructor(instructor_id, null);
+					Instructor i = new Instructor(instructor_id, null, null, null, null);
 					int result = this.iDAO.remove(i);
 					
 					if(result > 0) {
@@ -1258,7 +1258,7 @@ public class ServiceAdmin {
 				
 				if (selectNum == 1) {
 					// 개설 과정 등록
-					OpenCourse oc = new OpenCourse("", class_room_id, course_id, open_course_start_date, open_course_end_date);
+					OpenCourse oc = new OpenCourse(null, course_id, null, open_course_start_date, open_course_end_date, class_room_id, null);
 					int result = this.ocDAO.insert(oc);
 					if(result > 0) {
 						System.out.println("개설 과정이 추가되었습니다.");				
@@ -1478,7 +1478,7 @@ public class ServiceAdmin {
 				sc.nextLine();
 				if (selectNum == 1) {
 					// 개설 과정 삭제
-					OpenCourse oc = new OpenCourse(open_course_id, "");
+					OpenCourse oc = new OpenCourse(open_course_id, null, null, null, null, null, "");
 					int result = this.ocDAO.remove(oc);
 					if(result > 0) {
 						System.out.println("삭제되었습니다.");					
@@ -1604,10 +1604,10 @@ public class ServiceAdmin {
 						System.out.print("등록하시겠습니까? (0/1) > ");
 						int iNum = sc.nextInt();
 						sc.nextLine();
-
+						
 						if (iNum == 1) {
-							OpenSubject os = new OpenSubject("", subject_id, subjectbook_id, instructor_id, open_course_id,
-									subject_start_date, subject_end_date);
+							OpenSubject os = new OpenSubject(null, open_course_id, subject_id, 
+									subject_start_date, subject_end_date, subjectbook_id, instructor_id);
 							int result = this.osDAO.insert(os);
 							
 							if (result > 0) {
@@ -1774,7 +1774,8 @@ public class ServiceAdmin {
 				
 				if (iNum == 1) {
 					// 개설 과목 삭제
-					OpenSubject os = new OpenSubject(open_subject_id, null, null, null, null, null);
+					
+					OpenSubject os = new OpenSubject(open_subject_id, null, null, null, null, null, null);
 					int result = this.osDAO.remove(os);
 					if (result > 0) {
 						System.out.println("삭제되었습니다.");
@@ -1970,7 +1971,7 @@ public class ServiceAdmin {
 		System.out.print("수강생 번호 > ");
 		String student_id = sc.nextLine();
 		
-		List<Student> list1 = this.stDAO.search("student_id", new Student(student_id, null, null, null));
+		List<Student> list1 = this.stDAO.search("student_id", new Student(student_id, null, null, null, null));
 		
 		if (list1.size() > 0) {
 		
@@ -2009,7 +2010,7 @@ public class ServiceAdmin {
 		System.out.print("수강생 이름 > ");
 		String student_name = sc.nextLine();
 		
-		List<Student> list1 = this.stDAO.search("student_name", new Student(null, student_name, null, null));
+		List<Student> list1 = this.stDAO.search("student_name", new Student(null, student_name, null, null, null));
 		
 		if(list1.size() > 0) {
 			
@@ -2087,7 +2088,7 @@ public class ServiceAdmin {
 			System.out.print("수강생 번호 > ");
 			String student_id = sc.nextLine();
 			
-			List<Student> list2 = this.stDAO.search("student_id", new Student(student_id, null, null, null));
+			List<Student> list2 = this.stDAO.search("student_id", new Student(student_id, null, null, null, null));
 			
 			if(list2.size() > 0) {
 				for(Student s : list2) {
@@ -2102,7 +2103,7 @@ public class ServiceAdmin {
 				sc.nextLine();
 				
 				if(selectNum == 1) {
-					Student s = new Student(student_id, null);
+					Student s = new Student(student_id, null, null, null, null);
 					int result = this.stDAO.remove(s);
 					
 					if(result > 0) {
@@ -2134,7 +2135,7 @@ public class ServiceAdmin {
 
 		System.out.print("수강생 번호 > ");
 		String student_id = sc.nextLine();
-		List<Student> list2 = this.stDAO.search("student_id", new Student(student_id, null, null, null));
+		List<Student> list2 = this.stDAO.search("student_id", new Student(student_id, null, null, null, null));
 		
 		if (list2.size() > 0) {
 			
@@ -2615,7 +2616,7 @@ public class ServiceAdmin {
 		String student_name = sc.nextLine();
 		System.out.println();
 		
-		List<Student> list1 = this.stDAO.search("student_name", new Student(null, student_name, null, null));
+		List<Student> list1 = this.stDAO.search("student_name", new Student(null, student_name, null, null, null));
 			
 		if (list1.size() > 0) {
 

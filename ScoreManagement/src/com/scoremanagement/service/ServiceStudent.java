@@ -213,7 +213,7 @@ public class ServiceStudent {
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (수강생 : %s) > 2. 개인 정보 > 1. 개인 정보 조회\n", this.student_name);
 		
-		List<Student> list = this.stDAO.search("student_id", new Student(student_id, null, null, null));
+		List<Student> list = this.stDAO.search("student_id", new Student(student_id, null, null, null, null));
 		
 		for(Student s : list) {
 			System.out.printf("수강생 번호 : %s\n", s.getStudent_id());

@@ -40,7 +40,7 @@ public class ServiceInstructor {
 		System.out.print("비밀번호 > ");
 		String instructor_pw = sc.nextLine();
 		
-		Instructor i = new Instructor(this.instructor_name, instructor_pw, "");
+		Instructor i = new Instructor(this.instructor_name, instructor_pw, null);
 		this.instructor_id = this.iDAO.login(i);
 		
 		if(this.instructor_id != null) {
@@ -347,7 +347,7 @@ public class ServiceInstructor {
 							}
 							
 							List<Student> list = this.stDAO.search("student_id", 
-									new Student(student_id, null, null, null));
+									new Student(student_id, null, null, null, null));
 							for(Student s : list) {								
 								System.out.printf("수강생 번호 : ", s.getStudent_id());
 								System.out.printf("수강생 이름 : ", s.getStudent_name());
@@ -442,7 +442,7 @@ public class ServiceInstructor {
 						String student_id = sc.nextLine();
 						
 						List<Student> list = this.stDAO.search("student_id", 
-								new Student(student_id, null, null, null));
+								new Student(student_id, null, null, null, null));
 						for(Student s : list) {								
 							System.out.printf("수강생 번호 : ", s.getStudent_id());
 							System.out.printf("수강생 이름 : ", s.getStudent_name());
@@ -584,7 +584,7 @@ public class ServiceInstructor {
 		int size = 0;
 		
 		List<OpenSubject> list = this.osDAO.list5("open_subject_idANDinstructor_id", 
-				new OpenSubject(open_subject_id, null, null, this.instructor_id, null, null, null));
+				new OpenSubject(open_subject_id, null, null, null, null, this.instructor_id));
 		size = list.size();
 		if(size > 0) {
 			for(OpenSubject os : list) {
