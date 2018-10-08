@@ -217,7 +217,7 @@ public class OpenCourse {
 	}
 	
 	public String print3() {
-		String result = String.format("%s / %s / %s / %s ~ %s / %s\n", 
+		String result = String.format("%s / %s / %s / %s ~ %s / %s", 
 				this.getOpen_course_id(), this.getClass_room_name(), this.getCourse_name(), 
 				this.getOpen_course_start_date(), this.getOpen_course_end_date(),
 				(this.getCount_() > 0 ? 'X' : 'O'));
