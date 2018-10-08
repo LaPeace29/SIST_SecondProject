@@ -206,7 +206,7 @@ public class OpenCourseDAO {
 					"                ,os_count, s_count,(SELECT COUNT(*) FROM student_history sh\r\n" + 
 					"                    WHERE sh.open_course_id=v1.open_course_id) count_\r\n" + 
 					"                FROM open_course_list2_VW v1\r\n" + 
-					"    ORDER BY open_course_id;";
+					"    ORDER BY open_course_id";
 			
 			pstmt = conn.prepareStatement(sql);
 			
