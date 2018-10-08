@@ -64,6 +64,7 @@ public class ServiceInstructor {
 			sc.nextLine();
 			
 			switch(selectNum) {
+			
 			case 1:
 				this.m1(sc);
 				break;
@@ -82,6 +83,7 @@ public class ServiceInstructor {
 
 			case 0:
 				run = false;
+				System.out.printf("강사 '%s'님이 로그아웃 되었습니다.\n", this.instructor_name);
 				break;
 				
 			default:
@@ -349,10 +351,10 @@ public class ServiceInstructor {
 							List<Student> list = this.stDAO.search("student_id", 
 									new Student(student_id, null, null, null, null));
 							for(Student s : list) {								
-								System.out.printf("수강생 번호 : ", s.getStudent_id());
-								System.out.printf("수강생 이름 : ", s.getStudent_name());
-								System.out.printf("수강생 휴대폰번호 : ", s.getStudent_phone());
-								System.out.printf("수강생 등록일 : ", s.getStudent_regDate());
+								System.out.printf("수강생 번호 : %s\n", s.getStudent_id());
+								System.out.printf("수강생 이름 : %s\n", s.getStudent_name());
+								System.out.printf("수강생 휴대폰번호 : %s\n", s.getStudent_phone());
+								System.out.printf("수강생 등록일 : %s\n", s.getStudent_regDate());
 							}
 							
 							System.out.print("출결 점수 > ");
@@ -382,6 +384,8 @@ public class ServiceInstructor {
 						}
 					}
 				}
+			} else {
+				System.out.println("개설 과목 정보가 없습니다.");
 			}
 		}
 	}
@@ -444,10 +448,10 @@ public class ServiceInstructor {
 						List<Student> list = this.stDAO.search("student_id", 
 								new Student(student_id, null, null, null, null));
 						for(Student s : list) {								
-							System.out.printf("수강생 번호 : ", s.getStudent_id());
-							System.out.printf("수강생 이름 : ", s.getStudent_name());
-							System.out.printf("수강생 휴대폰번호 : ", s.getStudent_phone());
-							System.out.printf("수강생 등록일 : ", s.getStudent_regDate());
+							System.out.printf("수강생 번호 : %s\n", s.getStudent_id());
+							System.out.printf("수강생 이름 : %s\n", s.getStudent_name());
+							System.out.printf("수강생 휴대폰번호 : %s\n", s.getStudent_phone());
+							System.out.printf("수강생 등록일 : %s\n", s.getStudent_regDate());
 						}
 						
 						System.out.print("성적 정보를 삭제하시겠습니까? (0/1) > ");
@@ -575,7 +579,7 @@ public class ServiceInstructor {
 			}
 			System.out.println();
 		} else {
-			System.out.println("검색 결과가 없습니다.");
+			System.out.println("강의 스케줄이 없습니다.");
 		}
 		return list.size();
 	}
@@ -599,7 +603,7 @@ public class ServiceInstructor {
 				System.out.println();
 			}
 		} else {
-			System.out.println("검색 결과가 없습니다.");
+			System.out.println("개설 과목 정보가 없습니다.");
 		}
 		return size;
 	}
@@ -618,7 +622,7 @@ public class ServiceInstructor {
 			System.out.println("-------------------------------");
 			System.out.printf("총 %d건\n", size);
 		} else {
-			System.out.println("검색 결과가 없습니다.");
+			System.out.println("등록된 배점 정보가 없습니다.");
 		}
 
 		return size;
@@ -638,7 +642,7 @@ public class ServiceInstructor {
 			System.out.println("-------------------------------");
 			System.out.printf("총 %d건\n", size);
 		} else {
-			System.out.println("검색 결과가 없습니다.");
+			System.out.println("시험 정보가 없습니다.");
 		}
 
 		return size;
@@ -663,7 +667,7 @@ public class ServiceInstructor {
 				System.out.println();
 			}
 		} else {
-			System.out.println("검색 결과가 없습니다.");
+			System.out.println("시험 정보가 없습니다.");
 		}
 
 		return size;
@@ -684,7 +688,7 @@ public class ServiceInstructor {
 			System.out.println("-------------------------------");
 			System.out.printf("총 %d명\n", size);
 		} else {
-			System.out.println("검색 결과가 없습니다.");
+			System.out.println("수강생 정보가 없습니다.");
 		}
 		return size;
 	}
