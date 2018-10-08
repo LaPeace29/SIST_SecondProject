@@ -572,7 +572,7 @@ public class ExamDAO {
 			String sql3 = "Insert into SUBJECT_POINT \r\n" + 
 					"(SUBJECT_POINT_ID,EXAM_ID,ATTENDANCE_POINT,WRITE_POINT,SKILL_POINT) \r\n" + 
 					"values ((SELECT(CONCAT('SP', LPAD(NVL(SUBSTR(MAX(SUBJECT_POINT_ID), 3), 0) + 1, 2, 0)))AS newID FROM subject_point),\r\n" + 
-					"?, ?, ?, ?)";			
+					"UPPER(?), ?, ?, ?)";			
 			
 			pstmt3 = conn.prepareStatement(sql3);			
 			
