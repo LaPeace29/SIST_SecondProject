@@ -91,8 +91,9 @@ public class ExamDAO {
 				Date exam_date = rs.getDate("exam_date");
 				String exam_file = rs.getString("exam_file");
 				
-				Exam e = new Exam(exam_id, "", attendance_point, write_point, skill_point,
-						exam_date, exam_file);
+				Exam e = new Exam(exam_id, attendance_point, write_point, skill_point,
+						0, 0, 0, exam_date, exam_file);
+
 				list.add(e);
 			}
 		} catch (ClassNotFoundException e) {
@@ -417,9 +418,9 @@ public class ExamDAO {
 				String completion_status = rs.getString("completion");
 				Date completion_date = rs.getDate("completion_date");
 
-				Exam e = new Exam(student_id, student_name, student_phone, student_regDate,
-						attendance_score, write_score, skill_score, total_score, completion_status,
-						completion_date);
+				Exam e = new Exam(student_id, student_name, student_phone, student_regDate, 
+						completion_status, completion_date, 
+						attendance_score, write_score, skill_score, total_score);
 				list.add(e);
 			}
 		} catch (ClassNotFoundException e) {

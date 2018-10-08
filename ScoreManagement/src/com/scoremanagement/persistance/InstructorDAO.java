@@ -137,7 +137,7 @@ public class InstructorDAO {
 				String instructor_phone = rs.getString("instructor_phone");
 				Date instructor_regDate = rs.getDate("instructor_regDate");
 				String subjectList = rs.getString("subjectList");
-				Instructor i = new Instructor(instructor_id1, instructor_name, instructor_phone, instructor_regDate, subjectList);
+				Instructor i = new Instructor(instructor_id1, instructor_name, instructor_phone, instructor_regDate, subjectList, 0);
 				list.add(i);
 			}
 		} catch (ClassNotFoundException e) {
@@ -253,7 +253,7 @@ public class InstructorDAO {
 				String instructor_phone = rs.getString("instructor_phone");
 				Date instructor_regDate = rs.getDate("instructor_regDate");
 				
-				Instructor i = new Instructor(instructor_id, instructor_name, instructor_phone, instructor_regDate);
+				Instructor i = new Instructor(instructor_id, instructor_name, instructor_phone, instructor_regDate, null);
 				list.add(i);
 			}
 		} catch (ClassNotFoundException e) {

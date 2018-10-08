@@ -143,13 +143,13 @@ public class StudentDAO {
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				String student_id1 = rs.getString("student_id");
+				String student_id = rs.getString("student_id");
 				String student_name = rs.getString("student_name");
 				String student_phone = rs.getString("student_phone");
 				Date student_regDate = rs.getDate("student_regDate");
 				int count_ = rs.getInt("count_");
 				
-				Student s = new Student(student_id1, student_name, student_phone, student_regDate, count_);
+				Student s = new Student(student_id, student_name, student_phone, student_regDate, count_);
 				list.add(s);
 			}
 		} catch (ClassNotFoundException e) {
@@ -342,7 +342,7 @@ public class StudentDAO {
 				String student_phone = rs.getString("student_phone");
 				Date student_regDate = rs.getDate("student_regDate");
 				
-				Student s = new Student(student_id, student_name, student_phone, student_regDate);
+				Student s = new Student(student_id, student_name, student_phone, student_regDate, null);
 				list.add(s);
 			}
 		} catch (ClassNotFoundException e) {
