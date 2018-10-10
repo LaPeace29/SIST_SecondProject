@@ -220,7 +220,6 @@ public class ServiceInstructor {
 					}
 				}
 			}
-	
 		}
 	}
 	
@@ -341,6 +340,7 @@ public class ServiceInstructor {
 					int size4 = this.exam_detail_print(open_subject_id, exam_id);
 					
 					if(size4 > 0) {
+						
 						this.student_print(open_subject_id, this.instructor_id, exam_id);
 						while(run) {
 							System.out.print("수강생 번호 > ");
@@ -351,6 +351,7 @@ public class ServiceInstructor {
 							
 							List<Student> list = this.stDAO.search("student_id", 
 									new Student(student_id, null, null, null, null));
+							
 							for(Student s : list) {								
 								System.out.printf("수강생 번호 : %s\n", s.getStudent_id());
 								System.out.printf("수강생 이름 : %s\n", s.getStudent_name());
