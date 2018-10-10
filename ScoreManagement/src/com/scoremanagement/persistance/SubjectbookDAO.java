@@ -82,6 +82,9 @@ public class SubjectbookDAO {
 				Subjectbook sb = new Subjectbook(subjectbook_id, subjectbook_name, subjectbook_publisher);
 				list.add(sb);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -136,6 +139,9 @@ public class SubjectbookDAO {
 				Subjectbook sb = new Subjectbook(subjectbook_id, subjectbook_name, subjectbook_publisher, count_);
 				list.add(sb);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -190,6 +196,9 @@ public class SubjectbookDAO {
 					Subjectbook sb = new Subjectbook(subjectbook_id, subjectbook_name, subjectbook_publisher);
 					list.add(sb);
 				}
+				
+				rs.close();
+				
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

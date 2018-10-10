@@ -39,6 +39,7 @@ public class InstructorDAO {
 			}
 			
 			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -140,6 +141,9 @@ public class InstructorDAO {
 				Instructor i = new Instructor(instructor_id1, instructor_name, instructor_phone, instructor_regDate, subjectList, 0);
 				list.add(i);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -195,6 +199,9 @@ public class InstructorDAO {
 				Instructor i = new Instructor(instructor_id, instructor_name, instructor_phone, instructor_regDate, subjectList, count_);
 				list.add(i);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -256,6 +263,9 @@ public class InstructorDAO {
 				Instructor i = new Instructor(instructor_id, instructor_name, instructor_phone, instructor_regDate, null);
 				list.add(i);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

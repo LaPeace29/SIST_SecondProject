@@ -96,6 +96,9 @@ public class ExamDAO {
 
 				list.add(e);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -183,6 +186,9 @@ public class ExamDAO {
 						attendance_score, write_score, skill_score, exam_date, exam_file);
 				list.add(e);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -296,6 +302,9 @@ public class ExamDAO {
 						exam_file, class_count, score_status);
 				list.add(e);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -422,6 +431,9 @@ public class ExamDAO {
 						attendance_score, write_score, skill_score, total_score);
 				list.add(e);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -516,6 +528,9 @@ public class ExamDAO {
 						attendance_score, write_score, skill_score, exam_date, exam_file);
 				list.add(e);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -557,6 +572,9 @@ public class ExamDAO {
 			while(rs.next()) {
 				exam_id = rs.getString("newID");
 			}
+			
+			rs.close();
+			
 			String sql2 = "Insert into EXAM (EXAM_ID, EXAM_DATE, EXAM_FILE, OPEN_SUBJECT_ID)\r\n" + 
 					"values (?, ?, ?, ?)";
 			

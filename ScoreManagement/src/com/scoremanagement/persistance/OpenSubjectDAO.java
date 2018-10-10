@@ -135,6 +135,9 @@ public class OpenSubjectDAO {
 						null, subjectbook_name, null, instructor_name);
 				list.add(os);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -247,6 +250,9 @@ public class OpenSubjectDAO {
 						open_course_start_date, open_course_end_date, class_room_name);
 				list.add(os);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -320,6 +326,9 @@ public class OpenSubjectDAO {
 
 				list.add(os);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -385,6 +394,9 @@ public class OpenSubjectDAO {
 				OpenSubject os = new OpenSubject(open_subject_id, subject_name, subject_start_date, subject_end_date, completion);
 				list.add(os);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -441,7 +453,7 @@ public class OpenSubjectDAO {
 		
 		try {
 			conn = OracleConnection.connect();
-			String sql = "SELECT open_subject_id, course_name, open_course_start_date\r\n" + 
+			String sql = "SELECT open_subject_id, open_course_id, course_name, open_course_start_date\r\n" + 
 					", open_course_end_date, class_room_name\r\n" + 
 					", subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name\r\n" + 
 					", (SELECT COUNT(*) FROM student_history sh WHERE v2.open_course_id = sh.open_course_id) student_count\r\n" + 
@@ -457,6 +469,7 @@ public class OpenSubjectDAO {
 			
 			while(rs.next()) {
 				String open_subject_id = rs.getString("open_subject_id");
+				String open_course_id = rs.getString("open_course_id");
 				String course_name = rs.getString("course_name");
 				Date open_course_start_date = rs.getDate("open_course_start_date");
 				Date open_course_end_date = rs.getDate("open_course_end_date");
@@ -468,12 +481,15 @@ public class OpenSubjectDAO {
 				String subjectbook_name = rs.getString("subjectbook_name");
 				int student_count = rs.getInt("student_count");
 
-				OpenSubject os = new OpenSubject(open_subject_id, course_name, 
+				OpenSubject os = new OpenSubject(open_subject_id, open_course_id, course_name, 
 						open_course_start_date, open_course_end_date, class_room_name,
 						subject_name, subject_start_date, subject_end_date, 
 						instructor_name, subjectbook_name, student_count);
 				list.add(os);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -566,6 +582,9 @@ public class OpenSubjectDAO {
 						course_name, open_course_start_date, open_course_end_date, class_room_name, completion);
 				list.add(os);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -670,6 +689,9 @@ public class OpenSubjectDAO {
 						null, subjectbook_name, null, instructor_name);
 				list.add(os);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

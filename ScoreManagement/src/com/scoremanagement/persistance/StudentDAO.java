@@ -39,6 +39,7 @@ public class StudentDAO {
 			}
 			
 			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -151,6 +152,9 @@ public class StudentDAO {
 				Student s = new Student(student_id, student_name, student_phone, student_regDate, count_);
 				list.add(s);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -272,6 +276,9 @@ public class StudentDAO {
 						completion_status, completion_date);
 				list.add(s);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -344,6 +351,9 @@ public class StudentDAO {
 				Student s = new Student(student_id, student_name, student_phone, student_regDate, null);
 				list.add(s);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

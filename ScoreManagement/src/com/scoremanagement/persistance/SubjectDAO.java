@@ -80,6 +80,9 @@ public class SubjectDAO {
 				Subject s = new Subject(subject_id, subject_name);
 				list.add(s);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -133,6 +136,9 @@ public class SubjectDAO {
 				Subject s = new Subject(subject_id, subject_name, count_);
 				list.add(s);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -187,6 +193,9 @@ public class SubjectDAO {
 					Subject s = new Subject(subject_id, subject_name);
 					list.add(s);
 				}
+				
+				rs.close();
+				
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

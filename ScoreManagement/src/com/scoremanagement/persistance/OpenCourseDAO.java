@@ -101,6 +101,9 @@ public class OpenCourseDAO {
 						open_course_end_date, null, class_room_name);
 				list.add(oc);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -170,6 +173,9 @@ public class OpenCourseDAO {
 						open_course_start_date, open_course_end_date, class_room_name, os_count, s_count);
 				list.add(oc);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -223,6 +229,9 @@ public class OpenCourseDAO {
 						open_course_end_date, class_room_name, count_);
 				list.add(oc);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -303,6 +312,9 @@ public class OpenCourseDAO {
 						open_course_end_date, class_room_name, subjectlist);
 				list.add(oc);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -409,6 +421,9 @@ public class OpenCourseDAO {
 						open_course_end_date, class_room_name, completion_status, dropout_date);
 				list.add(oc);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -484,6 +499,9 @@ public class OpenCourseDAO {
 						open_course_end_date, null, class_room_name);
 				list.add(oc);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

@@ -77,6 +77,9 @@ public class InstructorPossibleDAO {
 				InstructorPossible ip = new InstructorPossible("", subject_id, subject_name);
 				list.add(ip);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

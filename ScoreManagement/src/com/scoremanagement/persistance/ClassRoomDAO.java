@@ -82,6 +82,9 @@ public class ClassRoomDAO {
 				ClassRoom cr = new ClassRoom(class_room_id, class_room_name, max_number);
 				list.add(cr);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -136,6 +139,9 @@ public class ClassRoomDAO {
 				ClassRoom cr = new ClassRoom(class_room_id, class_room_name, max_number, count_);
 				list.add(cr);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -191,6 +197,8 @@ public class ClassRoomDAO {
 					ClassRoom cr = new ClassRoom(class_room_id, class_room_name, max_number);
 					list.add(cr);
 				}
+				
+				rs.close();
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

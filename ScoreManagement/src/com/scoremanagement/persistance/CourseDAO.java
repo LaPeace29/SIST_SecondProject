@@ -80,6 +80,9 @@ public class CourseDAO {
 				Course c = new Course(course_id, course_name);
 				list.add(c);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -133,6 +136,9 @@ public class CourseDAO {
 				Course c = new Course(course_id, course_name, count_);
 				list.add(c);
 			}
+			
+			rs.close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -187,6 +193,9 @@ public class CourseDAO {
 					Course c = new Course(course_id, course_name);
 					list.add(c);
 				}
+				
+				rs.close();
+				
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
