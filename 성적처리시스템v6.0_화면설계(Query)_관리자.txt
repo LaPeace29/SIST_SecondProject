@@ -1,0 +1,2679 @@
+﻿---------------------------------------------------------------
+성적 처리 시스템 v6.0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0
+1. 수강생 로그인  2. 강사 로그인  3. 관리자 로그인
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 > 3. 관리자 로그인
+아이디 > admi
+비밀번호 > 1111
+이름이나 비밀번호가 틀렸습니다.
+/*
+-- 1번 쿼리문.
+SELECT admin_id
+    FROM admin
+    WHERE admin_id = '김길동' AND admin_pw = '1111';
+*/
+
+---------------------------------------------------------------
+성적 처리 시스템 v6.0
+1. 수강생 로그인  2. 강사 로그인  3. 관리자 로그인
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 > 3. 관리자 로그인
+아이디 > admin
+비밀번호 > admin
+/*
+-- 1번 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT admin_id
+    FROM admin
+    WHERE admin_id = 'admin' AND admin_pw = ’admin’;
+*/
+
+관리자 'admin'님이 로그인되었습니다.
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) 
+1. 기초 정보 관리  2. 강사 계정 관리  3. 개설 과정 관리  4. 개설 과목 관리  5. 수강생 관리  6. 성적 조회  7. 비밀번호 변경
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리
+1. 과정 관리  2. 과목 관리  3. 강의실 관리  4. 교재 관리
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 1. 과정 관리
+1. 과정 입력  2. 과정 출력  3. 과정 삭제
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 1. 과정 관리 > 1. 과정 입력
+
+과정명 > 자바기반 DB&모바일 개발자 양성과정
+등록하시겠습니까? (0/1) > 1
+/*
+-- 2번 쿼리문. 과정명 등록
+INSERT INTO course (course_id, course_name) 
+    VALUES ((SELECT CONCAT('CS',
+		 LPAD(NVL(SUBSTR(MAX(course_id), 3), 0) + 1, 4, 0)) AS newId FROM course)
+         , '자바기반 DB모바일 개발자 양성과정');
+*/
+과정이 추가되었습니다.
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 1. 과정 관리
+1. 과정 입력  2. 과정 출력  3. 과정 삭제
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 1. 과정 관리 > 2. 과정 출력
+-------------------------------
+과정 번호 / 과정명
+CS0001 / 웹기반 빅데이터 분석 응용SW개발자
+CS0002 / Python / Java 응용 SW실무 개발자 양성 과정
+CS0003 / 시큐어 코딩 / 웹 애플리케이션 응용SW개발자
+CS0004 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발)
+CS0005 / 빅데이터시각화 웹어플리케이션개발자(Java개발)
+CS0006 / JAVA Programming 향상 과정
+CS0007 / Linux+ 데이터베이스 향상과정
+CS0008 / HTML5/Jquery 향상과정
+CS0009 / Spring4.0 향상 과정
+CS0010 / 데이터베이스 엔지니어링 향상 과정
+CS0011 / 자바기반 DB&모바일 개발자 양성과정
+-------------------------------
+총 : 11건
+/*
+-- 3번 쿼리문. 과정명 출력
+SELECT course_id, course_name
+    FROM course
+ORDER BY course_id;
+*/
+
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 1. 과정 관리
+1. 과정 입력  2. 과정 출력  3. 과정 삭제
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 1. 과정 관리 > 3. 과정 삭제
+-------------------------------
+과정 번호 / 과정명 / 삭제 가능 여부
+CS0001 / 웹기반 빅데이터 분석 응용SW개발자 / X
+CS0002 / Python / Java 응용 SW실무 개발자 양성 과정 / X
+CS0003 / 시큐어 코딩 / 웹 애플리케이션 응용SW개발자 / X
+CS0004 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / X
+CS0005 / 빅데이터시각화 웹어플리케이션개발자(Java개발) / X
+CS0006 / JAVA Programming 향상 과정 / X
+CS0007 / Linux+ 데이터베이스 향상과정 / X
+CS0008 / HTML5/Jquery 향상과정 / X
+CS0009 / Spring4.0 향상 과정 / X
+CS0010 / 데이터베이스 엔지니어링 향상 과정 / X
+CS0011 / 오라클기반 DB&모바일 개발자 양성과정 / O
+-------------------------------
+총 : 11건
+/*
+-- 4번 쿼리문. 과정명 출력. 참조 확인해서 삭제 가능여부까지 확인
+SELECT course_id, course_name
+        ,(SELECT COUNT(*) FROM open_course
+            WHERE course_id=c.course_id) count_
+            FROM course c
+            ORDER BY course_id;
+*/
+
+과정 번호 > CS0000
+없는 과정입니다!
+
+과정 번호 > CS0011
+과정명 : 오라클기반 DB&모바일 개발자 양성과정
+위의 과정을 삭제하시겠습니까? (0/1) > 1
+'CS0011'이 삭제되었습니다.
+/*
+-- 5번 쿼리문. 과정명 삭제
+DELETE FROM course WHERE UPPER(course_id)=UPPER('과정아이디');
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 1. 과정 관리
+1. 과정 입력  2. 과정 출력  3. 과정 삭제
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리
+1. 과정 관리  2. 과목 관리  3. 강의실 관리  4. 교재 관리
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 2. 과목 관리
+1. 과목 입력  2. 과목 출력  3. 과목 삭제
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 2. 과목 관리 > 1. 과목 입력
+
+과목명 > C
+등록하시겠습니까? (0/1) > 1
+과목이 추가되었습니다.
+/*
+-- 6번 쿼리문. 과목명 입력.
+INSERT INTO subject (subject_id, subject_name) 
+    VALUES ((SELECT CONCAT('SUB',
+		 LPAD(NVL(SUBSTR(MAX(subject_id), 4), 0) + 1, 3, 0)) AS newId FROM subject)
+         , 'C');
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 2. 과목 관리
+1. 과목 입력  2. 과목 출력  3. 과목 삭제
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 2. 과목 관리 > 2. 과목 출력
+-------------------------------
+과목 번호 / 과목명
+SUB001 / Java SE
+SUB002 / Oracle
+SUB003 / JDBC
+SUB004 / MySQL
+SUB005 / HTML
+SUB006 / CSS
+SUB007 / Bootstrap
+SUB008 / Javascript
+SUB009 / jQuery
+SUB010 / JSP
+SUB011 / XML
+SUB012 / Ajax
+SUB013 / JSON
+SUB014 / Open API
+SUB015 / Servlet MVC
+SUB016 / JSTL
+SUB017 / EL
+SUB018 / Spring Framework
+SUB019 / DI
+SUB020 / AOP
+SUB021 / IoC
+SUB022 / Spring MVC
+SUB023 / Spring JDBC
+SUB024 / MyBatis
+SUB025 / Python
+SUB026 / C
+-------------------------------
+총 : 26건
+/*
+-- 7번 쿼리문. 과목명 출력.
+SELECT subject_id, subject_name
+    FROM subject
+    ORDER BY subject_id;
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 2. 과목 관리
+1. 과목 입력  2. 과목 출력  3. 과목 삭제
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 2. 과목 관리 > 3. 과목 삭제
+-------------------------------
+과목 번호 / 과목명 / 삭제 가능 여부
+SUB001 / Java SE / X
+SUB002 / Oracle / X
+SUB003 / JDBC / X
+SUB004 / MySQL / X
+SUB005 / HTML / X
+SUB006 / CSS / X
+SUB007 / Bootstrap / X
+SUB008 / Javascript / X
+SUB009 / jQuery / X
+SUB010 / JSP / X
+SUB011 / XML / X
+SUB012 / Ajax / X
+SUB013 / JSON / X
+SUB014 / Open API / X
+SUB015 / Servlet MVC / X
+SUB016 / JSTL / X
+SUB017 / EL / X
+SUB018 / Spring Framework / X
+SUB019 / DI / X
+SUB020 / AOP / X
+SUB021 / IoC / X
+SUB022 / Spring MVC / X
+SUB023 / Spring JDBC / X
+SUB024 / MyBatis / X
+SUB025 / Python / X
+SUB026 / C++ / O
+-------------------------------
+총 : 26건
+/*
+-- 8번 쿼리문. 과목명 출력. 참조 확인해서 삭제 가능여부까지 확인
+SELECT subject_id, subject_name
+        ,(SELECT COUNT(*) FROM open_subject
+            WHERE subject_id=s.subject_id) count_
+            FROM subject s
+            ORDER BY subject_id;
+*/
+과목 번호 > SUB026
+과목명 : C++
+위의 과목을 삭제하시겠습니까? (0/1) > 1
+'SUB026'이 삭제되었습니다.
+/*
+-- 9번 쿼리문. 과목명 삭제.
+DELETE FROM subject WHERE UPPER(subject_id)=UPPER(’과목아이디’);
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 2. 과목 관리
+1. 과목 입력  2. 과목 출력  3. 과목 삭제
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리
+1. 과정 관리  2. 과목 관리  3. 강의실 관리  4. 교재 관리
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 3. 강의실 관리
+1. 강의실 입력  2. 강의실 출력  3. 강의실 삭제
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 3. 강의실 관리 > 1. 강의실 입력
+
+강의실명> 8강의실
+최대 정원> 30
+등록하시겠습니까? (0/1) > 1
+강의실이 추가되었습니다.
+/*
+-- 10번 쿼리문. 강의실 입력. 최대정원 포함.
+INSERT INTO class_room (class_room_id, class_room_name, max_number)   
+    VALUES ((SELECT CONCAT('CR',
+		 LPAD(NVL(SUBSTR(MAX(class_room_id), 3), 0) + 1, 2, 0)) AS newId FROM class_room)
+         , '8강의실', 30);
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 3. 강의실 관리
+1. 강의실 입력  2. 강의실 출력  3. 강의실 삭제
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 3. 강의실 관리 > 2. 강의실 출력
+-------------------------------
+강의실 번호 / 강의실명 / 최대 정원
+CR01 / 1강의실 / 30
+CR02 / 2강의실 / 30
+CR03 / 3강의실 / 20
+CR04 / 4강의실 / 20
+CR05 / 5강의실 / 30
+CR06 / 6강의실 / 30
+CR07 / 7강의실 / 30
+CR08 / 8강의실 / 30
+-------------------------------
+총 : 8건
+/*
+-- 11번 쿼리문. 강의실 출력. 최대정원 포함.
+SELECT class_room_id, class_room_name, max_number
+    FROM class_room
+    ORDER BY class_room_id;
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 3. 강의실 관리
+1. 강의실 입력  2. 강의실 출력  3. 강의실 삭제
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 3. 강의실 관리 > 3. 강의실 삭제
+-------------------------------
+강의실 번호 / 강의실명 / 최대 정원 / 삭제 가능 여부
+CR01 / 1강의실 / 30 / X
+CR02 / 2강의실 / 30 / X
+CR03 / 3강의실 / 20 / X
+CR04 / 4강의실 / 20 / X
+CR05 / 5강의실 / 30 / X
+CR06 / 6강의실 / 30 / X
+CR07 / 7강의실 / 30 / X
+CR08 / 8강의실 / 30 / O
+-------------------------------
+총 : 8건
+/*
+-- 12번 쿼리문. 강의실 출력. 참조 확인해서 삭제 가능여부까지 확인
+SELECT class_room_id, class_room_name, max_number
+        ,(SELECT COUNT(*) FROM open_course
+            WHERE class_room_id=c.class_room_id) count_
+            FROM class_room c
+            ORDER BY class_room_id;
+*/
+강의실 번호 > CR00 
+없는 강의실입니다!
+
+강의실 번호 > CR08 
+강의실명: 8강의실
+위의 강의실을 삭제하시겠습니까? (0/1) > 1
+'CR08'이 삭제되었습니다.
+/*
+-- 13번 쿼리문. 강의실 삭제.
+DELETE FROM class_room WHERE UPPER(class_room_id)=UPPER('강의실아이디');
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리
+1. 과정 관리  2. 과목 관리  3. 강의실 관리  4. 교재 관리
+선택 > 4
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 4. 교재 관리
+1. 교재 입력  2. 교재 출력  3. 교재 삭제
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 4. 교재 관리 > 1. 교재 입력
+ 
+교재명 > 이것이 C언어다
+교재 출판사 > 한빛미디어
+등록하시겠습니까? (0/1) > 1
+교재가 추가되었습니다.
+/*
+-- 14번 쿼리문. 교재 입력. 출판사 포함
+INSERT INTO subjectbook (subjectbook_id, subjectbook_name,subjectbook_publisher)   
+    VALUES ((SELECT CONCAT('SB',
+		 LPAD(NVL(SUBSTR(MAX(subjectbook_id),3), 0) + 1, 4, 0)) AS newId FROM subjectbook)
+         , '이것이 C언어다', '한빛미디어');
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 4. 교재 관리
+1. 교재 입력  2. 교재 출력  3. 교재 삭제
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 4. 교재 관리 > 2. 교재 출력
+-------------------------------
+교재 번호 / 교재명 / 교재 출판사
+SB0001 / 이것이 자바다 / 한빛미디어
+SB0002 / 오라클SQL을 다루는 기술 / 길벗
+SB0003 / Java의 정석 / 도우
+SB0004 / 명품 JAVA programming / 생능
+SB0005 / 초보자를 위한 ORACLE / 엑시엄
+SB0006 / 이것이 오라클이다 / 한빛
+SB0007 / 이것이 MySQL이다 / 한빛
+SB0008 / HTML5 웹 프로그래밍 입문 / 한빛
+SB0009 / 모두의 HTML5 / CSS3 / 길벗
+SB0010 / 자바스크립트+jQuery 완전정복 / 위키북스
+SB0011 / 자바스크립트+jQuery / 영진닷컴
+SB0012 / XML 프로그래밍 / 한빛
+SB0013 / JAVA 개발자를 위한 XML / 프리렉
+SB0014 / Ajax와 jQuery 프로그래밍 / 가메
+SB0015 / 스프링 5.0 마스터 / 에이콘
+SB0016 / Spring 4.0 프로그래밍 / 가메
+SB0017 / 스타트 파이썬 / 코딩스쿨
+SB0018 / 스프링 부트로 배우는 자바 웹 개발 / 제이펍
+SB0019 / 은노기의 JSP 웹 프로그래밍 입문 / 혜지원
+SB0020 / 백견불여일타 JSP / Servlet / 로드북
+SB0021 / 자바스크립트 JSON 쿡북 / 에이콘
+SB0022 / 이것이 C언어다 / 한빛미디어
+-------------------------------
+총 : 22건
+/*
+-- 15번 쿼리문. 교재명 출력. 출판사 포함
+SELECT subjectbook_id, subjectbook_name, subjectbook_publisher
+    FROM subjectbook
+    ORDER BY subjectbook_id;
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 4. 교재 관리
+1. 교재 입력  2. 교재 출력  3. 교재 삭제
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 4. 교재 관리 > 3. 교재 삭제
+-------------------------------
+교재 번호 / 교재명 / 교재 출판사 / 삭제 가능 여부
+SB0001 / 이것이 자바다 / 한빛미디어 / X
+SB0002 / 오라클SQL을 다루는 기술 / 길벗 / X
+SB0003 / Java의 정석 / 도우 / X
+SB0004 / 명품 JAVA programming / 생능 / X
+SB0005 / 초보자를 위한 ORACLE / 엑시엄 / X
+SB0006 / 이것이 오라클이다 / 한빛 / X
+SB0007 / 이것이 MySQL이다 / 한빛 / X
+SB0008 / HTML5 웹 프로그래밍 입문 / 한빛 / X
+SB0009 / 모두의 HTML5 / CSS3 / 길벗 / X
+SB0010 / 자바스크립트+jQuery 완전정복 / 위키북스 / X
+SB0011 / 자바스크립트+jQuery / 영진닷컴 / X
+SB0012 / XML 프로그래밍 / 한빛 / X
+SB0013 / JAVA 개발자를 위한 XML / 프리렉 / X
+SB0014 / Ajax와 jQuery 프로그래밍 / 가메 / X
+SB0015 / 스프링 5.0 마스터 / 에이콘 / X
+SB0016 / Spring 4.0 프로그래밍 / 가메 / X
+SB0017 / 스타트 파이썬 / 코딩스쿨 / X
+SB0018 / 스프링 부트로 배우는 자바 웹 개발 / 제이펍 / X
+SB0019 / 은노기의 JSP 웹 프로그래밍 입문 / 혜지원 / X
+SB0020 / 백견불여일타 JSP / Servlet / 로드북 / X
+SB0021 / 자바스크립트 JSON 쿡북 / 에이콘 / X
+SB0022 / 이것이 C언어다 / 한빛미디어 / O
+-------------------------------
+총 : 22건
+/*
+-- 16번 쿼리문. 교재 입력. 참조 확인해서 삭제 가능여부까지 확인
+SELECT subjectbook_id, subjectbook_name, subjectbook_publisher
+        ,(SELECT COUNT(*) FROM open_subject
+            WHERE subjectbook_id=s.subjectbook_id) count_
+            FROM subjectbook s
+            ORDER BY subjectbook_id;
+*/
+
+교재 번호 > SB0022
+교재명 : 이것이 C언어다
+교재 출판사 : 한빛미디어
+위의 교재를 삭제하시겠습니까? (0/1) > 1
+'SB0022'이 삭제되었습니다.
+/*
+-- 17번 쿼리문. 교재 삭제.
+DELETE FROM subjectbook WHERE UPPER(subjectbook_id)=UPPER('교재아이디');
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리 > 4. 교재 관리
+1. 교재 입력  2. 교재 출력  3. 교재 삭제
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 1. 기초 정보 관리
+1. 과정 관리  2. 과목 관리  3. 강의실 관리  4. 교재 관리
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin)
+1. 기초 정보 관리  2. 강사 계정 관리  3. 개설 과정 관리  4. 개설 과목 관리  5. 수강생 관리  6. 성적 조회  7. 비밀번호 변경
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리
+1. 강사 입력  2. 강사 검색 및 출력  3. 강사 삭제  4. 비밀번호 초기화  5. 강의 가능 과목 관리
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 1. 강사 입력
+
+강사 이름 > 장동건
+강사 휴대폰 번호 > 010-2222-3333
+강사 비밀번호 > 3333
+강사 등록일 > 2018-09-01
+등록하시겠습니까? (0/1) > 1
+강사가 추가되었습니다.
+
+/*
+-- 18번 쿼리문. 강사 입력.
+INSERT INTO instructor (instructor_id, instructor_name, instructor_phone ,  instructor_pw
+    ,instructor_regdate)
+    VALUES ((SELECT CONCAT('INS',
+		 LPAD(NVL(SUBSTR(MAX(instructor_id),4), 0) + 1, 3, 0)) AS newId FROM instructor)
+         , '장동건', '010-2222-3333', '3333', '2018-09-01');
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리
+1. 강사 입력  2. 강사 검색 및 출력  3. 강사 삭제  4. 비밀번호 초기화  5. 강의 가능 과목 관리
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 2. 강사 검색 및 출력
+1. 강사 번호  2. 강사 이름  3. 강사 전체 출력
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 2. 강사 검색 및 출력 > 1. 강사 번호
+
+강사 번호 > INS001
+강사 이름 : 이민종
+강사 전화번호 : 010-1234-4321
+/*
+-- 19번 쿼리문. 강사 번호(저장), 강사 이름, 전화번호 출력
+SELECT instructor_id, instructor_name, instructor_phone
+    FROM instructor
+    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
+*/
+-------------------------------
+개설 과목명 / 개설 과목 기간 / 개설 과정명 / 개설 과정 기간 / 강의실 / 강의 진행 여부
+Java SE / 2018-06-25 ~ 2018-09-10 / Python / Java 응용 SW실무 개발자 양성 과정 / 2018-06-25 ~ 2019-01-17 / 2강의실 / 강의 종료
+JDBC / 2018-08-16 ~ 2018-10-13 / 데이터베이스 엔지니어링 향상 과정 / 2018-08-16 ~ 2019-01-20 / 4강의실 / 강의 중
+Open API / 2018-12-05 ~ 2019-02-18 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-12-05 ~ 2019-07-04 / 7강의실 / 강의 예정
+-------------------------------
+총 3건
+/*
+-- 20번 쿼리문. 해당 강사의 개설과목명, 개설과목기간, 개설과정명, 개설과정기간, 강의실, 강의진행여부(강의종료, 강의중, 강의예정) 출력
+CREATE OR REPLACE VIEW instructor_search_view1
+AS
+SELECT subject_name, subject_start_date, subject_end_date, course_name
+     , open_course_start_date, open_course_end_date, class_room_name 
+     ,CASE
+  WHEN SYSDATE <subject_start_date THEN '강의 예정'
+  WHEN SYSDATE >subject_end_date THEN '강의 종료'
+  else '강의 중'
+  END completion, ip.instructor_id
+    FROM subject s, open_subject os, course c, open_course oc, class_room cr
+    , instructor i, instructor_possible ip
+    WHERE s.subject_id = os.subject_id
+    AND oc.open_course_id = os.open_course_id
+    AND c.course_id = oc.course_id
+    AND cr.class_room_id = oc.class_room_id
+    AND i.instructor_id = os.instructor_id
+    AND ip.subject_id = s.subject_id;
+    
+SELECT subject_name, subject_start_date, subject_end_date, course_name
+     , open_course_start_date, open_course_end_date, class_room_name 
+     , completion
+     FROM instructor_search_view1
+     WHERE UPPER(instructor_id) = UPPER('강사ID')
+     ORDER BY subject_end_date; 
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 2. 강사 검색 및 출력
+1. 강사 번호  2. 강사 이름  3. 전체 출력
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 2. 강사 검색 및 출력 > 2. 강사 이름
+
+강사 이름 > 종
+
+-------------------------------
+강사 번호 / 강사 이름 / 강사 휴대폰 번호 / 등록일
+INS001 / 이민종 / 010-1234-4321 / 2017-01-05
+INS002 / 정종호 / 010-5285-3994 / 2017-02-08 
+-------------------------------
+총 2건
+/*
+-- 21번 쿼리문. 이름으로 검색시 여러건 => 강사번호, 강사이름, 강사휴대폰번호, 등록일 출력
+SELECT instructor_id, instructor_name, instructor_phone, instructor_regDate
+    FROM instructor
+    WHERE INSTR(instructor_name,'강사 이름 일부') > 0
+ORDER BY instructor_id;
+*/
+검색 결과가 여러건 입니다.
+강사 번호 > INS001
+
+강사 이름 : 이민종
+강사 전화번호 : 010-1234-4321
+/*
+-- 19번 쿼리문. 강사 번호(저장), 강사 이름, 전화번호 출력
+-- 위에 같은 번호 있으니 참고
+SELECT instructor_id, instructor_name, instructor_phone
+    FROM instructor
+    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’)
+ORDER BY instructor_id;
+*/
+-------------------------------
+개설 과목명 / 개설 과목 기간 / 개설 과정명 / 개설 과정 기간 / 강의실 / 강의 진행 여부
+Java SE / 2018-06-25 ~ 2018-09-10 / Python / Java 응용 SW실무 개발자 양성 과정 / 2018-06-25 ~ 2019-01-17 / 2강의실 / 강의 종료
+JDBC / 2018-08-16 ~ 2018-10-13 / 데이터베이스 엔지니어링 향상 과정 / 2018-08-16 ~ 2019-01-20 / 4강의실 / 강의 중
+Open API / 2018-12-05 ~ 2019-02-18 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-12-05 ~ 2019-07-04 / 7강의실 / 강의 예정
+-------------------------------
+총 3건
+/*
+-- 20번 쿼리문. 해당 강사의 개설과목명, 개설과목기간, 개설과정명, 개설과정기간, 강의실, 강의진행여부(강의종료, 강의중, 강의예정) 출력
+-- 위에 같은 번호 있으니 참고
+SELECT subject_name, subject_start_date, subject_end_date, course_name
+     , open_course_start_date, open_course_end_date, class_room_name 
+     , completion
+     FROM instructor_search_view1
+     WHERE UPPER(instructor_id) = UPPER('강사ID')
+     ORDER BY subject_end_date; 
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 2. 강사 검색 및 출력
+1. 강사 번호  2. 강사 이름  3. 전체 출력
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 2. 강사 검색 및 출력 > 3. 강사 전체 출력
+-------------------------------
+강사 번호 / 강사 이름 / 강사 휴대폰 번호 / 강사 등록일 / 강의 가능 과목
+INS001 / 이민종 / 010-1234-4321 / 2017-01-05 / Java SE, JDBC, OPEN API
+INS002 / 정종호 / 010-5285-3994 / 2017-02-08 / HTML
+INS003 / 정재우 / 010-7467-2111 / 2017-03-02 / JSTL
+INS004 / 김비삼 / 010-6339-7148 / 2017-03-09 / AOP, JSON
+INS005 / 조천운 / 010-4912-4701 / 2017-03-25 / Python
+INS006 / 최장학 / 010-5443-5830 / 2017-04-05 / IoC, XML, Javascript
+INS007 / 이상원 / 010-1932-1332 / 2017-04-20 / Oracle, Bootstrap, HTML
+INS008 / 차장윤 / 010-2438-8474 / 2017-05-06 / Ajax
+INS009 / 이동민 / 010-4630-7751 / 2017-05-22 / MyBatis, DI
+INS010 / 장규백 / 010-9374-5864 / 2017-06-05 / MySQL
+INS011 / 강군모 / 010-9705-7507 / 2017-06-26 / JSTL, Spring MVC
+INS012 / 노시환 / 010-9199-9770 / 2017-07-18 / EL, JSP
+INS013 / 전경택 / 010-5748-8896 / 2017-08-22 / Spring JDBC, JDBC
+INS014 / 한중현 / 010-4314-4595 / 2017-10-11 / CSS
+INS015 / 지동주 / 010-1669-6751 / 2017-11-10 / MySQL, Servlet MVC, Spring Framework
+INS016 / 송서진 / 010-7558-8648 / 2017-12-21 / Python, jQuery, Ajax
+INS017 / 장동건 / 010-2222-3333 / 2018-09-12 / 
+-------------------------------
+총 17명
+/*
+-- 22번 쿼리문. 전체 강사 출력
+-- 강사번호, 강사이름, 강사휴대폰번호, 강사등록일, 강의가능과목(LISTAGG() WITHIN GROUP(ORDER BY value) 사용) 출력
+SELECT i.instructor_id, i.instructor_name, i.instructor_phone, i.instructor_regdate
+    , (SELECT (LISTAGG(s.subject_name, ', ') WITHIN GROUP(ORDER BY pc.instructor_id))
+    FROM subject s, instructor_possible pc
+    WHERE pc.subject_id = s.subject_id
+    AND pc.instructor_id = i.instructor_id)  subjectList
+    FROM instructor i;
+*/
+
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 2. 강사 검색 및 출력
+1. 강사 번호  2. 강사 이름  3. 전체 출력
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리
+1. 강사 입력  2. 강사 검색 및 출력  3. 강사 삭제  4. 비밀번호 초기화  5. 강의 가능 과목 관리
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 3. 강사 삭제
+-------------------------------
+강사 번호 / 강사 이름 / 강사 휴대폰 번호 / 강사 등록일 / 강의 가능 과목 / 삭제 가능 여부
+INS001 / 이민종 / 010-1234-4321 / 2017-01-05 / Java SE, JDBC, OPEN API / X
+INS002 / 정종호 / 010-5285-3994 / 2017-02-08 / HTML / X
+INS003 / 정재우 / 010-7467-2111 / 2017-03-02 / JSTL / X
+INS004 / 김비삼 / 010-6339-7148 / 2017-03-09 / AOP, JSON / X
+INS005 / 조천운 / 010-4912-4701 / 2017-03-25 / Python / X
+INS006 / 최장학 / 010-5443-5830 / 2017-04-05 / IoC, XML, Javascript / X
+INS007 / 이상원 / 010-1932-1332 / 2017-04-20 / Oracle, Bootstrap, HTML / X
+INS008 / 차장윤 / 010-2438-8474 / 2017-05-06 / Ajax / X
+INS009 / 이동민 / 010-4630-7751 / 2017-05-22 / MyBatis, DI / X
+INS010 / 장규백 / 010-9374-5864 / 2017-06-05 / MySQL / X
+INS011 / 강군모 / 010-9705-7507 / 2017-06-26 / JSTL, Spring MVC / X
+INS012 / 노시환 / 010-9199-9770 / 2017-07-18 / EL, JSP / X
+INS013 / 전경택 / 010-5748-8896 / 2017-08-22 / Spring JDBC, JDBC / X
+INS014 / 한중현 / 010-4314-4595 / 2017-10-11 / CSS / X
+INS015 / 지동주 / 010-1669-6751 / 2017-11-10 / MySQL, Servlet MVC, Spring Framework / X
+INS016 / 송서진 / 010-7558-8648 / 2017-12-21 / Python, jQuery, Ajax / X
+INS017 / 장동건 / 010-2222-3333 / 2018-09-12 / / O
+-------------------------------
+총 17명
+/*
+-- 23번 쿼리문. 전체 강사 출력 / 참조키 참고해서 삭제 가능 여부 포함 출력
+-- 강사번호, 강사이름, 강사휴대폰번호, 강사등록일, 강의가능과목(LISTAGG() WITHIN GROUP(ORDER BY value) 사용), 삭제 가능 여부 출력
+SELECT i2.instructor_id, i2.instructor_name, i2.instructor_phone, i2.instructor_regdate
+    , (SELECT (LISTAGG(s.subject_name, ', ') WITHIN GROUP(ORDER BY pc.instructor_id))
+    FROM subject s, instructor_possible pc
+    WHERE pc.subject_id = s.subject_id
+    AND pc.instructor_id = i2.instructor_id)  subjectList, (SELECT count(*) 
+                                            FROM open_subject os
+                                           WHERE i2.instructor_id = os.instructor_id) count_
+    FROM instructor i2;
+*/
+
+강사 번호 > INS017
+강사이름 : 장동건
+전화번호 : 010-2222-3333
+위의 강사를 삭제하시겠습니까? (0/1) > 1
+'INS017'이 삭제되었습니다.
+/*
+-- 24번 쿼리문. 강사 삭제하는 쿼리문
+DELETE FROM instructor WHERE UPPER(instructor_id)=UPPER('강사아이디');
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리
+1. 강사 입력  2. 강사 검색 및 출력  3. 강사 삭제  4. 비밀번호 초기화  5. 강의 가능 과목 관리
+선택 > 4
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 4. 비밀번호 초기화
+-------------------------------
+강사 번호 / 강사 이름 / 강사 휴대폰 번호 / 강사 등록일 / 강의 가능 과목
+INS001 / 이민종 / 010-1234-4321 / 2017-01-05 / Java SE, JDBC, OPEN API
+INS002 / 정종호 / 010-5285-3994 / 2017-02-08 / HTML
+INS003 / 정재우 / 010-7467-2111 / 2017-03-02 / JSTL
+INS004 / 김비삼 / 010-6339-7148 / 2017-03-09 / AOP, JSON
+INS005 / 조천운 / 010-4912-4701 / 2017-03-25 / Python
+INS006 / 최장학 / 010-5443-5830 / 2017-04-05 / IoC, XML, Javascript
+INS007 / 이상원 / 010-1932-1332 / 2017-04-20 / Oracle, Bootstrap, HTML
+INS008 / 차장윤 / 010-2438-8474 / 2017-05-06 / Ajax
+INS009 / 이동민 / 010-4630-7751 / 2017-05-22 / MyBatis, DI
+INS010 / 장규백 / 010-9374-5864 / 2017-06-05 / MySQL
+INS011 / 강군모 / 010-9705-7507 / 2017-06-26 / JSTL, Spring MVC
+INS012 / 노시환 / 010-9199-9770 / 2017-07-18 / EL, JSP
+INS013 / 전경택 / 010-5748-8896 / 2017-08-22 / Spring JDBC, JDBC
+INS014 / 한중현 / 010-4314-4595 / 2017-10-11 / CSS
+INS015 / 지동주 / 010-1669-6751 / 2017-11-10 / MySQL, Servlet MVC, Spring Framework
+INS016 / 송서진 / 010-7558-8648 / 2017-12-21 / Python, jQuery, Ajax
+-------------------------------
+총 16명
+/*
+-- 22번 쿼리문. 전체 강사 출력
+-- 강사번호, 강사이름, 강사휴대폰번호, 강사등록일, 강의가능과목(LISTAGG() WITHIN GROUP(ORDER BY value) 사용) 출력
+-- 위에 같은 번호 있으니 참고
+SELECT i.instructor_id, i.instructor_name, i.instructor_phone, i.instructor_regdate
+    , (SELECT (LISTAGG(s.subject_name, ', ') WITHIN GROUP(ORDER BY pc.instructor_id))
+    FROM subject s, instructor_possible pc
+    WHERE pc.subject_id = s.subject_id
+    AND pc.instructor_id = i.instructor_id)  subjectList
+    FROM instructor i;
+*/
+
+강사 번호 > INS001
+
+강사 이름 : 이민종
+강사 전화번호 : 010-1234-4321
+/*
+-- 19번 쿼리문. 강사 번호(저장), 강사 이름, 전화번호 출력
+-- 위에 같은 번호 있으니 참고
+SELECT instructor_id, instructor_name, instructor_phone
+    FROM instructor
+    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
+*/
+
+강사 비밀번호 > 4321
+진행하시겠습니까? (0/1) > 1
+'INS001'의 비밀번호가 초기화되었습니다.
+/*
+-- 25번 쿼리문. 강사 비밀번호 초기화하는 쿼리문
+UPDATE instructor
+    SET instructor_pw = '4321'
+    WHERE UPPER(instructor_id) = UPPER('INS001');
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리
+1. 강사 입력  2. 강사 검색 및 출력  3. 강사 삭제  4. 비밀번호 초기화  5. 강의 가능 과목 관리
+선택 > 5
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 5. 강의 가능 과목 관리
+1. 강의 가능 과목 추가  2. 강의 가능 과목 삭제
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 5. 강의 가능 과목 관리 > 1. 강의 가능 과목 추가
+강사 번호 > INS002
+
+강사 이름 : 정종호
+강사 휴대폰 번호 : 010-5285-3994
+/*
+-- 19번 쿼리문. 강사 번호(저장), 강사 이름, 강사휴대폰번호 출력
+-- 위에 같은 번호 있으니 참고
+SELECT instructor_id, instructor_name, instructor_phone
+    FROM instructor
+    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
+*/
+
+-------------------------------
+강의 가능 과목
+SUB005 / HTML
+총 1건
+-------------------------------
+/*
+-- 26번 쿼리문. 강의가능과목(과목번호, 과목명) 출력
+CREATE OR REPLACE VIEW possible_subject_view
+AS
+SELECT s.subject_id, subject_name, i.instructor_id
+        FROM subject s, instructor_possible ip, instructor i
+        WHERE s.subject_id = ip.subject_id
+        AND i.instructor_id = ip.instructor_id;
+        
+        
+SELECT subject_id, subject_name
+    FROM possible_subject_view
+    WHERE UPPER(instructor_id) = UPPER('강사ID')
+    ORDER BY subject_id;
+*/
+
+// 1번 누를시 전체 과목이 출력됨.
+과목 번호 > 1
+-------------------------------
+과목 번호 / 과목명
+SUB001 / Java SE
+SUB002 / Oracle
+SUB003 / JDBC
+SUB004 / MySQL
+SUB005 / HTML
+SUB006 / CSS
+SUB007 / Bootstrap
+SUB008 / Javascript
+SUB009 / jQuery
+SUB010 / JSP
+SUB011 / XML
+SUB012 / Ajax
+SUB013 / JSON
+SUB014 / Open API
+SUB015 / Servlet MVC
+SUB016 / JSTL
+SUB017 / EL
+SUB018 / Spring Framework
+SUB019 / DI
+SUB020 / AOP
+SUB021 / IoC
+SUB022 / Spring MVC
+SUB023 / Spring JDBC
+SUB024 / MyBatis
+SUB025 / Python
+-------------------------------
+총 : 25건
+/*
+-- 7번 쿼리문. 과목명 출력
+-- 위에 같은 번호 있으니 참고
+SELECT subject_id, subject_name
+    FROM subject
+ORDER BY subject_id;
+*/
+과목 번호 > SUB001
+
+과목 번호 : SUB001
+과목명 : Java SE
+/*
+-- 27번 쿼리문. 선택한 과목명만 출력.
+SELECT subject_id, subject_name
+    FROM subject
+    WHERE UPPER(subject_id) = UPPER('sub001');
+*/
+
+등록하시겠습니까? (0/1) > 1
+강의 가능 과목이 추가되었습니다.
+/*
+-- 28번 쿼리문. 과목을 강의가능과목에 등록하는 쿼리문.
+INSERT INTO instructor_possible (instructor_id, subject_id)
+    VALUES ('INS002', 'SUB001');
+*/
+
+강사 이름 : 정종호
+강사 휴대폰 번호 : 010-5285-3994
+/*
+-- 19번 쿼리문. 강사 번호(저장), 강사 이름, 강사휴대폰번호 출력
+-- 위에 같은 번호 있으니 참고
+SELECT instructor_id, instructor_name, instructor_phone
+    FROM instructor
+    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
+*/
+
+-------------------------------
+강의 가능 과목
+SUB001 / Java SE
+SUB005 / HTML
+-------------------------------
+총 2건
+
+/*
+-- 26번 쿼리문. 강의가능과목(과목번호, 과목명) 출력
+-- 위에 같은 번호 있으니 참고
+SELECT subject_id, subject_name
+    FROM possible_subject_view
+    WHERE UPPER(instructor_id) = UPPER('강사ID')
+    ORDER BY subject_id;
+*/
+
+과목 번호 > SUB020
+
+과목 번호 : SUB020
+과목명 : AOP
+/*
+-- 27번 쿼리문. 선택한 과목명만 출력.
+-- 위에 같은 번호 있으니 참고
+SELECT subject_id, subject_name
+    FROM subject
+    WHERE UPPER(subject_id) = UPPER('sub020');
+*/
+
+등록하시겠습니까? (0/1) > 1
+강의 가능 과목이 추가되었습니다.
+/*
+-- 28번 쿼리문. 과목을 강의가능과목에 등록하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+INSERT INTO instructor_possible (instructor_id, subject_id)
+    VALUES ('INS002', 'SUB020');
+*/
+
+강사 이름 : 정종호
+강사 휴대폰 번호 : 010-5285-3994
+/*
+-- 19번 쿼리문. 강사 번호(저장), 강사 이름, 강사휴대폰번호 출력
+-- 위에 같은 번호 있으니 참고
+SELECT instructor_id, instructor_name, instructor_phone
+    FROM instructor
+    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
+*/
+
+-------------------------------
+강의 가능 과목
+SUB001 / Java SE
+SUB005 / HTML
+SUB020 / AOP
+-------------------------------
+총 3건
+/*
+-- 26번 쿼리문. 강의가능과목(과목번호, 과목명) 출력
+-- 위에 같은 번호 있으니 참고
+SELECT subject_id, subject_name
+    FROM possible_subject_view
+    WHERE UPPER(instructor_id) = UPPER('강사ID')
+    ORDER BY subject_id;
+*/
+
+과목 번호 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 5. 강의 가능 과목 관리
+1. 강의 가능 과목 추가  2. 강의 가능 과목 삭제
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 5. 강의 가능 과목 관리 > 2. 강의 가능 과목 삭제
+강사 번호 > INS002
+
+강사 이름 : 정종호
+강사 휴대폰 번호 : 010-5285-3994
+
+/*
+-- 19번 쿼리문. 강사 번호(저장), 강사 이름, 강사휴대폰번호 출력
+-- 위에 같은 번호 있으니 참고
+SELECT instructor_id, instructor_name, instructor_phone
+    FROM instructor
+    WHERE UPPER(instructor_id) = UPPER(‘강사 ID’);
+*/
+
+-------------------------------
+강의 가능 과목
+SUB001 / Java SE
+SUB005 / HTML
+SUB020 / AOP
+-------------------------------
+총 3건
+/*
+-- 26번 쿼리문. 강의가능과목(과목번호, 과목명) 출력
+-- 위에 같은 번호 있으니 참고
+SELECT subject_id, subject_name
+    FROM possible_subject_view
+    WHERE UPPER(instructor_id) = UPPER('강사ID')
+    ORDER BY subject_id;
+*/
+
+삭제할 과목 번호 > SUB020
+
+과목 번호 : SUB020
+과목명 : AOP
+/*
+-- 27번 쿼리문. 선택한 과목명만 출력.
+-- 위에 같은 번호 있으니 참고
+SELECT subject_id, subject_name
+    FROM subject
+    WHERE UPPER(subject_id) = UPPER('sub020');
+*/
+
+삭제하시겠습니까? (0/1) > 1
+/*
+-- 29번 쿼리문. 강의가능과목을 삭제하는 쿼리문.
+DELETE FROM instructor_possible 
+        WHERE UPPER(instructor_id)=UPPER('강사아이디') AND UPPER(subject_id)=UPPER('과목아이디');
+*/
+
+삭제되었습니다.
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리 > 5. 강의 가능 과목 관리
+1. 강의 가능 과목 추가  2. 강의 가능 과목 삭제
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 2. 강사 계정 관리
+1. 강사 입력  2. 강사 검색 및 출력  3. 강사 삭제  4. 비밀번호 초기화  5. 강의 가능 과목 관리
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin)
+1. 기초 정보 관리  2. 강사 계정 관리  3. 개설 과정 관리  4. 개설 과목 관리  5. 수강생 관리  6. 성적 조회  7. 비밀번호 변경
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 3. 개설 과정 관리
+1. 개설 과정 추가  2. 개설 과정 검색 및 출력  3. 개설 과정 삭제
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 3. 개설 과정 관리 > 1. 개설 과정 추가
+
+-------------------------------
+CS0001 / 웹기반 빅데이터 분석 응용SW개발자
+CS0002 / Python / Java 응용 SW실무 개발자 양성 과정
+CS0003 / 시큐어 코딩 / 웹 애플리케이션 응용SW개발자
+CS0004 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발)
+CS0005 / 빅데이터시각화 웹어플리케이션개발자(Java개발)
+CS0006 / JAVA Programming 향상 과정
+CS0007 / Linux+ 데이터베이스 향상과정
+CS0008 / HTML5/Jquery 향상과정
+CS0009 / Spring4.0 향상 과정
+CS0010 / 데이터베이스 엔지니어링 향상 과정
+-------------------------------
+총 10건
+/*
+-- 3번 쿼리문. 과정명 출력
+-- 위에 같은 번호 있으니 참고
+SELECT course_id, course_name
+    FROM course
+ORDER BY course_id;
+*/
+
+과정 번호 > CS0004 
+
+개설 과정 시작일 > 2018-09-20
+개설 과정 종료일 > 2018-12-19
+
+-------------------------------
+강의실 번호 / 강의실명 / 최대 정원
+CR01 / 1강의실 / 30
+CR02 / 2강의실 / 30
+CR03 / 3강의실 / 20
+CR04 / 4강의실 / 20
+CR05 / 5강의실 / 30
+CR06 / 6강의실 / 30
+CR07 / 7강의실 / 30
+-------------------------------
+총 7건
+/*
+-- 11번 쿼리문. 강의실 출력. 최대정원 포함.
+-- 위에 같은 번호 있으니 참고
+SELECT class_room_id, class_room_name, max_number
+    FROM class_room
+ORDER BY class_room_id;
+*/
+
+강의실 번호 > CR01
+
+등록하시겠습니까? (0/1) > 1
+/*
+-- 30번 쿼리문. 과정번호와 강의실을 입력받아 개설과정을 등록하는 쿼리문.
+INSERT INTO open_course (open_course_id, class_room_id, course_id
+    , open_course_start_date, open_course_end_date)
+     VALUES ((SELECT CONCAT('OC',
+		 LPAD(NVL(SUBSTR(MAX(open_course_id),3), 0) + 1, 4, 0)) AS newId FROM open_course)
+         , 'CR01', 'CS0004', '2018-09-20', '2018-12-19');
+*/
+
+개설 과정이 추가되었습니다.
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 3. 개설 과정 관리
+1. 개설 과정 추가  2. 개설 과정 검색 및 출력  3. 개설 과정 삭제
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 3. 개설 과정 관리 > 2. 개설 과정 검색 및 출력
+1. 개설 과정 번호  2. 개설 과정명  3. 개설 과정 전체 출력
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 3. 개설 과정 관리 > 2. 개설 과정 검색 및 출력 > 1. 개설 과정 번호
+개설 과정 번호 > OC0015
+-------------------------------
+개설 과정 번호 : OC0015
+개설 과정명 : Python / Java 응용 SW실무 개발자 양성 과정
+개설 과정 기간 :  2018-06-25 ~ 2019-01-17
+강의실명 : 2강의실
+/*
+-- 31번 쿼리문. 개설 과정 번호를 입력 받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
+CREATE OR REPLACE VIEW open_course_search_view1
+AS
+SELECT oc.open_course_id, c.course_name, oc.open_course_start_date
+    , oc.open_course_end_date, cr.class_room_name
+    FROM open_course oc, course c, class_room cr
+    WHERE oc.course_id = c.course_id
+    AND oc.class_room_id = cr.class_room_id;
+        
+
+SELECT open_course_id, course_name, open_course_start_date
+    , open_course_end_date, class_room_name
+    FROM open_course_search_view1
+    WHERE UPPER(open_course_id) = UPPER('과정번호');
+*/
+
+  ** 개설 과목 정보 **
+-------------------------------
+개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명
+OS0031 / Java SE / 2018-06-25 ~ 2018-09-10 / 이것이 자바다 / 이민종
+OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 오라클SQL을 다루는 기술 / 이상원
+OS0033 / HTML / 2018-11-13 ~ 2019-01-17 / HTML5 웹 프로그래밍 입문 / 최장학
+-------------------------------
+총 3건
+/*
+-- 32번 쿼리문. 개설 과정 번호를 입력받아 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명을 출력하는 쿼리문.
+CREATE OR REPLACE VIEW open_subject_print4_view1
+AS
+    SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_id, oc.open_course_id
+    FROM subject s, open_subject os, instructor i, open_course oc
+    WHERE s.subject_id = os.subject_id
+    AND i.instructor_id = os.instructor_id
+    AND os.open_course_id = oc.open_course_id;
+  
+CREATE OR REPLACE VIEW open_subject_print4_view2
+AS
+	SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name, open_course_id
+    FROM open_subject_print4_view1 v1, subjectbook sb
+    WHERE sb.subjectbook_id(+) = v1.subjectbook_id; 
+
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
+       , subjectbook_name, instructor_name
+    FROM open_subject_print4_view2
+    WHERE UPPER(open_course_id) = UPPER('OC0015');
+*/
+
+  ** 수강생 정보 **
+-------------------------------
+수강생 번호 / 수강생 이름 / 전화번호 / 등록일 / 수료여부 / 날짜(중도탈락은 탈락일, 과정 종료일)
+ST00031 / 조인성 / 010-1234-1234 / 2018-01-02 / 수료 예정 / 2019-01-17
+ST00032 / 김탈락 / 010-3232-3232 / 2018-06-25 / 중도 탈락 / 2018-09-10
+-------------------------------
+총 2명
+/*
+-- 33번 쿼리문. 개설 과정 번호를 입력받아 수강생번호, 수강생이름, 전화번호, 등록일, 수료여부, 날짜 등을 출력하는 쿼리문.
+CREATE OR REPLACE VIEW student_print4_view1
+AS
+SELECT oc.class_room_id, oc.open_course_id, oc.course_id, oc.open_course_start_date,
+oc.open_course_end_date, s.student_id, s.student_name, s.student_phone, s.student_regdate, c.course_name, os.instructor_id, os.open_subject_id
+    FROM open_course oc, student_history sh, student s, course c, open_subject os
+    WHERE oc.open_course_id = sh.open_course_id
+    AND s.student_id = sh.student_id
+    AND c.course_id = oc.course_id
+    AND oc.open_course_id = os.open_course_id;
+
+CREATE OR REPLACE VIEW student_print4_view2
+AS
+SELECT v1.class_room_id, v1.course_id, v1.open_course_end_date, v1.open_course_id,
+ v1.open_course_start_date, v1.student_id, v1.student_name, v1.student_phone, v1.student_regdate, v1.instructor_id, v1.open_subject_id
+, pc.dropout_date, course_name
+    FROM student_print4_view1 v1, process_complete pc
+    WHERE v1.open_course_id = pc.open_course_id(+)
+    AND v1.student_id = pc.student_id(+);
+
+CREATE OR REPLACE VIEW student_print4_view3
+AS
+SELECT student_id, student_name, student_phone, student_regdate, 
+ CASE WHEN SYSDATE < open_course_start_date AND dropout_date is null THEN '수료예정'
+  WHEN SYSDATE > open_course_end_date AND dropout_date is null THEN '수료완료'
+  WHEN dropout_date IS NOT NULL THEN '중도탈락'
+  else '진행중'
+  END completion, NVL2(dropout_date, dropout_date,open_course_end_date) completion_date, open_course_id, course_name, instructor_id, open_subject_id
+    FROM student_print4_view2;
+    
+SELECT student_id, student_name, student_phone, student_regdate, completion, completion_date
+    FROM student_print4_view3
+    WHERE UPPER(open_course_id) = UPPER('OC0015')
+    AND UPPER(open_subject_id) = UPPER('OS0031')
+    ORDER BY student_id;
+*/
+
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 3. 개설 과정 관리 > 2. 개설 과정 검색 및 출력
+1. 개설 과정 번호  2. 개설 과정명  3. 개설 과정 전체 출력
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 3. 개설 과정 관리 > 2. 개설 과정 검색 및 출력 > 2. 개설 과정명 
+개설 과정명 > 데이터베이스
+-------------------------------
+개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 
+OC0004 / Linux+ 데이터베이스 향상과정 / 2018-04-20 ~ 2018-08-19 / 2강의실
+OC0008 / 데이터베이스 엔지니어링 향상 과정 / 2018-08-16 ~ 2019-01-20 / 4강의실
+OC0010 / 데이터베이스 엔지니어링 향상 과정 / 2018-09-10 ~ 2019-03-09 / 5강의실
+-------------------------------
+총 3건
+/*
+-- 34번 쿼리문. 개설과정명을 입력하면 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
+CREATE OR REPLACE VIEW c_info_view
+AS
+SELECT oc.open_course_id, c.course_name, oc.open_course_start_date
+    , oc.open_course_end_date, cr.class_room_name
+    FROM open_course oc, course c, class_room cr
+    WHERE oc.course_id = c.course_id
+        AND oc.class_room_id = cr.class_room_id;
+        
+SELECT open_course_id, course_name, open_course_start_date, open_course_end_date, class_room_name
+    FROM c_info_view
+    WHERE INSTR(course_name, '데이터베이스') > 0;
+*/
+
+검색 결과가 여러개입니다.
+
+개설 과정 번호 > OC0015
+-------------------------------
+개설 과정 번호 : OC0015
+개설 과정명 : Python / Java 응용 SW실무 개발자 양성 과정
+개설 과정 기간 :  2018-06-25 ~ 2019-01-17
+강의실명 : 2강의실
+/*
+-- 31번 쿼리문. 개설 과정 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT open_course_id, course_name, open_course_start_date
+    , open_course_end_date, class_room_name
+    FROM open_course_search_view1
+    WHERE UPPER(open_course_id) = UPPER('OC0015');
+*/
+
+  ** 개설 과목 정보 **
+-------------------------------
+개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명
+OS0031 / Java SE / 2018-06-25 ~ 2018-09-10 이것이 자바다 / 이민종
+OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 오라클SQL을 다루는 기술 / 이상원
+OS0033 / HTML / 2018-11-13 ~ 2019-01-17 HTML5 웹 프로그래밍 입문 / 최장학
+-------------------------------
+총 3건
+/*
+-- 32번 쿼리문. 개설 과정 번호를 입력받아 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명을 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
+       , subjectbook_name, instructor_name
+    FROM open_subject_search_view2
+    WHERE UPPER(open_course_id) = UPPER('OC0015');
+*/
+
+  ** 수강생 정보 **
+-------------------------------
+수강생 번호 / 수강생 이름 / 전화번호 / 등록일 / 수료여부 / 날짜
+ST00031 / 조인성 / 010-1234-1234 / 2018-01-02 / 수료 예정 / 2019-01-17
+ST00032 / 김탈락 / 010-3232-3232 / 2018-06-25 / 중도 탈락 / 2018-09-10
+-------------------------------
+총 2명
+/*
+-- 33번 쿼리문. 개설 과정 번호를 입력받아 수강생번호, 수강생이름, 전화번호, 등록일, 수료여부, 날짜 등을 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT student_id, student_name, student_phone, student_regdate, completion, completion_date
+    FROM student_infoo3
+    WHERE INSTR(course_name, '데이터베이스') > 0
+    ORDER BY student_id;
+*/
+
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 3. 개설 과정 관리 > 2. 개설 과정 검색 및 출력
+1. 개설 과정 번호  2. 개설 과정명  3. 개설 과정 전체 출력
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 3. 개설 과정 관리 > 2. 개설 과정 검색 및 출력 > 3. 개설 과정 전체 출력
+-------------------------------
+개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 / 개설 과목 등록 갯수 / 수강생 등록 인원
+OC0001 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-01-02 ~ 2018-05-06 / 1강의실 / 3개 / 2명
+OC0002 / 시큐어 코딩 / 웹 애플리케이션 응용SW개발자 / 2018-02-08 ~ 2018-08-05 / 1강의실 / 3개 / 2명
+OC0003 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-03-12 ~ 2018-07-11 / 2강의실 / 3개 / 2명
+OC0004 / Linux+ 데이터베이스 향상과정 / 2018-04-20 ~ 2018-08-19 / 2강의실 / 3개 / 2명
+OC0005 / HTML5/Jquery 향상과정 / 2018-06-05 ~ 2018-10-12 / 3강의실 / 3개 / 2명
+OC0006/ HTML5/Jquery 향상과정 / 2018-06-12 ~ 2018-11-11 / 3강의실  / 3개 / 2명
+OC0007/ 빅데이터시각화 웹어플리케이션개발자(Java개발) / 2018-07-11 ~ 2019-01-03 / 4강의실  / 3개 / 2명
+OC0008 / 데이터베이스 엔지니어링 향상 과정 / 2018-08-16 ~ 2019-01-20 / 4강의실 / 3개 / 2명
+OC0009 / Python / Java 응용 SW실무 개발자 양성 과정 / 2018-09-03 ~ 2019-02-05 / 5강의실 / 3개 / 2명
+OC0010 / 데이터베이스 엔지니어링 향상 과정 / 2018-09-10 ~ 2019-03-09 / 5강의실 / 3개 / 2명
+OC0011 / JAVA Programming 향상 과정 / 2018-10-11 ~ 2019-05-10 / 6강의실 / 3개 / 2명
+OC0012 / 빅데이터시각화 웹어플리케이션개발자(Java개발) / 2018-11-22 ~ 2019-05-21 / 6강의실 / 3개 / 2명
+OC0013 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / 2018-11-29 ~ 2019-06-28 / 7강의실 / 3개 / 2명
+OC0014 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-12-05 ~ 2019-07-04 / 7강의실 / 3개 / 2명
+OC0015 / Python / Java 응용 SW실무 개발자 양성 과정 / 2018-06-25 ~ 2019-01-17 / 2강의실 / 2개 / 2명
+OC0016 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / 2018-09-20 ~ 2018-12-19 / 1강의실 / 3개 / 2명
+-------------------------------
+총 16건
+/*
+-- 100번 쿼리문. 개설과정번호, 과정명, 개설과정기간, 강의실명, 개설과목등록갯수, 수강생등록인원 전체를 출력하는 쿼리문
+CREATE OR REPLACE VIEW open_course_print2_view
+AS
+    SELECT open_course_id, course_name, open_course_start_date
+                ,open_course_end_date, class_room_name
+                    ,(SELECT COUNT(*) FROM open_subject
+            WHERE open_course_id=oc.open_course_id) os_count
+            ,(SELECT COUNT(*) FROM student_history
+            WHERE open_course_id=oc.open_course_id) s_count
+            
+            FROM open_course oc, course c, class_room cr
+            WHERE oc.course_id = c.course_id
+            AND oc.class_room_id=cr.class_room_id;
+            
+    SELECT open_course_id, course_name, open_course_start_date
+                ,open_course_end_date, class_room_name
+                ,os_count, s_count
+                FROM open_course_print2_view
+            ORDER BY open_course_id;
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 3. 개설 과정 관리 > 2. 개설 과정 검색 및 출력
+1. 개설 과정 번호  2. 개설 과정명  3. 개설 과정 전체 출력
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 3. 개설 과정 관리
+1. 개설 과정 추가  2. 개설 과정 검색 및 출력  3. 개설 과정 삭제
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 3. 개설 과정 관리 > 3. 개설 과정 삭제
+-------------------------------
+개설 과정 번호 / 강의실명 / 과정명 / 개설 과정 기간 / 삭제 가능 여부
+OC0001 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-01-02 ~ 2018-05-06 / 1강의실 / X
+OC0002 / 시큐어 코딩 / 웹 애플리케이션 응용SW개발자 / 2018-02-08 ~ 2018-08-05 / 1강의실 / X
+OC0003 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-03-12 ~ 2018-07-11 / 2강의실 / X
+OC0004 / Linux+ 데이터베이스 향상과정 / 2018-04-20 ~ 2018-08-19 / 2강의실 / X
+OC0005 / HTML5/Jquery 향상과정 / 2018-06-05 ~ 2018-10-12 / 3강의실 / X
+OC0006 / HTML5/Jquery 향상과정 / 2018-06-12 ~ 2018-11-11 / 3강의실 / X
+OC0007 / 빅데이터시각화 웹어플리케이션개발자(Java개발) / 2018-07-11 ~ 2019-01-03 / 4강의실 / X
+OC0008 / 데이터베이스 엔지니어링 향상 과정 / 2018-08-16 ~ 2019-01-20 / 4강의실 / X
+OC0009 / Python / Java 응용 SW실무 개발자 양성 과정 / 2018-09-03 ~ 2019-02-05 / 5강의실 / X
+OC0010 / 데이터베이스 엔지니어링 향상 과정 / 2018-09-10 ~ 2019-03-09 / 5강의실 / X
+OC0011 / JAVA Programming 향상 과정 / 2018-10-11 ~ 2019-05-10 / 6강의실 / X
+OC0012 / 빅데이터시각화 웹어플리케이션개발자(Java개발) / 2018-11-22 ~ 2019-05-21 / 6강의실 / X
+OC0013 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / 2018-11-29 ~ 2019-06-28 / 7강의실 / X
+OC0014 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-12-05 ~ 2019-07-04 / 7강의실 / X
+OC0015 / Python / Java 응용 SW실무 개발자 양성 과정 / 2018-06-25 ~ 2019-01-17 / 2강의실 / X
+OC0016 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / 2018-09-20 ~ 2018-12-19 / 1강의실 / O
+-------------------------------
+총 15건
+/*
+-- 35번 쿼리문. 개설과정번호, 과정명, 개설과정기간, 강의실명, 개설과목등록갯수, 수강생등록인원 전체를 출력하는 쿼리문
+-- 참조여부를 확인해서 삭제가능여부까지 포함하여 출력.
+SELECT v1.open_course_id, course_name, open_course_start_date
+                ,open_course_end_date, class_room_name
+                ,os_count, s_count,(SELECT COUNT(*) FROM student_history sh
+                    WHERE sh.open_course_id=v1.open_course_id) count_
+                FROM open_course_print2_view v1
+    ORDER BY open_course_id;
+*/
+개설 과정 번호 > OC0016
+
+개설 과정번호 : OC0016
+개설 과정명 : 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발)
+개설 과정 기간 : 2018-09-20 ~ 2018-12-19
+강의실명 : 1강의실
+/*
+-- 31번 쿼리문. 개설 과정 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT open_course_id, course_name, open_course_start_date
+    , open_course_end_date, class_room_name
+    FROM open_course_search_view1
+    WHERE UPPER(open_course_id) = UPPER('OC0015');
+*/
+
+위의 개설 과정을 삭제하시겠습니까? (0/1) > 1
+/*
+-- 36번 쿼리문. 개설과정번호를 입력받아 삭제하는 쿼리문.
+DELETE FROM open_course WHERE UPPER(open_course_id) = UPPER('개설과정번호');
+*/
+
+삭제되었습니다.
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 3. 개설 과정 관리
+1. 개설 과정 추가  2. 개설 과정 검색 및 출력  3. 개설 과정 삭제
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin)
+1. 기초 정보 관리  2. 강사 계정 관리  3. 개설 과정 관리  4. 개설 과목 관리  5. 수강생 관리  6. 성적 조회  7. 비밀번호 변경
+선택 > 4
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리
+1. 개설 과목 추가  2. 개설 과목 검색 및 출력  3. 개설 과목 삭제
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리 > 1. 개설 과목 추가
+
+-------------------------------
+개설 과정 번호 / 개설 과정명 / 개설 과정 기간 / 강의실명 / 개설 과목명
+OC0011 / JAVA Programming 향상 과정 / 2018-10-11 ~ 2019-05-10 / 6강의실 / AOP, JSTL
+OC0012 / JAVA Programming 향상 과정 / 2018-11-22 ~ 2019-05-21 / 6강의실 / Python
+OC0013 / Linux+ 데이터베이스 향상과정 / 2018-11-29 ~ 2019-06-28 / 7강의실 / DI, Oracle
+OC0014 / Linux+ 데이터베이스 향상과정 / 2018-12-05 ~ 2019-07-04 / 7강의실 / Oracle, MySQL, Open API
+-------------------------------
+총 4건
+/*
+-- 37번 쿼리문. 개설과목 추가전에 개설 과정을 출력하는 테이블
+-- 오늘날짜 이후로 검색해서 아직 시작되지 않은 과정에 한해 입력이 가능.
+-- 개설과정번호, 개설과정명, 개설과정기간, 강의실명, 개설과목명(LISTAGG() WITHIN GROUP(ORDER BY value) 사용) 출력
+CREATE OR REPLACE VIEW open_course_add_list1
+AS    
+SELECT cr.class_room_id, cr.class_room_name, cr.max_number, oc.open_course_id,
+oc.open_course_start_date, oc.open_course_end_date, c.course_id, c.course_name
+    FROM open_course oc, course c, class_room cr
+    WHERE cr.class_room_id = oc.class_room_id
+    AND c.course_id = oc.course_id
+    AND sysdate < open_course_start_date;    
+    
+CREATE OR REPLACE VIEW open_course_add_list2
+AS    
+SELECT 
+oc.open_course_id,oc.class_room_name, oc.course_name,oc.open_course_start_date, oc.open_course_end_date,
+
+(SELECT (LISTAGG(s.subject_name, ', ') WITHIN GROUP(ORDER BY s.subject_id))
+    FROM open_subject t, subject s
+   WHERE s.subject_id = t.subject_id 
+   AND oc.open_course_id= t.open_course_id
+ ) subjectlist
+
+    FROM open_course_add_list1 oc;
+    
+SELECT open_course_id, course_name,
+open_course_start_date, open_course_end_date, class_room_name
+subjectlist
+    FROM open_course_add_list2
+    ORDER BY open_course_id;
+*/
+
+개설 과정 번호 > OC0011
+
+-------------------------------
+과목 번호 / 과목명
+SUB001 / Java SE
+SUB002 / Oracle
+SUB003 / JDBC
+SUB004 / MySQL
+SUB005 / HTML
+SUB006 / CSS
+SUB007 / Bootstrap
+SUB008 / Javascript
+SUB009 / jQuery
+SUB010 / JSP
+SUB011 / XML
+SUB012 / Ajax
+SUB013 / JSON
+SUB014 / Open API
+SUB015 / Servlet MVC
+SUB016 / JSTL
+SUB017 / EL
+SUB018 / Spring Framework
+SUB019 / DI
+SUB020 / AOP
+SUB021 / IoC
+SUB022 / Spring MVC
+SUB023 / Spring JDBC
+SUB024 / MyBatis
+SUB025 / Python
+-------------------------------
+총 25건
+/*
+-- 7번 쿼리문. 과목명 출력.
+-- 위에 같은 번호 있으니 참고
+SELECT subject_id, subject_name
+    FROM subject
+    ORDER BY subject_id;
+*/
+
+과목 번호 > SUB001
+
+개설 과목 시작일 > 2018-09-20
+개설 과목 종료일 > 2018-10-10
+
+-------------------------------
+교재 번호 / 교재명 / 교재 출판사
+SB0001 / 이것이 자바다 / 한빛미디어
+SB0002 / 오라클SQL을 다루는 기술 / 길벗
+SB0003 / Java의 정석 / 도우
+SB0004 / 명품 JAVA programming / 생능
+SB0005 / 초보자를 위한 ORACLE / 엑시엄
+SB0006 / 이것이 오라클이다 / 한빛
+SB0007 / 이것이 MySQL이다 / 한빛
+SB0008 / HTML5 웹 프로그래밍 입문 / 한빛
+SB0009 / 모두의 HTML5 / CSS3 / 길벗
+SB0010 / 자바스크립트+jQuery 완전정복 / 위키북스
+SB0011 / 자바스크립트+jQuery / 영진닷컴
+SB0012 / XML 프로그래밍 / 한빛
+SB0013 / JAVA 개발자를 위한 XML / 프리렉
+SB0014 / Ajax와 jQuery 프로그래밍 / 가메
+SB0015 / 스프링 5.0 마스터 / 에이콘
+SB0016 / Spring 4.0 프로그래밍 / 가메
+SB0017 / 스타트 파이썬 / 코딩스쿨
+SB0018 / 스프링 부트로 배우는 자바 웹 개발 / 제이펍
+SB0019 / 은노기의 JSP 웹 프로그래밍 입문 / 혜지원
+SB0020 / 백견불여일타 JSP / Servlet / 로드북
+SB0021 / 자바스크립트 JSON 쿡북 / 에이콘
+-------------------------------
+총 : 21건
+/*
+-- 15번 쿼리문. 교재명 출력. 출판사 포함
+-- 위에 같은 번호 있으니 참고
+SELECT subjectbook_id, subjectbook_name, subjectbook_publisher
+    FROM subjectbook
+    ORDER BY subjectbook_id;
+*/
+
+교재 번호 > SB0001
+
+-------------------------------
+강사 번호 / 강사 이름 / 강사 휴대폰 번호 / 강사 등록일 / 강의 가능 과목
+INS001 / 이민종 / 010-1234-4321 / 2017-01-05 / Java SE, JDBC, OPEN API
+INS002 / 정종호 / 010-5285-3994 / 2017-02-08 / HTML
+INS003 / 정재우 / 010-7467-2111 / 2017-03-02 / JSTL
+INS004 / 김비삼 / 010-6339-7148 / 2017-03-09 / AOP, JSON
+INS005 / 조천운 / 010-4912-4701 / 2017-03-25 / Python
+INS006 / 최장학 / 010-5443-5830 / 2017-04-05 / IoC, XML, Javascript
+INS007 / 이상원 / 010-1932-1332 / 2017-04-20 / Oracle, Bootstrap, HTML
+INS008 / 차장윤 / 010-2438-8474 / 2017-05-06 / Ajax
+INS009 / 이동민 / 010-4630-7751 / 2017-05-22 / MyBatis, DI
+INS010 / 장규백 / 010-9374-5864 / 2017-06-05 / MySQL
+INS011 / 강군모 / 010-9705-7507 / 2017-06-26 / JSTL, Spring MVC
+INS012 / 노시환 / 010-9199-9770 / 2017-07-18 / EL, JSP
+INS013 / 전경택 / 010-5748-8896 / 2017-08-22 / Spring JDBC, JDBC
+INS014 / 한중현 / 010-4314-4595 / 2017-10-11 / CSS
+INS015 / 지동주 / 010-1669-6751 / 2017-11-10 / MySQL, Servlet MVC, Spring Framework
+INS016 / 송서진 / 010-7558-8648 / 2017-12-21 / Python, jQuery, Ajax
+-------------------------------
+총 16명
+/*
+-- 22번 쿼리문. 전체 강사 출력
+-- 강사번호, 강사이름, 강사휴대폰번호, 강사등록일, 강의가능과목(LISTAGG() WITHIN GROUP(ORDER BY value) 사용) 출력
+-- 위에 같은 번호 있으니 참고
+SELECT i.instructor_id, i.instructor_name, i.instructor_phone, i.instructor_regdate
+    , (SELECT (LISTAGG(s.subject_name, ', ') WITHIN GROUP(ORDER BY pc.instructor_id))
+    FROM subject s, instructor_possible pc
+    WHERE pc.subject_id = s.subject_id
+    AND pc.instructor_id = i.instructor_id)  subjectList
+    FROM instructor i;
+*/
+
+강사 번호 > INS001
+
+등록하시겠습니까? (0/1) > 1
+/*
+-- 38번 쿼리문. 개설 과목을 등록하는 쿼리문.
+INSERT INTO open_subject (open_subject_id, subjectbook_id, subject_id
+    , instructor_id, open_course_id, subject_start_date, subject_end_date)
+    VALUES ((SELECT CONCAT('OS',
+		 LPAD(NVL(SUBSTR(MAX(open_subject_id),3), 0) + 1, 4, 0)) AS newId FROM open_subject)
+         , 'SB0001', 'SUB001', 'INS001', 'OC0011', '18-09-20', '18-10-10');
+*/
+
+개설 과목이 추가되었습니다.
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리
+1. 개설 과목 추가  2. 개설 과목 검색 및 출력  3. 개설 과목 삭제
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리 > 2. 개설 과목 검색 및 출력
+1. 개설 과목 번호  2. 개설 과목명  3. 개설 과목 전체 출력
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리 > 2. 개설 과목 검색 및 출력 > 1. 개설 과목 번호
+
+개설 과목 번호 > OS0001
+-------------------------------
+개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명 / 개설 과정명 / 개설 과정 기간 / 강의실명
+OS0001 / JSTL / 2018-10-11 ~ 2019-01-23 / 은노기의 JSP 웹 프로그래밍 입문 / 정재우 / JAVA Programming 향상 과정 / 2018-10-11 ~ 2019-05-10 / 6강의실
+-------------------------------
+총 1건
+/*
+-- 39번 쿼리문. 개설 과목번호를 입력받아
+-- 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명, 개설과정명, 개설과정기간, 강의실을 출력하는 테이블
+CREATE OR REPLACE VIEW open_course_print1_view1
+AS
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_id,
+             instructor_name, course_name, open_course_start_date, open_course_end_date, 
+             class_room_name, oc.open_course_id, st.student_id         
+            FROM open_subject os, subject s, instructor i, 
+            open_course oc, class_room cr, course c, student_history sh, student st
+            WHERE os.subject_id = s.subject_id
+            AND os.instructor_id = i.instructor_id
+            AND os.open_course_id = oc.open_course_id
+            AND oc.course_id = c.course_id
+            AND oc.class_room_id = cr.class_room_id
+            AND oc.open_course_id = sh.open_course_id
+            AND sh.student_id = st.student_id;
+            
+CREATE OR REPLACE VIEW open_course_print1_view2
+AS
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_name,
+             instructor_name, course_name, open_course_start_date, open_course_end_date, 
+             class_room_name, open_course_id, student_id
+            FROM open_course_print1_view1 v1, subjectbook sb
+            WHERE v1.subjectbook_id = sb.subjectbook_id(+);
+                
+
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,
+            subjectbook_name, instructor_name, course_name, open_course_start_date
+            , open_course_end_date, class_room_name
+                FROM open_course_print1_view2
+                WHERE UPPER(open_subject_id)=UPPER('OS0022')
+                ORDER BY open_subject_id;
+*/
+
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리 > 2. 개설 과목 검색 및 출력
+1. 개설 과목 번호  2. 개설 과목명  3. 개설 과목 전체 출력
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리 > 2. 개설 과목 검색 및 출력 > 2. 개설 과목명
+개설 과목명 > JSTL
+
+-------------------------------
+개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명 / 개설 과정명 / 개설 과정 기간 / 강의실
+OS0001 / JSTL / 2018-10-11 ~ 2019-01-23 / 은노기의 JSP 웹 프로그래밍 입문 / 정재우 / JAVA Programming 향상 과정 / 2018-10-11 ~ 2019-05-10 / 6강의실
+OS0018 / JSTL / 2018-09-03 ~ 2018-11-02 / 은노기의 JSP 웹 프로그래밍 입문 / 정재우 / Python / Java 응용 SW실무 개발자 양성 과정 / 2018-09-03 ~ 2019-02-05 / 5강의실
+OS0028 / JSTL / 2018-11-06 ~ 2018-12-25 / 은노기의 JSP 웹 프로그래밍 입문 / 정재우 / 데이터베이스 엔지니어링 향상 과정 / 2018-09-10 ~ 2019-03-09 / 6강의실
+-------------------------------
+총 3건
+/*
+-- 40번 쿼리문. 개설 과목명을 입력받아
+-- 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명, 개설과정명, 개설과정기간, 강의실을 출력하는 테이블
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,
+            subjectbook_name, instructor_name, course_name, open_course_start_date
+            , open_course_end_date, class_room_name
+                FROM open_course_info_join_view
+                WHERE INSTR(subject_name, 'JSTL') > 0
+                ORDER BY open_subject_id;
+*/
+
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리 > 2. 개설 과목 검색 및 출력
+1. 개설 과목 번호  2. 개설 과목명  3. 개설 과목 전체 출력
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리 > 2. 개설 과목 검색 및 출력 > 3. 개설 과목 전체 출력
+-------------------------------
+개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명 / 개설 과정명 / 개설 과정 기간 / 강의실
+OS0001 / JSTL / 2018-10-11 ~ 2019-01-23 / 은노기의 JSP 웹 프로그래밍 입문 / 정재우 /  JAVA Programming 향상 과정 / 2018-10-11 ~ 2019-05-10 / 6강의실 
+OS0002 / JSON / 2018-01-02 ~ 2018-03-22 / 자바스크립트 JSON 쿡북/ 김비삼 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-01-02 ~ 2018-05-06 / 1강의실
+...
+OS0035 / JSON / 2018-03-03 ~ 2018-05-06 / 자바스크립트 JSON 쿡북 / 김비삼 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-01-02 ~ 2018-05-06 / 1강의실
+OS0036 ...........
+-------------------------------
+총 36건
+/*
+-- 41번 쿼리문. 개설 과목 전체를 출력하는 쿼리문.
+-- 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명, 개설과정명, 개설과정기간, 강의실을 출력하는 테이블
+CREATE OR REPLACE VIEW open_subject_print1_view1
+	AS
+	SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_id,
+             instructor_name, course_name, open_course_start_date, open_course_end_date, 
+             class_room_name, oc.open_course_id, st.student_id         
+            FROM open_subject os, subject s, instructor i, 
+            open_course oc, class_room cr, course c, student_history sh, student st
+            WHERE os.subject_id = s.subject_id
+            AND os.instructor_id = i.instructor_id
+            AND os.open_course_id = oc.open_course_id
+            AND oc.course_id = c.course_id
+            AND oc.class_room_id = cr.class_room_id
+            AND oc.open_course_id = sh.open_course_id
+            AND sh.student_id = st.student_id;
+            
+	CREATE OR REPLACE VIEW open_subject_print1_view2
+	AS
+	SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_name,
+             instructor_name, course_name, open_course_start_date, open_course_end_date, 
+             class_room_name, open_course_id, student_id
+            FROM open_subject_print1_view1 v1, subjectbook sb
+            WHERE v1.subjectbook_id = sb.subjectbook_id(+);
+
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_name
+    , instructor_name,  course_name , open_course_start_date,  open_course_end_date, class_room_name
+    FROM open_subject_print1_view2
+    ORDER BY open_subject_id;
+*/
+
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리 > 2. 개설 과목 검색 및 출력
+1. 개설 과목 번호  2. 개설 과목명  3. 개설 과목 전체 출력
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리
+1. 개설 과목 추가  2. 개설 과목 검색 및 출력  3. 개설 과목 삭제
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리 > 3. 개설 과목 삭제
+-------------------------------
+개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 교재명 / 강사명 / 개설 과정명 / 개설 과정 기간 / 강의실 / 삭제 가능 여부
+OS0001 / JSTL / 2018-10-11 ~ 2019-01-23 / 은노기의 JSP 웹 프로그래밍 입문 / 정재우  / JAVA Programming 향상 과정 / 2018-10-11 ~ 2019-05-10 / 6강의실/ X
+OS0002 / 자바스크립트 JSON 쿡북 / 2018-01-02 ~ 2018-03-22 / JSON / 김비삼 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-01-02 ~ 2018-05-06 / 1강의실 / X
+...
+OS0035 / JSON / 2018-03-03 ~ 2018-05-06 / 자바스크립트 JSON 쿡북 / 김비삼 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-01-02 ~ 2018-05-06 / 1강의실 / X
+OS0036 ........... / O
+-------------------------------
+총 36건
+/*
+-- 42번 쿼리문. 개설 과목 전체를 출력하는 쿼리문.
+-- 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명, 개설과정명, 개설과정기간, 강의실을 출력하는 테이블
+-- 참조하여 삭제가능여부를 확인하여 삭제 가능 여부 포함.
+CREATE OR REPLACE VIEW open_subject_print2_view
+AS
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_name
+    , instructor_name,  course_name , open_course_start_date,  open_course_end_date, class_room_name
+    ,(SELECT COUNT(*) FROM exam
+                WHERE open_subject_id = v.open_subject_id) count_
+    FROM open_subject_print1_view2 v, subjectbook sb
+    WHERE v.subjectbook_id = sb.subjectbook_id(+);
+
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,
+            subjectbook_name, instructor_name, course_name, open_course_start_date
+            , open_course_end_date, class_room_name
+            , count_
+                FROM open_subject_print2_view
+                ORDER BY open_subject_id;
+*/
+
+개설 과목 번호 > OS0036
+
+개설 과목명 : Java SE
+개설 과목 기간 : 2018-09-20 ~ 2018-10-10
+/*
+-- 39번 쿼리문. 개설 과목번호를 입력받아
+-- 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명, 개설과정명, 개설과정기간, 강의실을 출력하는 테이블
+-- 위에 같은 번호 있으니 참고
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,
+            subjectbook_name, instructor_name, course_name, open_course_start_date
+            , open_course_end_date, class_room_name
+                FROM open_course_info_join_view
+                WHERE UPPER(open_subject_id)=UPPER('OS0036')
+                ORDER BY open_subject_id;
+*/
+
+위의 개설 과목을 삭제하시겠습니까? (0/1) > 1
+/*
+-- 43번 쿼리문. 개설 과목을 삭제하는 쿼리문.
+DELETE FROM open_subject WHERE UPPER(open_subject_id) = UPPER('개설과목아이디');
+*/
+
+삭제되었습니다.
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 4. 개설 과목 관리
+1. 개설 과목 추가  2. 개설 과목 검색 및 출력  3. 개설 과목 삭제
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin)
+1. 기초 정보 관리  2. 강사 계정 관리  3. 개설 과정 관리  4. 개설 과목 관리  5. 수강생 관리  6. 성적 조회  7. 비밀번호 변경
+선택 > 5
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리
+1. 수강생 입력  2. 수강생 검색 및 출력  3. 수강생 삭제  4. 비밀번호 초기화  5. 수강생 과정 관리
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 1. 수강생 입력
+
+수강생 이름 > 홍길동
+수강생 전화번호 > 010-2356-4528
+수강생 비밀번호 > 4528
+
+등록하시겠습니까? (0/1) > 1
+/*
+-- 44번 쿼리문. 수강생을 추가하는 쿼리문.
+INSERT INTO student (student_id, student_name, student_phone, student_regdate, student_pw)   
+    VALUES ((SELECT CONCAT('ST',
+		 LPAD(NVL(SUBSTR(MAX(student_id),3), 0) + 1, 5, 0)) AS newId FROM student)
+         , '홍길동', '010-2356-4528', '18-09-01', '0000');
+*/
+이미 등록된 수강생입니다.
+기존 수강생으로 처리합니다.
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리
+1. 수강생 입력  2. 수강생 검색 및 출력  3. 수강생 삭제  4. 비밀번호 초기화  5. 수강생 과정 관리
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 1. 수강생 입력
+수강생 이름 > 김수강
+수강생 전화번호 > 010-0000-0000
+수강생 비밀번호 > 0000
+
+등록하시겠습니까? (0/1) > 1
+/*
+-- 44번 쿼리문. 수강생을 등록하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+INSERT INTO student (student_id, student_name, student_phone, student_regdate, student_pw)   
+    VALUES ((SELECT CONCAT('ST',
+		 LPAD(NVL(SUBSTR(MAX(student_id),3), 0) + 1, 5, 0)) AS newId FROM student)
+         , '김수강', '010-0000-0000', '18-09-01', '0000');
+*/
+등록되었습니다.
+
+기존 개설 과정에 같이 등록하시겠습니까? (0/1) > 1
+
+-------------------------------
+개설 과정 번호 / 강의실명 / 과정명 / 개설 과정 기간 / 개설 과목 등록 갯수 / 수강생 등록 인원
+OC0001 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-01-02 ~ 2018-05-06 / 1강의실 / 4개 / 3명
+OC0002 / 시큐어 코딩 / 웹 애플리케이션 응용SW개발자 / 2018-02-08 ~ 2018-08-05 / 1강의실 / 3개 / 2명
+OC0003 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-03-12 ~ 2018-07-11 / 2강의실 / 2개 / 2명
+OC0004 / Linux+ 데이터베이스 향상과정 / 2018-04-20 ~ 2018-08-19 / 2강의실 / 2개 / 2명
+OC0005 / HTML5/Jquery 향상과정 / 2018-06-05 ~ 2018-10-12 / 3강의실 / 1개 / 2명
+OC0006 / HTML5/Jquery 향상과정 / 2018-06-12 ~ 2018-11-11 / 3강의실 / 2개 / 2명
+OC0007 / 빅데이터시각화 웹어플리케이션개발자(Java개발) / 2018-07-11 ~ 2019-01-03 / 4강의실 / 2개 / 2명
+OC0008 / 데이터베이스 엔지니어링 향상 과정 / 2018-08-16 ~ 2019-01-20 / 4강의실 / 2개 / 2명
+OC0009 / Python / Java 응용 SW실무 개발자 양성 과정 / 2018-09-03 ~ 2019-02-05 / 5강의실 / 2개 / 2명
+OC0010 / 데이터베이스 엔지니어링 향상 과정 / 2018-09-10 ~ 2019-03-09 / 5강의실 / 3개 / 2명
+OC0011 / JAVA Programming 향상 과정 / 2018-10-11 ~ 2019-05-10 / 6강의실 / 2개 / 2명
+OC0012 / 빅데이터시각화 웹어플리케이션개발자(Java개발) / 2018-11-22 ~ 2019-05-21 / 6강의실 / 1개 / 2명
+OC0013 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / 2018-11-29 ~ 2019-06-28 / 7강의실 / 2개 / 2명
+OC0014 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-12-05 ~ 2019-07-04 / 7강의실 / 3개 / 3명
+OC0015 / Python / Java 응용 SW실무 개발자 양성 과정 / 2018-06-25 ~ 2019-01-17 / 2강의실 / 3개 / 2명
+-------------------------------
+총 15건
+/*
+-- 100번 쿼리문. 개설과정번호, 과정명, 개설과정기간, 강의실명, 개설과목등록갯수, 수강생등록인원 전체를 출력하는 쿼리문
+-- 위에 같은 번호 있으니 참고
+SELECT open_course_id, course_name, open_course_start_date
+                ,open_course_end_date, class_room_name
+                ,os_count, s_count
+                FROM open_course_infoo1
+            ORDER BY open_course_id;
+*/
+
+개설 과정 번호 > OC0014
+
+개설 과정 번호 : OC0014
+개설 과정명 : 웹기반 빅데이터 분석 응용SW개발자
+개설 과정 기간 :  2018-12-05 ~ 2019-07-04
+강의실명 : 7강의실
+/*
+-- 31번 쿼리문. 개설 과정 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT open_course_id, course_name, open_course_start_date
+    , open_course_end_date, class_room_name
+    FROM open_course_search_view1
+    WHERE UPPER(open_course_id) = UPPER('OC0014');
+*/
+
+등록하시겠습니까? (0/1) > 1
+/*
+-- 45번 쿼리문. 개설과정번호에 수강생을 등록하는 쿼리문.
+-- STUDENT_HISTORY에 추가
+INSERT INTO student_history (open_course_id, student_id)
+    VALUES ('OC0014', (SELECT student_id FROM student WHERE student_name = '김수강'));
+*/
+등록되었습니다.
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리
+1. 수강생 입력  2. 수강생 검색 및 출력  3. 수강생 삭제  4. 비밀번호 초기화  5. 수강생 과정 관리
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 2. 수강생 검색 및 출력
+1. 수강생 번호  2. 수강생 이름  3. 수강생 전체 출력
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 2. 수강생 검색 및 출력 > 1. 수강생 번호
+
+수강생 번호 > ST00031
+
+수강생 이름 : 조인성 
+수강생 전화번호 : 010-1234-1234
+/*
+-- 46번 쿼리문. 수강생 번호를 입력받아 수강생 번호, 수강생 이름, 수강생 전화번호를 출력하는 쿼리문.
+SELECT student_id, student_name, student_phone
+    FROM student
+    WHERE UPPER(student_id) = UPPER('ST00031');
+*/
+-------------------------------
+개설 과정 번호 : OC0001
+개설 과정명 : 웹기반 빅데이터 분석 응용SW개발자
+개설 과정 기간 :  2018-01-02 ~ 2018-05-06
+강의실명 : 1강의실
+수료여부 : 중도탈락
+날짜 : 2018-09-10
+-------------------------------
+-------------------------------
+개설 과정 번호 : OC0015
+개설 과정명 : Python / Java 응용 SW실무 개발자 양성 과정
+개설 과정 기간 :  2018-06-25 ~ 2019-01-17
+강의실명 : 2강의실
+수료여부 : 수료예정
+날짜 : 2019-01-17
+-------------------------------
+총 2건
+/*
+-- 47번 쿼리문. 수강생 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명, 수료여부, 날짜를 출력하는 쿼리문.
+CREATE OR REPLACE VIEW pass_non_view1
+    AS
+    SELECT oc.open_course_id, course_name, open_course_start_date,  open_course_end_date
+    , class_room_name, student_name, s.student_id
+    FROM student s, open_course oc, class_room cr, course c, student_history sh
+    WHERE cr.class_room_id = oc.class_room_id
+    AND c.course_id = oc.course_id
+    AND oc.open_course_id = sh.open_course_id
+    AND s.student_id = sh.student_id;
+    
+CREATE OR REPLACE VIEW pass_non_view2
+    AS
+    SELECT view1.open_course_id, course_name, open_course_start_date, open_course_end_date
+    , class_room_name, student_name, view1.student_id
+    , CASE WHEN SYSDATE < open_course_end_date AND dropout_date is null THEN '수료예정'
+    WHEN SYSDATE > open_course_end_date AND dropout_date is null THEN '수료'
+    WHEN dropout_date is NOT NULL THEN '중도탈락'
+    END completion1
+    , CASE WHEN dropout_date is null THEN open_course_end_date 
+    WHEN  dropout_date is not null THEN dropout_date 
+    END completion2
+    FROM pass_non_view1 view1, process_complete pc
+    WHERE view1.open_course_id = pc.open_course_id(+)
+    AND view1.student_id = pc.student_id(+);
+    
+SELECT open_course_id, course_name, open_course_start_date, open_course_end_date
+    , class_room_name, student_name, completion1, completion2    
+    FROM pass_non_view2
+    WHERE UPPER(student_id) = UPPER('ST00031')
+    ORDER BY open_course_id ;
+*/
+
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 2. 수강생 검색 및 출력
+1. 수강생 번호  2. 수강생 이름  3. 수강생 전체 출력
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 2. 수강생 검색 및 출력 > 2. 수강생 이름
+
+수강생 이름 > 인
+
+-------------------------------
+수강생 번호 / 수강생 이름 / 수강생 휴대폰 번호 / 수강생 등록일
+ST00007 / 장인철 / 010-2345-2525 / 2018-03-05
+ST00023 / 김인수 / 010-5574-7517 / 2018-10-25
+ST00031 / 조인성 / 010-1234-1234 / 2018-01-02
+-------------------------------
+총 3건
+/*
+-- 48번 쿼리문. 수강생 이름을 입력받아(부분입력) 수강생번호, 수강생이름, 수강생휴대폰번호, 수강생 등록일을 출력하는 쿼리문.
+SELECT student_id, student_name, student_phone, student_regdate
+    FROM student
+    WHERE INSTR(student_name,'인') > 0;
+*/
+검색 결과가 여러건 입니다.
+
+수강생 번호 > ST00031
+
+수강생 이름 : 조인성 
+수강생 전화번호 : 010-1234-1234
+/*
+-- 46번 쿼리문. 수강생 번호를 입력받아 수강생 번호, 수강생 이름, 수강생 전화번호를 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT student_id, student_name, student_phone
+    FROM student
+    WHERE UPPER(student_id) = UPPER('ST00031');
+*/
+
+-------------------------------
+개설 과정 번호 : OC0001
+개설 과정명 : 웹기반 빅데이터 분석 응용SW개발자
+개설 과정 기간 :  2018-01-02 ~ 2018-05-06
+강의실명 : 1강의실
+수료여부 : 중도탈락
+날짜 : 2018-09-10
+-------------------------------
+-------------------------------
+개설 과정 번호 : OC0015
+개설 과정명 : Python / Java 응용 SW실무 개발자 양성 과정
+개설 과정 기간 :  2018-06-25 ~ 2019-01-17
+강의실명 : 2강의실
+수료여부 : 수료예정
+날짜 : 2019-01-17
+-------------------------------
+총 2건
+/*
+-- 47번 쿼리문. 수강생 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명, 수료여부, 날짜를 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT open_course_id, course_name, open_course_start_date, open_course_end_date
+    , class_room_name, student_name, completion1, completion2    
+    FROM pass_non_view2
+    WHERE UPPER(student_id) = UPPER('ST00031')
+    ORDER BY open_course_id ;
+*/
+
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 2. 수강생 검색 및 출력
+1. 수강생 번호  2. 수강생 이름  3. 수강생 전체 출력
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 2. 수강생 검색 및 출력 > 3. 수강생 전체 출력
+-------------------------------
+수강생 번호 / 수강생 이름 / 수강생 전화번호 / 수강생 등록일 / 수강 횟수
+ST00001 / 홍길동 / 010-2356-4528 / 2017-12-20 / 1회
+ST00002 / 이순신 / 010-4758-6532 / 2017-12-26 / 1회
+ST00003 / 이순애 / 010-4231-1236 / 2018-01-15 / 1회
+ST00004 / 김정훈 / 010-5236-4221 / 2018-01-20 / 1회
+ST00005 / 한석봉 / 010-5211-3542 / 2018-02-12 / 1회
+ST00006 / 이기자 / 010-3214-5357 / 2018-02-20 / 1회
+ST00007 / 장인철 / 010-2345-2525 / 2018-03-05 / 1회
+ST00008 / 김영년 / 010-2222-4444 / 2018-03-25 / 1회
+ST00009 / 나윤균 / 010-1111-2222 / 2018-04-28 / 1회
+ST00010 / 김종서 / 010-3214-5555 / 2018-05-25 / 1회
+ST00011 / 유관순 / 010-8888-4422 / 2018-06-01 / 1회
+ST00012 / 정한국 / 010-2222-4242 / 2018-06-25 / 1회
+ST00013 / 조미숙 / 010-6666-4444 / 2018-07-05 / 1회
+ST00014 / 황진이 / 010-3214-5467 / 2018-07-20 / 1회
+ST00015 / 이현숙 / 010-2548-3365 / 2018-08-02 / 1회
+ST00016 / 이상헌 / 010-4526-1234 / 2018-08-20 / 1회
+ST00017 / 엄용수 / 010-3254-2542 / 2018-08-25 / 1회
+ST00018 / 이성길 / 010-1333-3333 / 2018-09-02 / 1회
+ST00019 / 박문수 / 010-4747-4848 / 2018-09-05 / 1회
+ST00020 / 유영희 / 010-9595-8585 / 2018-09-15 / 1회
+ST00021 / 홍길남 / 010-9999-7575 / 2018-10-01 / 1회
+ST00022 / 이영숙 / 010-5214-5282 / 2018-10-20 / 1회
+ST00023 / 김인수 / 010-5574-7517 / 2018-10-25 / 1회
+ST00024 / 김말자 / 010-5248-7789 / 2018-11-10 / 1회
+ST00025 / 우재옥 / 010-4563-2587 / 2018-11-20 / 1회
+ST00026 / 김숙남 / 010-2112-5225 / 2018-11-25 / 1회
+ST00027 / 김영길 / 010-8523-1478 / 2018-11-26 / 1회
+ST00028 / 김말숙 / 010-3535-3636 / 2018-12-01 / 1회
+ST00029 / 정정해 / 010-6564-6752 / 2018-12-02 / 1회
+ST00030 / 전용재 / 010-7549-8654 / 2018-12-03 / 1회
+ST00031 / 조인성 / 010-1234-1234 / 2018-01-02 / 2회
+ST00032 / 김탈락 / 010-3232-3232 / 2018-06-25 / 1회
+ST00033 / 김수강 / 010-0000-0000 / 2018-09-13 / 1회
+-------------------------------
+총 33명
+/*
+-- 49번 쿼리문. 수강생 전체를 출력하는 쿼리문.
+-- 수강생번호, 수강생이름, 수강생전화번호, 수강생등록일, 수강횟수 포함하여 출력.
+CREATE OR REPLACE VIEW student_print3_view
+AS
+SELECT student_id, student_name, student_phone, student_regdate,
+        (SELECT COUNT(*) FROM student_history
+                WHERE student_id = s.student_id) count_
+                FROM student s;
+
+SELECT student_id, student_name, student_phone, student_regdate,count_
+    FROM student_print3_view
+        ORDER BY student_id;
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 2. 수강생 검색 및 출력
+1. 수강생 번호  2. 수강생 이름  3. 수강생 전체 출력
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리
+1. 수강생 입력  2. 수강생 검색 및 출력  3. 수강생 삭제  4. 비밀번호 초기화  5. 수강생 과정 관리
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 3. 수강생 삭제
+-------------------------------
+수강생 번호 / 수강생 이름 / 수강생 전화번호 / 수강생 등록일 / 삭제 가능 여부
+ST00001 / 홍길동 / 010-2356-4528 / 2017-12-20 / X
+ST00002 / 이순신 / 010-4758-6532 / 2017-12-26 / X
+ST00003 / 이순애 / 010-4231-1236 / 2018-01-15 / X
+ST00004 / 김정훈 / 010-5236-4221 / 2018-01-20 / X
+ST00005 / 한석봉 / 010-5211-3542 / 2018-02-12 / X
+ST00006 / 이기자 / 010-3214-5357 / 2018-02-20 / X
+ST00007 / 장인철 / 010-2345-2525 / 2018-03-05 / X
+ST00008 / 김영년 / 010-2222-4444 / 2018-03-25 / X
+ST00009 / 나윤균 / 010-1111-2222 / 2018-04-28 / X
+ST00010 / 김종서 / 010-3214-5555 / 2018-05-25 / X
+ST00011 / 유관순 / 010-8888-4422 / 2018-06-01 / X
+ST00012 / 정한국 / 010-2222-4242 / 2018-06-25 / X
+ST00013 / 조미숙 / 010-6666-4444 / 2018-07-05 / X
+ST00014 / 황진이 / 010-3214-5467 / 2018-07-20 / X
+ST00015 / 이현숙 / 010-2548-3365 / 2018-08-02 / X
+ST00016 / 이상헌 / 010-4526-1234 / 2018-08-20 / X
+ST00017 / 엄용수 / 010-3254-2542 / 2018-08-25 / X
+ST00018 / 이성길 / 010-1333-3333 / 2018-09-02 / X
+ST00019 / 박문수 / 010-4747-4848 / 2018-09-05 / X
+ST00020 / 유영희 / 010-9595-8585 / 2018-09-15 / X
+ST00021 / 홍길남 / 010-9999-7575 / 2018-10-01 / X
+ST00022 / 이영숙 / 010-5214-5282 / 2018-10-20 / X
+ST00023 / 김인수 / 010-5574-7517 / 2018-10-25 / X
+ST00024 / 김말자 / 010-5248-7789 / 2018-11-10 / X
+ST00025 / 우재옥 / 010-4563-2587 / 2018-11-20 / X
+ST00026 / 김숙남 / 010-2112-5225 / 2018-11-25 / X
+ST00027 / 김영길 / 010-8523-1478 / 2018-11-26 / X
+ST00028 / 김말숙 / 010-3535-3636 / 2018-12-01 / X
+ST00029 / 정정해 / 010-6564-6752 / 2018-12-02 / X
+ST00030 / 전용재 / 010-7549-8654 / 2018-12-03 / X
+ST00031 / 조인성 / 010-1234-1234 / 2018-01-02 / X
+ST00032 / 김탈락 / 010-3232-3232 / 2018-06-25 / X
+ST00033 / 김수강 / 010-0000-0000  / 2018-09-13 / O
+-------------------------------
+총 33명
+/*
+-- 50번 쿼리문. 수강생 전체를 출력하는 쿼리문.
+-- 수강생번호, 수강생이름, 수강생전화번호, 수강생등록일 출력.
+-- 참조 여부를 확인하여 수강생 삭제가 가능한지 확인하는 삭제 가능여부 포함하여 출력.
+SELECT student_id, student_name, student_phone, student_regdate,count_
+    FROM student_info_view1
+        ORDER BY student_id;
+*/
+
+수강생 번호 > ST00033
+
+수강생 이름 : 김수강 
+수강생 전화번호 : 010-0000-0000
+/*
+-- 46번 쿼리문. 수강생 번호를 입력받아 수강생 이름, 수강생 전화번호를 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT student_id, student_name, student_phone
+    FROM student
+    WHERE UPPER(student_id) = UPPER('ST00033');
+*/
+
+위의 수강생을 삭제하시겠습니까? (0/1) > 1
+/*
+-- 51번 쿼리문. 수강생을 삭제하는 쿼리문.
+DELETE FROM student WHERE UPPER(student_id) = UPPER('ST00033');
+*/
+'ST00033'이 삭제되었습니다.
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리
+1. 수강생 입력  2. 수강생 검색 및 출력  3. 수강생 삭제  4. 비밀번호 초기화  5. 수강생 과정 관리
+선택 > 4
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 4. 비밀번호 초기화
+-------------------------------
+수강생 번호 / 수강생 이름 / 수강생 전화번호 / 수강생 등록일 / 수강횟수
+ST00001 / 홍길동 / 010-2356-4528 / 2017-12-20 / 1회
+ST00002 / 이순신 / 010-4758-6532 / 2017-12-26 / 1회
+ST00003 / 이순애 / 010-4231-1236 / 2018-01-15 / 1회
+ST00004 / 김정훈 / 010-5236-4221 / 2018-01-20 / 1회
+ST00005 / 한석봉 / 010-5211-3542 / 2018-02-12 / 1회
+ST00006 / 이기자 / 010-3214-5357 / 2018-02-20 / 1회
+ST00007 / 장인철 / 010-2345-2525 / 2018-03-05 / 1회
+ST00008 / 김영년 / 010-2222-4444 / 2018-03-25 / 1회
+ST00009 / 나윤균 / 010-1111-2222 / 2018-04-28 / 1회
+ST00010 / 김종서 / 010-3214-5555 / 2018-05-25 / 1회
+ST00011 / 유관순 / 010-8888-4422 / 2018-06-01 / 1회
+ST00012 / 정한국 / 010-2222-4242 / 2018-06-25 / 1회
+ST00013 / 조미숙 / 010-6666-4444 / 2018-07-05 / 1회
+ST00014 / 황진이 / 010-3214-5467 / 2018-07-20 / 1회
+ST00015 / 이현숙 / 010-2548-3365 / 2018-08-02 / 1회
+ST00016 / 이상헌 / 010-4526-1234 / 2018-08-20 / 1회
+ST00017 / 엄용수 / 010-3254-2542 / 2018-08-25 / 1회
+ST00018 / 이성길 / 010-1333-3333 / 2018-09-02 / 1회
+ST00019 / 박문수 / 010-4747-4848 / 2018-09-05 / 1회
+ST00020 / 유영희 / 010-9595-8585 / 2018-09-15 / 1회
+ST00021 / 홍길남 / 010-9999-7575 / 2018-10-01 / 1회
+ST00022 / 이영숙 / 010-5214-5282 / 2018-10-20 / 1회
+ST00023 / 김인수 / 010-5574-7517 / 2018-10-25 / 1회
+ST00024 / 김말자 / 010-5248-7789 / 2018-11-10 / 1회
+ST00025 / 우재옥 / 010-4563-2587 / 2018-11-20 / 1회
+ST00026 / 김숙남 / 010-2112-5225 / 2018-11-25 / 1회
+ST00027 / 김영길 / 010-8523-1478 / 2018-11-26 / 1회
+ST00028 / 김말숙 / 010-3535-3636 / 2018-12-01 / 1회
+ST00029 / 정정해 / 010-6564-6752 / 2018-12-02 / 1회
+ST00030 / 전용재 / 010-7549-8654 / 2018-12-03 / 1회
+ST00031 / 조인성 / 010-1234-1234 / 2018-01-02 / 2회
+ST00032 / 김탈락 / 010-3232-3232 / 2018-06-25 / 1회
+-------------------------------
+총 32명
+/*
+-- 49번 쿼리문. 수강생 전체를 출력하는 쿼리문.
+-- 수강생번호, 수강생이름, 수강생전화번호, 수강생등록일, 수강횟수 포함하여 출력.
+-- 위에 같은 번호 있으니 참고
+SELECT student_id, student_name, student_phone, student_regdate, count_
+    FROM student_info_view1
+        ORDER BY student_id;
+*/
+
+수강생 번호 > ST00028
+
+수강생 이름 : 김말숙
+수강생 전화번호 : 010-3535-3636
+/*
+-- 46번 쿼리문. 수강생 번호를 입력받아 수강생 이름, 수강생 전화번호를 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT student_id, student_name, student_phone
+    FROM student
+    WHERE UPPER(student_id) = UPPER('ST00028');
+*/
+
+수강생 비밀번호 > 3636
+진행하시겠습니까? (0/1) > 1
+/*
+-- 52번 쿼리문. 수강생 비밀번호 초기화하는 쿼리문
+UPDATE student
+    SET student_pw = '3636'
+    WHERE UPPER(student_id) = UPPER('ST00028');
+*/
+
+'ST00028'의 비밀번호가 초기화되었습니다.
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리
+1. 수강생 입력  2. 수강생 검색 및 출력  3. 수강생 삭제  4. 비밀번호 초기화  5. 수강생 과정 관리
+선택 > 5
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 5. 수강생 과정 관리
+1. 수강생 과정 등록  2. 수강생 과정 취소  3. 수강생 중도 탈락
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 5. 수강생 과정 관리 > 1. 수강생 과정 등록
+
+수강생 번호 > ST00032
+
+-------------------------------
+수강생 번호 / 수강생 이름 / 수강생 전화번호 / 수강생 등록일 / 수강 횟수
+ST00032 / 김탈락 / 010-3232-3232 / 2018-06-25 / 1회
+-------------------------------
+총 1명
+/*
+-- 53번 쿼리문. 수강생 번호를 입력.
+-- 수강생번호, 수강생이름, 수강생전화번호, 수강생등록일, 수강횟수 포함하여 출력.
+SELECT student_id, student_name, student_phone, student_regdate,count_
+    FROM student_info_view1
+    WHERE UPPER(student_id) = UPPER('학생아이디')
+        ORDER BY student_id;
+*/
+
+-------------------------------
+개설 과정 번호 / 과정명 / 개설 과정 기간 / 강의실명 / 개설 과목 등록 갯수 / 수강생 등록 인원
+OC0001 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-01-02 ~ 2018-05-06 / 1강의실 / 4개 / 3명
+OC0002 / 시큐어 코딩 / 웹 애플리케이션 응용SW개발자 / 2018-02-08 ~ 2018-08-05 / 1강의실 / 3개 / 2명
+OC0003 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-03-12 ~ 2018-07-11 / 2강의실 / 2개 / 2명
+OC0004 / Linux+ 데이터베이스 향상과정 / 2018-04-20 ~ 2018-08-19 / 2강의실 / 2개 / 2명
+OC0005 / HTML5/Jquery 향상과정 / 2018-06-05 ~ 2018-10-12 / 3강의실 / 1개 / 2명
+OC0006 / HTML5/Jquery 향상과정 / 2018-06-12 ~ 2018-11-11 / 3강의실 / 2개 / 2명
+OC0007 / 빅데이터시각화 웹어플리케이션개발자(Java개발) / 2018-07-11 ~ 2019-01-03 / 4강의실 / 2개 / 2명
+OC0008 / 데이터베이스 엔지니어링 향상 과정 / 2018-08-16 ~ 2019-01-20 / 4강의실 / 2개 / 2명
+OC0009 / Python / Java 응용 SW실무 개발자 양성 과정 / 2018-09-03 ~ 2019-02-05 / 5강의실 / 2개 / 2명
+OC0010 / 데이터베이스 엔지니어링 향상 과정 / 2018-09-10 ~ 2019-03-09 / 5강의실 / 3개 / 2명
+OC0011 / JAVA Programming 향상 과정 / 2018-10-11 ~ 2019-05-10 / 6강의실 / 2개 / 2명
+OC0012 / 빅데이터시각화 웹어플리케이션개발자(Java개발) / 2018-11-22 ~ 2019-05-21 / 6강의실 / 1개 / 2명
+OC0013 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / 2018-11-29 ~ 2019-06-28 / 7강의실 / 2개 / 2명
+OC0014 / 웹기반 빅데이터 분석 응용SW개발자 / 2018-12-05 ~ 2019-07-04 / 7강의실 / 3개 / 3명
+OC0015 / Python / Java 응용 SW실무 개발자 양성 과정 / 2018-06-25 ~ 2019-01-17 / 2강의실 / 3개 / 2명 
+OC0016 / 클라우드 컴퓨팅 기반의 빅데이터전문가(Java개발) / 2018-09-20 ~ 2018-12-19 / 1강의실 / 0개 / 0명
+-------------------------------
+총 16건
+/*
+-- 100번 쿼리문. 개설과정번호, 과정명, 개설과정기간, 강의실명, 개설과목등록갯수, 수강생등록인원 전체를 출력하는 쿼리문
+-- 위에 같은 번호 있으니 참고
+SELECT open_course_id, course_name, open_course_start_date
+                ,open_course_end_date, class_room_name
+                ,os_count, s_count
+                FROM open_course_infoo1
+            ORDER BY open_course_id;
+*/
+
+개설 과정 번호 > OC0014
+
+개설 과정 번호 : OC0014
+개설 과정명 : 웹기반 빅데이터 분석 응용SW개발자
+개설 과정 기간 :  2018-12-05 ~ 2019-07-04
+강의실명 : 7강의실
+/*
+-- 31번 쿼리문. 개설 과정 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT open_course_id, course_name, open_course_start_date
+    , open_course_end_date, class_room_name
+    FROM open_course_search_view1
+    WHERE UPPER(open_course_id) = UPPER('OC0014');
+*/
+
+등록하시겠습니까? (0/1) > 1
+/*
+-- 45번 쿼리문. 개설과정번호에 수강생을 등록하는 쿼리문.
+-- STUDENT_HISTORY에 추가
+-- 위에 같은 번호 있으니 참고
+INSERT INTO student_history (open_course_id, student_id)
+    VALUES ('OC0014', (SELECT student_id FROM student WHERE student_name = '김수강'));
+*/
+
+등록되었습니다.
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 5. 수강생 과정 관리
+1. 수강생 과정 등록  2. 수강생 과정 취소  3. 수강생 중도 탈락
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 5. 수강생 과정 관리 > 2. 수강생 과정 취소
+수강생 번호 > ST00024
+
+-------------------------------
+수강생 번호 / 수강생 이름 / 수강생 전화번호 / 수강생 등록일 / 수강 횟수
+ST00024 / 김말자 / 010-5248-7789 / 2018-11-10 / 1회
+-------------------------------
+총 1명
+/*
+-- 53번 쿼리문. 수강생 번호를 입력.
+-- 수강생번호, 수강생이름, 수강생전화번호, 수강생등록일, 수강횟수 포함하여 출력.
+-- 위에 같은 번호 있으니 참고
+SELECT student_id, student_name, student_phone, student_regdate,count_
+    FROM student_info_view1
+    WHERE UPPER(student_id) = UPPER('학생아이디')
+        ORDER BY student_id;
+*/
+
+-------------------------------
+개설 과정 번호 : OC0012 
+개설 과정명 : 빅데이터시각화 웹어플리케이션개발자(Java개발)
+개설 과정 기간 :  2018-11-22 ~ 2019-05-21
+강의실명 : 6강의실
+수료여부 : 수료예정
+날짜 : 2019-05-21
+-------------------------------
+총 1건
+/*
+-- 47번 쿼리문. 수강생 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명, 수료여부, 날짜를 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT open_course_id, course_name, open_course_start_date, open_course_end_date
+    , class_room_name, student_name, completion1, completion2    
+    FROM pass_non_view2
+    WHERE UPPER(student_id) = UPPER('ST00031')
+    ORDER BY open_course_id ;
+*/
+
+개설 과정 번호 > OC0012 
+
+개설 과정 번호 : OC0012 
+개설 과정명 : 빅데이터시각화 웹어플리케이션개발자(Java개발)
+개설 과정 기간 :  2018-11-22 ~ 2019-05-21
+강의실명 : 6강의실
+/*
+-- 31번 쿼리문. 개설 과정 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT open_course_id, course_name, open_course_start_date
+    , open_course_end_date, class_room_name
+    FROM open_course_search_view1
+    WHERE UPPER(open_course_id) = UPPER('OC0012');
+*/
+
+취소하시겠습니까? (0/1) > 1
+/*
+-- 54번 쿼리문. 수강생번호와 개설과정번호로 삭제하는 쿼리문.
+STUDENT_HISTORY에서 삭제.
+DELETE FROM student_history 
+    WHERE UPPER(student_id)=UPPER('수강생아이디') AND UPPER(open_course_id)=UPPER('개설과정아이디');
+*/
+
+취소되었습니다.
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 5. 수강생 과정 관리
+1. 수강생 과정 등록  2. 수강생 과정 취소  3. 수강생 중도 탈락
+선택 > 3
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 5. 수강생 과정 관리 > 3. 수강생 중도 탈락
+수강생 번호 > ST00031
+
+-------------------------------
+수강생 번호 / 수강생 이름 / 수강생 전화번호 / 수강생 등록일 / 수강 횟수
+ST00031 / 조인성 / 010-1234-1234 / 2018-01-02 / 2회
+-------------------------------
+총 1명
+/*
+-- 53번 쿼리문. 수강생 번호를 입력.
+-- 수강생번호, 수강생이름, 수강생전화번호, 수강생등록일, 수강횟수 포함하여 출력.
+-- 위에 같은 번호 있으니 참고
+SELECT student_id, student_name, student_phone, student_regdate,count_
+    FROM student_info_view1
+    WHERE UPPER(student_id) = UPPER('학생아이디')
+        ORDER BY student_id;
+*/
+
+-------------------------------
+개설 과정 번호 : OC0001
+개설 과정명 : 웹기반 빅데이터 분석 응용SW개발자
+개설 과정 기간 :  2018-01-02 ~ 2018-05-06
+강의실명 : 1강의실
+수료여부 : 중도탈락
+날짜 : 2018-09-10
+-------------------------------
+-------------------------------
+개설 과정 번호 : OC0015
+개설 과정명 : Python / Java 응용 SW실무 개발자 양성 과정
+개설 과정 기간 :  2018-06-25 ~ 2019-01-17
+강의실명 : 2강의실
+수료여부 : 수료예정
+날짜 : 2019-01-17
+-------------------------------
+총 2건
+/*
+-- 47번 쿼리문. 수강생 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명, 수료여부, 날짜를 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT open_course_id, course_name, open_course_start_date, open_course_end_date
+    , class_room_name, student_name, completion1, completion2    
+    FROM pass_non_view2
+    WHERE UPPER(student_id) = UPPER('ST00031')
+    ORDER BY open_course_id ;
+*/
+
+개설 과정 번호 > OC0015
+
+개설 과정 번호 : OC0015
+개설 과정명 : Python / Java 응용 SW실무 개발자 양성 과정
+개설 과정 기간 :  2018-06-25 ~ 2019-01-17
+강의실명 : 2강의실
+/*
+-- 31번 쿼리문. 개설 과정 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT open_course_id, course_name, open_course_start_date
+    , open_course_end_date, class_room_name
+    FROM open_course_search_view1
+    WHERE UPPER(open_course_id) = UPPER('OC0015');
+*/
+
+중도 탈락 날짜 > 2018-09-14
+진행하시겠습니까? (0/1) > 1
+/*
+-- 55번 쿼리문. 수강생번호와 개설과정번호, 중도탈락날짜로 등록하는 쿼리문.
+process_complete 테이블에 추가.
+INSERT INTO process_complete (open_course_id, student_id, dropout_date)
+    VALUES ('OC0015', 'ST00031', '18-09-14');
+*/
+중도 탈락되었습니다.
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리 > 5. 수강생 과정 관리
+1. 수강생 과정 등록  2. 수강생 과정 취소  3. 수강생 중도 탈락
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 5. 수강생 관리
+1. 수강생 입력  2. 수강생 검색 및 출력  3. 수강생 삭제  4. 비밀번호 초기화  5. 수강생 과정 관리
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin)
+1. 기초 정보 관리  2. 강사 계정 관리  3. 개설 과정 관리  4. 개설 과목 관리  5. 수강생 관리  6. 성적 조회  7. 비밀번호 변경
+선택 > 6
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회
+1. 개설 과목 성적 조회  2. 수강생 개인 성적 조회
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회 > 1. 개설 과목 성적 조회
+개설 과정 번호 > OC0015
+
+-------------------------------
+  ** 개설 과정 정보 **
+개설 과정번호 : OC0015
+개설 과정명 : Python / Java 응용 SW실무 개발자 양성 과정
+개설 과정 기간 : 2018-06-25 ~ 2019-01-17
+강의실명 : 2강의실
+/*
+-- 31번 쿼리문. 개설 과정 번호를 입력받아 개설과정번호, 개설과정명, 개설과정기간, 강의실명을 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT open_course_id, course_name, open_course_start_date
+    , open_course_end_date, class_room_name
+    FROM open_course_search_view1
+    WHERE UPPER(open_course_id) = UPPER('OC0015');
+*/
+
+-------------------------------
+개설 과목 번호 / 개설 과목명 / 개설 과목 기간 / 강사명 / 교재명
+OS0031 / Java SE / 2018-06-25 ~ 2018-09-10 / 이민종 / 이것이 자바다
+OS0032 / Oracle / 2018-09-11 ~ 2018-11-12 / 이상원 / 오라클SQL을 다루는 기술
+OS0033 / HTML / 2018-11-13 ~ 2019-01-17 / 최장학 / HTML5 웹 프로그래밍 입문
+-------------------------------
+총 3건
+/*
+-- 32번 쿼리문. 개설 과정 번호를 입력받아 개설과목번호, 개설과목명, 개설과목기간, 교재명, 강사명을 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date
+       , subjectbook_name, instructor_name
+    FROM open_subject_search_view2
+    WHERE UPPER(open_course_id) = UPPER('OC0015');
+*/
+개설 과목 번호 > OS0032
+
+개설 과목명 : Oracle
+개설 과목 기간 : 2018-09-11 ~ 2018-11-12
+강사명 : 이상원
+교재명 : 오라클SQL을 다루는 기술
+/*
+-- 56번 쿼리문. 개설 과목 번호를 입력받아 개설과목명, 개설과목기간, 강사명, 교재명을 출력하는 쿼리문.
+CREATE OR REPLACE VIEW open_subject_search_view1
+    AS
+    SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_id, s.subject_id, st.student_id
+    FROM subject s, open_subject os, instructor i, open_course oc, student_history sh, student st
+    WHERE s.subject_id = os.subject_id
+    AND i.instructor_id = os.instructor_id
+    AND os.open_course_id = oc.open_course_id
+    AND oc.open_course_id = sh.open_course_id
+    AND sh.student_id = st.student_id;
+  
+CREATE OR REPLACE VIEW open_subject_search_view2
+AS
+SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name, student_id
+    FROM open_subject_search_view1 osv, subjectbook sb
+    WHERE sb.subjectbook_id(+) = osv.subjectbook_id;  
+
+SELECT subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name
+    FROM open_subject_search_view1 
+    WHERE UPPER(open_subject_id) = UPPER('OS0032');
+*/
+
+시험번호 : EXAM0013
+출결배점 : 20
+필기배점 : 30
+실기배점 : 50
+시험날짜 : 2018-10-15
+시험문제파일 : OS0032_181015.zip
+/*
+-- 57번 쿼리문. 개설 과목 번호를 입력받아 시험번호, 출결배점, 필기배점, 실기배점, 시험날짜, 시험문제파일을 출력하는 쿼리문.
+CREATE OR REPLACE VIEW open_subject_exam_view
+AS
+SELECT e.exam_id, attendance_point, write_point, skill_point, exam_date, exam_file, os.open_subject_id
+    FROM exam e, subject_point p, open_subject os
+    WHERE os.open_subject_id = e.open_subject_id
+    AND e.exam_id = p.exam_id;
+    
+SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
+    FROM open_subject_exam_view
+    WHERE UPPER(open_subject_id) = UPPER('OS0032');
+*/
+
+  ** 수강생 정보 **
+수강생 번호 / 수강생 이름 / 전화번호 / 출결점수 / 필기점수 / 실기점수 / 총점
+ST00000 / 홍길동 / 000-000-0000 / 10 / 10 / 10 / 30
+/*
+-- 58번 쿼리문. 시험번호를 입력받아 수강생 번호, 수강생 이름, 전화번호, 출결점수, 필기점수, 실기점수, 총점을 출력하는 쿼리문.
+CREATE OR REPLACE VIEW exam_search_view
+AS
+SELECT s.student_id, student_name, student_phone, attendance_score, write_score, skill_score
+    , (attendance_score+write_score+skill_score) total, e.exam_id
+    FROM student s, student_score ss, exam e
+    WHERE s.student_id = ss.student_id 
+    AND ss.exam_id = e.exam_id;
+    
+SELECT student_id, student_name, student_phone, attendance_score, write_score, skill_score, total
+    FROM exam_search_view
+    WHERE UPPER(exam_id) = UPPER('EXAM0013');
+*/
+
+시험번호 : EXAM0014
+출결배점 : 20
+필기배점 : 40
+실기배점 : 40
+시험날짜 : 2018-11-12
+시험문제파일 : OS0032_181112.zip
+/*
+-- 57번 쿼리문. 개설 과목 번호를 입력받아 시험번호, 출결배점, 필기배점, 실기배점, 시험날짜, 시험문제파일을 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT exam_id, attendance_point, write_point, skill_point, exam_date, exam_file
+    FROM open_subject_exam_view
+    WHERE UPPER(open_subject_id) = UPPER('OS0032');
+*/
+
+  ** 수강생 정보 **
+수강생 번호 / 수강생 이름 / 전화번호 / 출결점수 / 필기점수 / 실기점수 / 총점
+ST00000 / 홍길동 / 000-000-0000 / 10 / 10 / 10 / 30
+-------------------------------
+/*
+-- 58번 쿼리문. 시험번호를 입력받아 수강생 번호, 수강생 이름, 전화번호, 출결점수, 필기점수, 실기점수, 총점을 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT student_id, student_name, student_phone, attendance_score, write_score, skill_score, total
+    FROM exam_search_view
+    WHERE UPPER(exam_id) = UPPER('EXAM0013');
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회
+1. 개설 과목 성적 조회  2. 수강생 개인 성적 조회
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회 > 2. 수강생 개인 성적 조회
+1. 수강생 번호  2. 수강생 이름
+선택 > 1
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회 > 2. 수강생 개인 성적 조회 > 1. 수강생 번호
+수강생 번호 > ST0001
+
+  ** 수강생 정보 **
+수강생 이름 : 홍길동
+수강생 전화번호 : 010-2356-4528
+/*
+-- 46번 쿼리문. 수강생 번호를 입력받아 수강생 번호, 수강생 이름, 수강생 전화번호를 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT student_id, student_name, student_phone
+    FROM student
+    WHERE UPPER(student_id) = UPPER('ST00001');
+*/
+
+  ** 개설 과정 정보 **
+개설 과정명 : 웹기반 빅데이터 분석 응용SW개발자
+개설 과정기간 : 2018-01-02 ~ 2018-05-06
+강의실명 : 1강의실
+/*
+-- 60번 쿼리문. 수강생 번호를 수강한 개설과정정보, 개설과정기간, 강의실명을 출력하는 쿼리문.
+CREATE OR REPLACE VIEW student_search_view1
+AS
+SELECT c.course_name, oc.open_course_start_date, oc.open_course_end_date, cr.class_room_name, s.student_id
+    FROM open_course oc, class_room cr, student_history sh, student s, course c
+    WHERE s.student_id = sh.student_id    
+    AND sh.open_course_id = oc.open_course_id
+    AND c.course_id = oc.course_id
+    AND oc.class_room_id = cr.class_room_id;
+
+SELECT course_name, open_course_start_date, open_course_end_date, class_room_name
+    FROM student_search_view1
+    WHERE UPPER(student_id) = UPPER('ST00001');
+*/
+
+  ** 개설 과목 성적 정보 **
+개설 과목명 / 개설 과목기간 / 강사명 / 출결점수(배점) / 필기점수(배점) / 실기점수(배점) / 시험날짜
+JSON / 2018-01-02 ~ 2018-03-22 / 김비삼 / 20(20) / 30(40) / 30(40) / 2018-03-22
+AOP / 2018-03-23 ~ 2018-05-06 / 김비삼 / 20(30) / 20(25) / 40(45) / 2018-05-06
+/*
+-- 61번 쿼리문. 개설과정번호로 수강생의 개설과목 성적 정보를 출력하는 쿼리문.
+-- 개설과목명, 개설과목기간, 강사명, 출결배점, 필기배점, 실기배점, 출결점수, 필기점수, 실기점수, 시험날짜를 출력.
+CREATE OR REPLACE VIEW exam_print3_view
+AS
+SELECT s.subject_name, os.subject_start_date, os.subject_end_date, i.instructor_name, p.attendance_point, st.student_id
+    , p.write_point, p.skill_point, ss.attendance_score, ss.write_score, ss.skill_score, e.exam_date, e.exam_file
+    FROM subject s, open_subject os, instructor i, subject_point p, exam e
+        , student_score ss , student st
+    WHERE os.subject_id = s.subject_id
+    AND i.instructor_id = os.instructor_id
+    AND e.exam_id = p.exam_id
+    AND e.open_subject_id = os.open_subject_id
+    AND ss.exam_id = e.exam_id
+    AND st.student_id = ss.student_id;
+
+
+SELECT subject_name, subject_start_date, subject_end_date, instructor_name, attendance_point
+    , write_point, skill_point, attendance_score, write_score, skill_score, exam_date
+    FROM exam_print3_view
+    WHERE UPPER(student_id) = UPPER('ST00001');
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회 > 2. 수강생 개인 성적 조회
+1. 수강생 번호  2. 수강생 이름
+선택 > 2
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회 > 2. 수강생 개인 성적 조회 > 2. 수강생 이름
+수강생 이름 > 홍
+
+-------------------------------
+수강생 번호 / 수강생 이름 / 수강생 휴대폰 번호 / 수강생 등록일
+ST00001 / 홍길동 / 010-2356-4528 / 2017-12-20
+ST00021 / 홍길남 / 010-9999-7575 / 2018-10-01
+-------------------------------
+총 2건
+/*
+-- 48번 쿼리문. 수강생 이름을 입력받아(부분입력) 수강생번호, 수강생이름, 수강생휴대폰번호, 수강생 등록일을 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT student_id, student_name, student_phone, student_regdate
+    FROM student
+    WHERE INSTR(student_name,'홍') > 0;
+*/
+
+검색 결과가 여러건 입니다.
+수강생 번호 > ST00001
+
+  ** 수강생 정보 **
+수강생 이름 : 홍길동
+수강생 전화번호 : 010-2356-4528
+/*
+-- 46번 쿼리문. 수강생 번호를 입력받아 수강생 번호, 수강생 이름, 수강생 전화번호를 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT student_id, student_name, student_phone
+    FROM student
+    WHERE UPPER(student_id) = UPPER('ST00001');
+*/
+
+  ** 개설 과정 정보 **
+개설 과정명 : 웹기반 빅데이터 분석 응용SW개발자
+개설 과정기간 : 2018-01-02 ~ 2018-05-06
+강의실명 : 1강의실
+/*
+-- 60번 쿼리문. 수강생 번호를 수강한 개설과정정보, 개설과정기간, 강의실명을 출력하는 쿼리문.
+-- 위에 같은 번호 있으니 참고
+SELECT course_name, open_course_start_date, open_course_end_date, class_room_name
+    FROM student_search_view1
+    WHERE UPPER(student_id) = UPPER('ST00001');
+*/
+
+  ** 개설 과목 성적 정보 **
+개설 과목명 / 개설 과목기간 / 강사명 / 출결점수(배점) / 필기점수(배점) / 실기점수(배점) / 시험날짜
+JSON / 2018-01-02 ~ 2018-03-22 / 김비삼 / 20(20) / 30(40) / 30(40) / 2018-03-22
+AOP / 2018-03-23 ~ 2018-05-06 / 김비삼 / 20(30) / 20(25) / 40(45) / 2018-05-06
+/*
+-- 61번 쿼리문. 개설과정번호로 수강생의 개설과목 성적 정보를 출력하는 쿼리문.
+-- 개설과목명, 개설과목기간, 강사명, 출결배점, 필기배점, 실기배점, 출결점수, 필기점수, 실기점수, 시험날짜를 출력.
+-- 위에 같은 번호 있으니 참고
+SELECT subject_name, subject_start_date, subject_end_date, instructor_name, attendance_point
+    , write_point, skill_point, attendance_score, write_score, skill_score, exam_date
+    FROM exam_print3_view
+    WHERE UPPER(student_id) = UPPER('ST00001');
+*/
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회 > 2. 수강생 개인 성적 조회
+1. 수강생 번호  2. 수강생 이름
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회 
+1. 개설 과목 성적 조회  2. 수강생 개인 성적 조회
+선택 > 0
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin)
+1. 기초 정보 관리  2. 강사 계정 관리  3. 개설 과정 관리  4. 개설 과목 관리  5. 수강생 관리  6. 성적 조회  7. 비밀번호 변경
+선택 > 7
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin) > 7. 비밀번호 변경
+현재 비밀번호 > admin
+신규 비밀번호 > 1111
+비밀번호 확인 > 1111
+비밀번호를 변경하시겠습니까? (0/1) > 1
+/*
+-- 62번 쿼리문. 관리자의 비밀번호를 변경하는 쿼리문.
+UPDATE admin
+    SET admin_pw = '1111' 
+    WHERE admin_id = 'admin' AND admin_pw = ‘admin’;
+*/
+관리자 'admin'의 비밀번호가 변경되었습니다.
+// 쿼리문 작성 
+---------------------------------------------------------------
+성적 처리 시스템 v6.0 (관리자 : admin)
+1. 기초 정보 관리  2. 강사 계정 관리  3. 개설 과정 관리  4. 개설 과목 관리  5. 수강생 관리  6. 성적 조회  7. 비밀번호 변경
+선택 > 0
+관리자 'admin' 로그아웃되었습니다.
+---------------------------------------------------------------
+성적 처리 시스템 v6.0
+1. 수강생 로그인  2. 강사 로그인  3. 관리자 로그인
+선택 > 0
+프로그램이 종료되었습니다.
+---------------------------------------------------------------
