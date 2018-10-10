@@ -26,6 +26,7 @@ public class ServiceInstructor {
 	private InstructorPossibleDAO ipDAO = new InstructorPossibleDAO();
 	
 	private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+	
 	private String instructor_id = null;
 	private String instructor_name = null;
 	

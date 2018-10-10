@@ -42,7 +42,7 @@ public class ServiceAdmin {
 	private InstructorPossibleDAO ipDAO = new InstructorPossibleDAO();
 	private ExamDAO eDAO = new ExamDAO();
 
-	String admin_id = null;
+	private String admin_id = null;
 	
 	// 성적 처리 시스템 v6.0 > 3. 관리자 로그인
 	public void login(Scanner sc) {
@@ -2441,7 +2441,7 @@ public class ServiceAdmin {
 		while (run) {
 			System.out.println("---------------------------------------------------------------");
 			System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 6. 성적 조회\n", this.admin_id);
-			System.out.println("1. 개설 과목 성적 조회  2. 수강생 개인 성적 조회");
+			System.out.println("1. 개설 과정 성적 조회  2. 수강생 개인 성적 조회");
 			System.out.print("선택 > ");
 
 			int selectNum = sc.nextInt();
@@ -2468,11 +2468,11 @@ public class ServiceAdmin {
 		}
 	}
 
-	// 성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회 > 1. 개설 과목 성적 조회
+	// 성적 처리 시스템 v6.0 (관리자 : admin) > 6. 성적 조회 > 1. 개설 과정 성적 조회
 	private void m6_s1(Scanner sc) {
 		
 		System.out.println("---------------------------------------------------------------");
-		System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 6. 성적 조회 > 1. 개설 과목 성적 조회%n", this.admin_id);
+		System.out.printf("성적 처리 시스템 v6.0 (관리자 : %s) > 6. 성적 조회 > 1. 개설 과정 성적 조회%n", this.admin_id);
 
 		System.out.print("개설 과정 번호 > ");
 		String open_course_id = sc.nextLine();
