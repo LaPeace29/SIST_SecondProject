@@ -10,12 +10,12 @@ import com.scoremanagement.domain.Admin;
 
 public class AdminDAO {
 	
-	String admin_id = null;
-	
 	// 관리자 로그인 메소드
 	public String login(Admin a) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		
+		String admin_id = null;
 		
 		try {
 			conn = OracleConnection.connect();

@@ -91,8 +91,9 @@ public class ExamDAO {
 				Date exam_date = rs.getDate("exam_date");
 				String exam_file = rs.getString("exam_file");
 				
-				Exam e = new Exam(exam_id, "", attendance_point, write_point, skill_point,
-						exam_date, exam_file);
+				Exam e = new Exam(exam_id, attendance_point, write_point, skill_point,
+						0, 0, 0, exam_date, exam_file);
+
 				list.add(e);
 			}
 		} catch (ClassNotFoundException e) {
@@ -147,7 +148,6 @@ public class ExamDAO {
 				String sql = "SELECT exam_id, attendance_point, write_point, skill_point," +
 						" attendance_score, write_score, skill_score, student_id, exam_date, exam_file\r\n" + 
 						"    FROM exam_list2_VW\r\n" + 
-						"    WHERE open_subject_id = UPPER(?)\r\n" + 
 						"    WHERE UPPER(student_id) = UPPER(?)";
 				
 				pstmt = conn.prepareStatement(sql);
@@ -417,9 +417,9 @@ public class ExamDAO {
 				String completion_status = rs.getString("completion");
 				Date completion_date = rs.getDate("completion_date");
 
-				Exam e = new Exam(student_id, student_name, student_phone, student_regDate,
-						attendance_score, write_score, skill_score, total_score, completion_status,
-						completion_date);
+				Exam e = new Exam(student_id, student_name, student_phone, student_regDate, 
+						completion_status, completion_date, 
+						attendance_score, write_score, skill_score, total_score);
 				list.add(e);
 			}
 		} catch (ClassNotFoundException e) {
@@ -443,6 +443,100 @@ public class ExamDAO {
 		return list;
 	}
 	
+	// 시험 출력 리스트 메소드(5)
+	// 시험번호 / 과목명 / 과목개설기간 / 강사명 / 출결점수 / 출결배점 / 필기점수 / 필기배점 / 실기점수 / 실기배점 / 시험날짜 / 시험파일
+	public List<Exam> list5(String key, Exam value) {
+		// exam_list5_VW1
+		/*
+		CREATE OR REPLACE VIEW exam_list5_VW
+		AS
+		SELECT os.open_subject_id, s.subject_name, os.subject_start_date, os.subject_end_date,
+		        i.instructor_name, p.attendance_point, p.write_point, p.skill_point, 
+		        ss.attendance_score, ss.write_score, ss.skill_score, 
+		        e.exam_id, e.exam_date, e.exam_file, st.student_id
+		    FROM subject s, open_subject os, instructor i, subject_point p, exam e, 
+		        student_score ss , student st
+		    WHERE os.subject_id = s.subject_id
+		        AND i.instructor_id = os.instructor_id
+		        AND e.exam_id = p.exam_id
+		        AND e.open_subject_id = os.open_subject_id
+		        AND ss.exam_id = e.exam_id
+		        AND st.student_id = ss.student_id;
+		*/
+		
+		List<Exam> list = new ArrayList<Exam>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = OracleConnection.connect();
+			
+			if(key.equals("student_id")) {
+				String sql = "SELECT exam_id, subject_name, subject_start_date, subject_end_date,\r\n" + 
+						" instructor_name, attendance_point, write_point, skill_point," +
+						" attendance_score, write_score, skill_score, student_id, exam_date, exam_file\r\n" + 
+						"    FROM exam_list5_VW\r\n" + 
+						"    WHERE UPPER(student_id) = UPPER(?)";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value.getStudent_id());
+			}
+
+			else if(key.equals("student_name")) {
+				String sql = "SELECT exam_id, subject_name, subject_start_date, subject_end_date,\r\n" + 
+						" instructor_name, attendance_point, write_point, skill_point," +
+						" attendance_score, write_score, skill_score, student_id, exam_date, exam_file\r\n" + 
+						"    FROM exam_list5_VW\r\n" + 
+						"    WHERE INSTR(student_name, ?) > 0";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, value.getStudent_name());	
+			}
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String exam_id = rs.getString("exam_id");
+				String subject_name = rs.getString("subject_name");
+				Date subject_start_date = rs.getDate("subject_start_date");
+				Date subject_end_date = rs.getDate("subject_end_date");
+				String instructor_name = rs.getString("instructor_name");
+				int attendance_point = rs.getInt("attendance_point");
+				int write_point = rs.getInt("write_point");
+				int skill_point = rs.getInt("skill_point");
+				int attendance_score = rs.getInt("attendance_score");
+				int write_score = rs.getInt("write_score");
+				int skill_score = rs.getInt("skill_score");		
+				Date exam_date = rs.getDate("exam_date");
+				String exam_file = rs.getString("exam_file");
+
+				Exam e = new Exam(exam_id, subject_name, subject_start_date, subject_end_date, 
+						instructor_name, attendance_point, write_point, skill_point,
+						attendance_score, write_score, skill_score, exam_date, exam_file);
+				list.add(e);
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+            try {
+                if (pstmt != null)
+                    pstmt.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+            try {
+                OracleConnection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+		
+		return list;
+	}
+		
 	// 시험 배점 입력 메소드
 	public int insertPoint(Exam e) {
 		int result = 0;
@@ -478,7 +572,7 @@ public class ExamDAO {
 			String sql3 = "Insert into SUBJECT_POINT \r\n" + 
 					"(SUBJECT_POINT_ID,EXAM_ID,ATTENDANCE_POINT,WRITE_POINT,SKILL_POINT) \r\n" + 
 					"values ((SELECT(CONCAT('SP', LPAD(NVL(SUBSTR(MAX(SUBJECT_POINT_ID), 3), 0) + 1, 2, 0)))AS newID FROM subject_point),\r\n" + 
-					"?, ?, ?, ?)";			
+					"UPPER(?), ?, ?, ?)";			
 			
 			pstmt3 = conn.prepareStatement(sql3);			
 			
@@ -532,8 +626,8 @@ public class ExamDAO {
 					"                        WHERE sp.exam_id = e.exam_id\r\n" + 
 					"                            AND e.open_subject_id = os.open_subject_id\r\n" + 
 					"                            AND os.instructor_id = i.instructor_id\r\n" + 
-					"                            AND i.instructor_id = ?\r\n" + 
-					"                            AND e.exam_id = ?)";
+					"                            AND i.instructor_id = UPPER(?)\r\n" + 
+					"                            AND e.exam_id = UPPER(?))";
 			
 			pstmt1 = conn.prepareStatement(sql1);
 			
@@ -591,17 +685,18 @@ public class ExamDAO {
 		
 		try {
 			conn = OracleConnection.connect();
+			
 			String sql = "INSERT INTO student_score (student_score_id, attendance_score, write_score, skill_score, exam_id, student_id)\r\n" + 
 					"    VALUES((SELECT (CONCAT('SS', LPAD(NVL(SUBSTR(MAX(student_score_id), 3), 0) + 1, 5, 0)))AS newID FROM student_score)\r\n" + 
-					"    , ?, ?, ?, ?, ?)";
+					"    , ?, ?, ?, UPPER(?), UPPER(?))";
 			
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setInt(1, e.getAttendance_score());
 			pstmt.setInt(2, e.getWrite_score());
 			pstmt.setInt(3, e.getSkill_score());
-			pstmt.setString(3, e.getExam_id());
-			pstmt.setString(4, e.getStudent_id());
+			pstmt.setString(4, e.getExam_id());
+			pstmt.setString(5, e.getStudent_id());
 			
 			result = pstmt.executeUpdate();
 

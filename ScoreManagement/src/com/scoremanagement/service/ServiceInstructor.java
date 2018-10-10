@@ -26,6 +26,7 @@ public class ServiceInstructor {
 	private InstructorPossibleDAO ipDAO = new InstructorPossibleDAO();
 	
 	private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+	
 	private String instructor_id = null;
 	private String instructor_name = null;
 	
@@ -40,7 +41,7 @@ public class ServiceInstructor {
 		System.out.print("비밀번호 > ");
 		String instructor_pw = sc.nextLine();
 		
-		Instructor i = new Instructor(this.instructor_name, instructor_pw, "");
+		Instructor i = new Instructor(this.instructor_name, instructor_pw, null);
 		this.instructor_id = this.iDAO.login(i);
 		
 		if(this.instructor_id != null) {
@@ -64,6 +65,7 @@ public class ServiceInstructor {
 			sc.nextLine();
 			
 			switch(selectNum) {
+			
 			case 1:
 				this.m1(sc);
 				break;
@@ -82,6 +84,7 @@ public class ServiceInstructor {
 
 			case 0:
 				run = false;
+				System.out.printf("강사 '%s'님이 로그아웃 되었습니다.\n", this.instructor_name);
 				break;
 				
 			default:
@@ -111,7 +114,7 @@ public class ServiceInstructor {
 					System.out.println("** 수강생 정보 **");
 					System.out.println("수강생번호 / 이름 / 전화번호 / 등록일 / 수료여부 / 날짜");
 					for(Student s : list3) {
-						System.out.println(s.print4());
+						System.out.println(s.print2());
 					}
 					System.out.println();
 				} else {
@@ -217,7 +220,6 @@ public class ServiceInstructor {
 					}
 				}
 			}
-	
 		}
 	}
 	
@@ -338,6 +340,7 @@ public class ServiceInstructor {
 					int size4 = this.exam_detail_print(open_subject_id, exam_id);
 					
 					if(size4 > 0) {
+						
 						this.student_print(open_subject_id, this.instructor_id, exam_id);
 						while(run) {
 							System.out.print("수강생 번호 > ");
@@ -347,12 +350,13 @@ public class ServiceInstructor {
 							}
 							
 							List<Student> list = this.stDAO.search("student_id", 
-									new Student(student_id, null, null, null));
+									new Student(student_id, null, null, null, null));
+							
 							for(Student s : list) {								
-								System.out.printf("수강생 번호 : ", s.getStudent_id());
-								System.out.printf("수강생 이름 : ", s.getStudent_name());
-								System.out.printf("수강생 휴대폰번호 : ", s.getStudent_phone());
-								System.out.printf("수강생 등록일 : ", s.getStudent_regDate());
+								System.out.printf("수강생 번호 : %s\n", s.getStudent_id());
+								System.out.printf("수강생 이름 : %s\n", s.getStudent_name());
+								System.out.printf("수강생 휴대폰번호 : %s\n", s.getStudent_phone());
+								System.out.printf("수강생 등록일 : %s\n", s.getStudent_regDate());
 							}
 							
 							System.out.print("출결 점수 > ");
@@ -382,6 +386,8 @@ public class ServiceInstructor {
 						}
 					}
 				}
+			} else {
+				System.out.println("개설 과목 정보가 없습니다.");
 			}
 		}
 	}
@@ -442,12 +448,12 @@ public class ServiceInstructor {
 						String student_id = sc.nextLine();
 						
 						List<Student> list = this.stDAO.search("student_id", 
-								new Student(student_id, null, null, null));
+								new Student(student_id, null, null, null, null));
 						for(Student s : list) {								
-							System.out.printf("수강생 번호 : ", s.getStudent_id());
-							System.out.printf("수강생 이름 : ", s.getStudent_name());
-							System.out.printf("수강생 휴대폰번호 : ", s.getStudent_phone());
-							System.out.printf("수강생 등록일 : ", s.getStudent_regDate());
+							System.out.printf("수강생 번호 : %s\n", s.getStudent_id());
+							System.out.printf("수강생 이름 : %s\n", s.getStudent_name());
+							System.out.printf("수강생 휴대폰번호 : %s\n", s.getStudent_phone());
+							System.out.printf("수강생 등록일 : %s\n", s.getStudent_regDate());
 						}
 						
 						System.out.print("성적 정보를 삭제하시겠습니까? (0/1) > ");
@@ -575,7 +581,7 @@ public class ServiceInstructor {
 			}
 			System.out.println();
 		} else {
-			System.out.println("검색 결과가 없습니다.");
+			System.out.println("강의 스케줄이 없습니다.");
 		}
 		return list.size();
 	}
@@ -584,7 +590,7 @@ public class ServiceInstructor {
 		int size = 0;
 		
 		List<OpenSubject> list = this.osDAO.list5("open_subject_idANDinstructor_id", 
-				new OpenSubject(open_subject_id, null, null, this.instructor_id, null, null, null));
+				new OpenSubject(open_subject_id, null, null, null, null, this.instructor_id));
 		size = list.size();
 		if(size > 0) {
 			for(OpenSubject os : list) {
@@ -599,7 +605,7 @@ public class ServiceInstructor {
 				System.out.println();
 			}
 		} else {
-			System.out.println("검색 결과가 없습니다.");
+			System.out.println("개설 과목 정보가 없습니다.");
 		}
 		return size;
 	}
@@ -618,7 +624,7 @@ public class ServiceInstructor {
 			System.out.println("-------------------------------");
 			System.out.printf("총 %d건\n", size);
 		} else {
-			System.out.println("검색 결과가 없습니다.");
+			System.out.println("등록된 배점 정보가 없습니다.");
 		}
 
 		return size;
@@ -633,12 +639,12 @@ public class ServiceInstructor {
 			System.out.println("-------------------------------");	
 			System.out.println("시험 번호 / 출결 배점 / 필기 배점 / 실기 배점 / 시험 날짜 / 시험 문제 / 성적 등록 인원수 / 성적 입력 여부");
 			for(Exam e : list) {
-				System.out.println(e.print4());
+				System.out.println(e.print3());
 			}
 			System.out.println("-------------------------------");
 			System.out.printf("총 %d건\n", size);
 		} else {
-			System.out.println("검색 결과가 없습니다.");
+			System.out.println("시험 정보가 없습니다.");
 		}
 
 		return size;
@@ -663,7 +669,7 @@ public class ServiceInstructor {
 				System.out.println();
 			}
 		} else {
-			System.out.println("검색 결과가 없습니다.");
+			System.out.println("시험 정보가 없습니다.");
 		}
 
 		return size;
@@ -679,12 +685,12 @@ public class ServiceInstructor {
 			System.out.println("-------------------------------");
 			System.out.println("수강생번호 / 이름 / 휴대폰번호 / 등록일 / 수료여부 / 날짜 / 출결점수 / 필기점수 / 실기점수 / 총점");
 			for(Exam e : list) {
-				System.out.println(e.print5());
+				System.out.println(e.print4());
 			}
 			System.out.println("-------------------------------");
 			System.out.printf("총 %d명\n", size);
 		} else {
-			System.out.println("검색 결과가 없습니다.");
+			System.out.println("수강생 정보가 없습니다.");
 		}
 		return size;
 	}

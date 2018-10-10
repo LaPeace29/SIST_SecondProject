@@ -92,13 +92,13 @@ public class OpenCourseDAO {
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				String open_course_id1 = rs.getString("open_course_id");
+				String open_course_id = rs.getString("open_course_id");
 				String course_name = rs.getString("course_name");
 				Date open_course_start_date = rs.getDate("open_course_start_date");
 				Date open_course_end_date = rs.getDate("open_course_end_date");
 				String class_room_name = rs.getString("class_room_name");
-				OpenCourse oc = new OpenCourse(open_course_id1, class_room_name, course_name, open_course_start_date,
-						open_course_end_date, null, null);
+				OpenCourse oc = new OpenCourse(open_course_id, null, course_name, open_course_start_date,
+						open_course_end_date, null, class_room_name);
 				list.add(oc);
 			}
 		} catch (ClassNotFoundException e) {
@@ -166,8 +166,8 @@ public class OpenCourseDAO {
 				String class_room_name = rs.getString("class_room_name");
 				int os_count = rs.getInt("os_count");
 				int s_count = rs.getInt("s_count");			
-				OpenCourse oc = new OpenCourse(open_course_id, class_room_name, course_name, open_course_start_date,
-						open_course_end_date, os_count, s_count);
+				OpenCourse oc = new OpenCourse(open_course_id, course_name, 
+						open_course_start_date, open_course_end_date, class_room_name, os_count, s_count);
 				list.add(oc);
 			}
 		} catch (ClassNotFoundException e) {
@@ -206,7 +206,7 @@ public class OpenCourseDAO {
 					"                ,os_count, s_count,(SELECT COUNT(*) FROM student_history sh\r\n" + 
 					"                    WHERE sh.open_course_id=v1.open_course_id) count_\r\n" + 
 					"                FROM open_course_list2_VW v1\r\n" + 
-					"    ORDER BY open_course_id;";
+					"    ORDER BY open_course_id";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -219,8 +219,8 @@ public class OpenCourseDAO {
 				Date open_course_end_date = rs.getDate("open_course_end_date");
 				String class_room_name = rs.getString("class_room_name");
 				int count_ = rs.getInt("count_");
-				OpenCourse oc = new OpenCourse(open_course_id, class_room_name, course_name, open_course_start_date,
-						open_course_end_date, count_);
+				OpenCourse oc = new OpenCourse(open_course_id, course_name, open_course_start_date,
+						open_course_end_date, class_room_name, count_);
 				list.add(oc);
 			}
 		} catch (ClassNotFoundException e) {
@@ -299,8 +299,8 @@ public class OpenCourseDAO {
 				String class_room_name = rs.getString("class_room_name");
 				String subjectlist = rs.getString("subjectlist");
 
-				OpenCourse oc = new OpenCourse(open_course_id, class_room_name, course_name, open_course_start_date,
-						open_course_end_date, subjectlist);
+				OpenCourse oc = new OpenCourse(open_course_id, course_name, open_course_start_date,
+						open_course_end_date, class_room_name, subjectlist);
 				list.add(oc);
 			}
 		} catch (ClassNotFoundException e) {
@@ -405,8 +405,8 @@ public class OpenCourseDAO {
 				String class_room_name = rs.getString("class_room_name");
 				String completion_status = rs.getString("completion");
 				Date dropout_date = rs.getDate("drop_date");
-				OpenCourse oc = new OpenCourse(open_course_id, class_room_name, course_name, open_course_start_date,
-						open_course_end_date, completion_status, dropout_date);
+				OpenCourse oc = new OpenCourse(open_course_id, course_name, open_course_start_date,
+						open_course_end_date, class_room_name, completion_status, dropout_date);
 				list.add(oc);
 			}
 		} catch (ClassNotFoundException e) {
@@ -480,8 +480,8 @@ public class OpenCourseDAO {
 				Date open_course_start_date = rs.getDate("open_course_start_date");
 				Date open_course_end_date = rs.getDate("open_course_end_date");
 				String class_room_name = rs.getString("class_room_name");
-				OpenCourse oc = new OpenCourse(open_course_id, class_room_name, course_name, open_course_start_date,
-						open_course_end_date, null, null);
+				OpenCourse oc = new OpenCourse(open_course_id, null, course_name, open_course_start_date,
+						open_course_end_date, null, class_room_name);
 				list.add(oc);
 			}
 		} catch (ClassNotFoundException e) {

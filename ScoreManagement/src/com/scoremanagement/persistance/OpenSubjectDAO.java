@@ -131,8 +131,8 @@ public class OpenSubjectDAO {
 				String subjectbook_name = rs.getString("subjectbook_name");
 				String instructor_name = rs.getString("instructor_name");
 				
-				OpenSubject os = new OpenSubject(open_subject_id, subject_name, subjectbook_name, instructor_name,
-						null, subject_start_date, subject_end_date, null, null, null);
+				OpenSubject os = new OpenSubject(open_subject_id, null, subject_name, subject_start_date, subject_end_date,
+						null, subjectbook_name, null, instructor_name);
 				list.add(os);
 			}
 		} catch (ClassNotFoundException e) {
@@ -165,16 +165,14 @@ public class OpenSubjectDAO {
 		AS
 		SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_id,
 		        instructor_name, course_name, open_course_start_date, open_course_end_date, 
-		        class_room_name, oc.open_course_id, st.student_id         
+		        class_room_name, oc.open_course_id    
 		    FROM open_subject os, subject s, instructor i, 
-		        open_course oc, class_room cr, course c, student_history sh, student st
+		        open_course oc, class_room cr, course c
 		    WHERE os.subject_id = s.subject_id
 		        AND os.instructor_id = i.instructor_id
 		        AND os.open_course_id = oc.open_course_id
 		        AND oc.course_id = c.course_id
-		        AND oc.class_room_id = cr.class_room_id
-		        AND oc.open_course_id = sh.open_course_id
-		        AND sh.student_id = st.student_id;
+		        AND oc.class_room_id = cr.class_room_id;
 		*/
 		
 		// open_subject_list2_VW2
@@ -183,7 +181,7 @@ public class OpenSubjectDAO {
 		AS
 		SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, subjectbook_name,
 		        instructor_name, course_name, open_course_start_date, open_course_end_date, 
-		        class_room_name, open_course_id, student_id
+		        class_room_name, open_course_id
 		    FROM open_subject_list2_VW1 v1, subjectbook sb
 		    WHERE v1.subjectbook_id = sb.subjectbook_id(+);
 		*/
@@ -220,6 +218,16 @@ public class OpenSubjectDAO {
 				pstmt.setString(1, value);
 			}
 			
+			else if(key.equals("all")){
+				String sql = "SELECT open_subject_id, subject_name, subject_start_date, subject_end_date,\r\n" + 
+						"            subjectbook_name, instructor_name, course_name, open_course_start_date\r\n" + 
+						"            , open_course_end_date, class_room_name\r\n" + 
+						"                FROM open_subject_list2_VW2\r\n" + 
+						"                ORDER BY open_subject_id";
+				
+				pstmt = conn.prepareStatement(sql);
+			}
+			
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -233,9 +241,10 @@ public class OpenSubjectDAO {
 				Date open_course_start_date = rs.getDate("open_course_start_date");
 				Date open_course_end_date = rs.getDate("open_course_end_date");
 				String class_room_name = rs.getString("class_room_name");
-				
-				OpenSubject os = new OpenSubject(open_subject_id, subject_name, subjectbook_name, instructor_name, course_name,
-						subject_start_date, subject_end_date, open_course_start_date, open_course_end_date, class_room_name);
+
+				OpenSubject os = new OpenSubject(open_subject_id, subject_name, subject_start_date, subject_end_date, 
+						subjectbook_name, instructor_name, course_name,
+						open_course_start_date, open_course_end_date, class_room_name);
 				list.add(os);
 			}
 		} catch (ClassNotFoundException e) {
@@ -305,9 +314,9 @@ public class OpenSubjectDAO {
 				String class_room_name = rs.getString("class_room_name");
 				int count_ = rs.getInt("count_");
 
-				OpenSubject os = new OpenSubject(open_subject_id, subject_name, subjectbook_name, instructor_name,
-						course_name, subject_start_date, subject_end_date, open_course_start_date, open_course_end_date,
-						class_room_name, count_);
+				OpenSubject os = new OpenSubject(open_subject_id, subject_name, subject_start_date, subject_end_date, 
+						subjectbook_name, instructor_name, course_name, 
+						open_course_start_date, open_course_end_date, class_room_name, count_);
 
 				list.add(os);
 			}
@@ -405,12 +414,13 @@ public class OpenSubjectDAO {
 		AS
 		SELECT os.instructor_id, course_name, open_course_start_date, open_course_end_date,
 		        class_room_name,open_subject_id, subject_name, subject_start_date, subject_end_date, 
-		        subjectbook_id, oc.open_course_id
-		    FROM course c, open_course oc, class_room cr, open_subject os, subject s
+		        subjectbook_id, oc.open_course_id, instructor_name
+		    FROM course c, open_course oc, class_room cr, open_subject os, subject s, instructor i
 		    WHERE c.course_id = oc.course_id
 		        AND cr.class_room_id = oc.class_room_id
 		        AND oc.open_course_id = os.open_course_id
-		        AND s.subject_id = os.subject_id;
+		        AND s.subject_id = os.subject_id
+		        AND os.instructor_id = i.instructor_id;
 		*/
 		
 		// open_subject_list5_VW2
@@ -419,7 +429,7 @@ public class OpenSubjectDAO {
 		AS
 		SELECT v1.instructor_id, course_name, open_course_start_date, open_course_end_date, 
 		        open_subject_id ,class_room_name, open_course_id, subject_name, 
-		        subject_start_date, subject_end_date, subjectbook_name
+		        subject_start_date, subject_end_date, subjectbook_name, instructor_name
 		    FROM open_subject_list5_VW1 v1, subjectbook sb
 		    WHERE v1.subjectbook_id = sb.subjectbook_id(+);
 		*/
@@ -433,7 +443,7 @@ public class OpenSubjectDAO {
 			conn = OracleConnection.connect();
 			String sql = "SELECT open_subject_id, course_name, open_course_start_date\r\n" + 
 					", open_course_end_date, class_room_name\r\n" + 
-					", subject_name, subject_start_date, subject_end_date, subjectbook_name\r\n" + 
+					", subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name\r\n" + 
 					", (SELECT COUNT(*) FROM student_history sh WHERE v2.open_course_id = sh.open_course_id) student_count\r\n" + 
 					"    FROM open_subject_list5_VW2 v2\r\n" + 
 					"    WHERE UPPER(open_subject_id) = UPPER(?)\r\n" + 
@@ -454,12 +464,14 @@ public class OpenSubjectDAO {
 				String subject_name = rs.getString("subject_name");
 				Date subject_start_date = rs.getDate("subject_start_date");
 				Date subject_end_date = rs.getDate("subject_end_date");
+				String instructor_name = rs.getString("instructor_name");
 				String subjectbook_name = rs.getString("subjectbook_name");
 				int student_count = rs.getInt("student_count");
-				
-				OpenSubject os = new OpenSubject(open_subject_id, subject_name, subjectbook_name, course_name,
-						subject_start_date, subject_end_date, open_course_start_date, open_course_end_date,
-						class_room_name, student_count);
+
+				OpenSubject os = new OpenSubject(open_subject_id, course_name, 
+						open_course_start_date, open_course_end_date, class_room_name,
+						subject_name, subject_start_date, subject_end_date, 
+						instructor_name, subjectbook_name, student_count);
 				list.add(os);
 			}
 		} catch (ClassNotFoundException e) {
@@ -549,8 +561,9 @@ public class OpenSubjectDAO {
 				Date open_course_end_date = rs.getDate("open_course_end_date");
 				String class_room_name = rs.getString("class_room_name");
 				String completion = rs.getString("completion");
-				OpenSubject os = new OpenSubject(open_subject_id, subject_name, course_name, subject_start_date, subject_end_date,
-						open_course_start_date, open_course_end_date, class_room_name, completion);
+
+				OpenSubject os = new OpenSubject(open_subject_id, subject_name, subject_start_date, subject_end_date,
+						course_name, open_course_start_date, open_course_end_date, class_room_name, completion);
 				list.add(os);
 			}
 		} catch (ClassNotFoundException e) {
@@ -573,22 +586,6 @@ public class OpenSubjectDAO {
 		return list;
 	}
 	
-	/*
-	CREATE OR REPLACE VIEW open_subject_search_view1
-    AS
-    SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_id, s.subject_id, course_name
-    FROM subject s, open_subject os, instructor i, open_course oc, course c
-    WHERE s.subject_id = os.subject_id
-    AND i.instructor_id = os.instructor_id
-    AND os.open_course_id = oc.open_course_id
-    AND c.course_id = oc.course_id;
-  
-	CREATE OR REPLACE VIEW open_subject_search_view2
-	AS
-	SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, instructor_name, subjectbook_name, course_name
-    FROM open_subject_search_view1 osv, subjectbook sb
-    WHERE sb.subjectbook_id(+) = osv.subjectbook_id; 
-	 */
 	// 개설 과목 검색 메소드
 	// 1. 개설 과목 번호  2. 과목명  3. 개설 과정 번호  4. 과정명
 	public List<OpenSubject> search(String key, String value) {
@@ -597,7 +594,7 @@ public class OpenSubjectDAO {
 		CREATE OR REPLACE VIEW open_subject_search_VW1
 		AS
 		SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, 
-		        instructor_name, subjectbook_id, s.subject_id, course_name
+		        instructor_name, subjectbook_id, s.subject_id, oc.open_course_id, course_name
 		    FROM subject s, open_subject os, instructor i, open_course oc, course c
 		    WHERE s.subject_id = os.subject_id
 		        AND i.instructor_id = os.instructor_id
@@ -610,7 +607,7 @@ public class OpenSubjectDAO {
 		CREATE OR REPLACE VIEW open_subject_search_VW2
 		AS
 		SELECT open_subject_id, subject_name, subject_start_date, subject_end_date, 
-		        instructor_name, subjectbook_name, course_name
+		        instructor_name, subjectbook_name, open_course_id, course_name
 		    FROM open_subject_search_VW1 v1, subjectbook sb
 		    WHERE sb.subjectbook_id(+) = v1.subjectbook_id; 
 		*/
@@ -669,8 +666,8 @@ public class OpenSubjectDAO {
 				String subjectbook_name = rs.getString("subjectbook_name");
 				String instructor_name = rs.getString("instructor_name");
 
-				OpenSubject os = new OpenSubject(open_subject_id, subject_name, subjectbook_name, instructor_name,
-						null, subject_start_date, subject_end_date, null, null, null);
+				OpenSubject os = new OpenSubject(open_subject_id, null, subject_name, subject_start_date, subject_end_date, 
+						null, subjectbook_name, null, instructor_name);
 				list.add(os);
 			}
 		} catch (ClassNotFoundException e) {

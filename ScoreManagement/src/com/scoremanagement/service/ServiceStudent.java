@@ -56,6 +56,7 @@ public class ServiceStudent {
 			sc.nextLine();
 
 			if (num == 0) {
+				System.out.printf("수강생 '%s'님이 로그아웃 되었습니다.\n", this.student_name);
 				break;
 			}
 
@@ -121,7 +122,7 @@ public class ServiceStudent {
 				oc.getOpen_course_end_date());
 		System.out.printf("강의실 : %s%n", oc.getClass_room_name());
 		System.out.printf("수료 여부 : %s%n", oc.getCompletion_status());
-		System.out.printf("중도탈락 날짜 : %s%n", oc.getDropout_date());
+		System.out.printf("%s 날짜 : %s%n", oc.getCompletion_status(), oc.getDropout_date());
 				
 		List<OpenSubject> list1 = this.osDAO.list1("open_course_idANDstudent_id", 
 				new OpenSubject(null, null,  oc.getOpen_course_id(), null, this.student_id, null));
@@ -213,7 +214,7 @@ public class ServiceStudent {
 		System.out.println("---------------------------------------------------------------");
 		System.out.printf("성적 처리 시스템 v6.0 (수강생 : %s) > 2. 개인 정보 > 1. 개인 정보 조회\n", this.student_name);
 		
-		List<Student> list = this.stDAO.search("student_id", new Student(student_id, null, null, null));
+		List<Student> list = this.stDAO.search("student_id", new Student(student_id, null, null, null, null));
 		
 		for(Student s : list) {
 			System.out.printf("수강생 번호 : %s\n", s.getStudent_id());
@@ -233,6 +234,7 @@ public class ServiceStudent {
 				System.out.printf("강의실 : %s\n", oc.getClass_room_name());
 				System.out.printf("수료 여부 : %s\n", oc.getCompletion_status());
 				System.out.printf("%s 날짜 : %s\n", oc.getCompletion_status(), oc.getDropout_date());
+				System.out.println();
 			}
 			System.out.println("-------------------------------");
 			System.out.printf("과정 수강 횟수 : %d번\n", list2.size());

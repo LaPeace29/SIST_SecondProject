@@ -34,16 +34,10 @@ public class Student {
 		this.student_new_pw = student_new_pw;
 	}
 
-	// 수강생이름 / 수강생전화번호
-	// 수강생번호 / 수강생이름 / 수강생전화번호 / 수강생등록일
-	public Student(String student_id, String student_name, String student_phone, Date student_regDate) {
-		this.student_id = student_id;
-		this.student_name = student_name;
-		this.student_phone = student_phone;
-		this.student_regDate = student_regDate;
-	}
-	
 	// 수강생 추가시 사용
+	// 수강생 삭제시 사용
+	// 수강생 검색시 사용
+	// 수강생번호 / 수강생이름 / 수강생전화번호 / 수강생등록일
 	public Student(String student_id, String student_name, String student_phone, Date student_regDate,
 			String student_pw) {
 		this.student_id = student_id;
@@ -140,21 +134,21 @@ public class Student {
 	}
 	
 	// print method
-	public String print1() {
+	public String print() {
 		String result = "";
 		result = String.format("%s / %s / %s / %s", this.getStudent_id(), this.getStudent_name(),
 				this.getStudent_phone(), this.getStudent_regDate());
 		return result;
 	}
 
-	public String print3() {
+	public String print1() {
 		String result = "";
 		result = String.format("%s / %s / %s / %s / %d회", this.getStudent_id(), this.getStudent_name(),
 				this.getStudent_phone(), this.getStudent_regDate(), this.getCount_());
 		return result;
 	}
 	
-	public String print4() {
+	public String print2() {
 		String result = "";
 		result = String.format("%s / %s / %s / %s / %s / %s", 
 				getStudent_id(), getStudent_name(), getStudent_phone(), getStudent_regDate(),

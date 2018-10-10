@@ -30,6 +30,9 @@ public class OpenSubject {
 	}
 	
 	// 검색시 사용
+	// 개설과목아이디랑 학생아이디
+	// 개설과정아이디랑 학생아이디
+	// 개설과목아이디
 	public OpenSubject(String open_subject_id, String subject_name, String open_course_id, String course_name, 
 			String student_id, String instructor_id) {
 		this.open_subject_id = open_subject_id;
@@ -49,80 +52,95 @@ public class OpenSubject {
 		this.subject_end_date = subject_end_date;
 		this.instructor_status = instructor_status;
 	}
-
-	// 개설 과목 추가할때 사용
-	public OpenSubject(String open_subject_id, String subject_id, String subjectbook_id, String instructor_id,
-			String open_course_id, Date subject_start_date, Date subject_end_date) {
+	
+	// 개설 과목 번호 / 과목명 / 개설 과목 기간 / 교재명 / 강사명
+	// 1. 개설 과목 번호  2. 과목명  3. 개설 과정 번호  4. 과정명
+	public OpenSubject(String open_subject_id, String subject_id, String subject_name, Date subject_start_date, Date subject_end_date,
+			String subjectbook_id, String subjectbook_name, String instructor_id, String instructor_name) {
 		this.open_subject_id = open_subject_id;
 		this.subject_id = subject_id;
-		this.subjectbook_id = subjectbook_id;
-		this.instructor_id = instructor_id;
-		this.open_course_id = open_course_id;
+		this.subject_name = subject_name;
 		this.subject_start_date = subject_start_date;
 		this.subject_end_date = subject_end_date;
+		this.subjectbook_id = subjectbook_id;
+		this.subjectbook_name = subjectbook_name;
+		this.instructor_id = instructor_id;
+		this.instructor_name = instructor_name;
 	}
 
-	// 개설과목명 / 개설과목기간
-	// 개설과목번호 / 개설과목명 / 개설과목기간 / 강사명 / 교재명
-	// 개설과목명 / 개설과목기간 / 강사명 / 교재명
-	// 개설과목번호 / 개설과목명 / 개설과목기간 / 교재명 / 강사명 / 개설과정명 / 개설과정기간 / 강의실
-	// 개설과목번호 / 과목명 / 개설과목기간
-	public OpenSubject(String open_subject_id, String subject_name, String subjectbook_name, String instructor_name,
-			String course_name, Date subject_start_date, Date subject_end_date, Date open_course_start_date,
-			Date open_course_end_date, String class_room_name) {
+	// 개설 과목 추가할 때 사용
+	// 개설 과목 삭제할 때 사용
+	public OpenSubject(String open_subject_id, String open_course_id, String subject_id, 
+			Date subject_start_date, Date subject_end_date, String subjectbook_id, String instructor_id) {
+		this.open_subject_id = open_subject_id;
+		this.open_course_id = open_course_id;
+		this.subject_id = subject_id;
+		this.subject_start_date = subject_start_date;
+		this.subject_end_date = subject_end_date;
+		this.subjectbook_id = subjectbook_id;
+		this.instructor_id = instructor_id;
+	}
+
+	// 개설 과목 번호 / 개설과목명 / 개설 과목 기간 / 교재명 / 강사명 / 과정명 / 개설 과정 기간 / 강의실명
+	public OpenSubject(String open_subject_id, String subject_name, Date subject_start_date, Date subject_end_date,
+			String subjectbook_name, String instructor_name, String course_name, 
+			Date open_course_start_date, Date open_course_end_date, String class_room_name) {
 		this.open_subject_id = open_subject_id;
 		this.subject_name = subject_name;
+		this.subject_start_date = subject_start_date;
+		this.subject_end_date = subject_end_date;
 		this.subjectbook_name = subjectbook_name;
 		this.instructor_name = instructor_name;
 		this.course_name = course_name;
-		this.subject_start_date = subject_start_date;
-		this.subject_end_date = subject_end_date;
 		this.open_course_start_date = open_course_start_date;
 		this.open_course_end_date = open_course_end_date;
 		this.class_room_name = class_room_name;
 	}
 	
-	// 개설과목번호 / 개설과목명 / 개설과목기간 / 교재명 / 강사명 / 개설과정명 / 개설과정기간 / 강의실 / 삭제가능여부
-	public OpenSubject(String open_subject_id, String subject_name, String subjectbook_name, String instructor_name,
-			String course_name, Date subject_start_date, Date subject_end_date, Date open_course_start_date,
-			Date open_course_end_date, String class_room_name, int count_) {
+	// 개설과목번호 / 개설과목명 / 개설과목기간 / 교재명 / 강사명 / 개설과정명 / 개설과정기간 / 강의실명 / 삭제가능여부
+	public OpenSubject(String open_subject_id, String subject_name, Date subject_start_date, Date subject_end_date, 
+			String subjectbook_name, String instructor_name, String course_name, 
+			Date open_course_start_date, Date open_course_end_date, 
+			String class_room_name, int count_) {
 		this.open_subject_id = open_subject_id;
 		this.subject_name = subject_name;
+		this.subject_start_date = subject_start_date;
+		this.subject_end_date = subject_end_date;
 		this.subjectbook_name = subjectbook_name;
 		this.instructor_name = instructor_name;
 		this.course_name = course_name;
-		this.subject_start_date = subject_start_date;
-		this.subject_end_date = subject_end_date;
 		this.open_course_start_date = open_course_start_date;
 		this.open_course_end_date = open_course_end_date;
 		this.class_room_name = class_room_name;
 		this.count_ = count_;
 	}
 
-	// 개설과목번호 / 개설과정명 / 개설과정기간 / 강의실 / 개설과목명 / 개설과목기간 / 교재명 / 수강생등록인원
-	public OpenSubject(String open_subject_id, String subject_name, String subjectbook_name, String course_name,
-			Date subject_start_date, Date subject_end_date, Date open_course_start_date, Date open_course_end_date,
-			String class_room_name, int student_count) {
+	// 개설과목번호 / 개설과정명 / 개설과정기간 / 강의실명 / 개설과목명 / 개설과목기간 / 강사명 / 교재명 / 수강생등록인원
+	public OpenSubject(String open_subject_id, String course_name, Date open_course_start_date, Date open_course_end_date,
+			String class_room_name, String subject_name, Date subject_start_date, Date subject_end_date, 
+			String instructor_name, String subjectbook_name, int student_count) {
 		this.open_subject_id = open_subject_id;
-		this.subject_name = subject_name;
-		this.subjectbook_name = subjectbook_name;
 		this.course_name = course_name;
-		this.subject_start_date = subject_start_date;
-		this.subject_end_date = subject_end_date;
 		this.open_course_start_date = open_course_start_date;
 		this.open_course_end_date = open_course_end_date;
 		this.class_room_name = class_room_name;
+		this.subject_name = subject_name;
+		this.subject_start_date = subject_start_date;
+		this.subject_end_date = subject_end_date;
+		this.instructor_name = instructor_name;
+		this.subjectbook_name = subjectbook_name;
 		this.student_count = student_count;
 	}
 
-	// 개설과목명 / 개설과목기간 / 개설과정명 / 개설과정기간 / 강의실 / 강의진행여부
-	public OpenSubject(String open_subject_id, String subject_name, String course_name, Date subject_start_date, Date subject_end_date,
-			Date open_course_start_date, Date open_course_end_date, String class_room_name, String instructor_status) {
+	// 개설과목명 / 개설과목기간 / 개설과정명 / 개설과정기간 / 강의실명 / 강의진행여부
+	public OpenSubject(String open_subject_id, String subject_name, Date subject_start_date, Date subject_end_date, 
+			String course_name, Date open_course_start_date, Date open_course_end_date, 
+			String class_room_name, String instructor_status) {
 		this.open_subject_id = open_subject_id;
 		this.subject_name = subject_name;
-		this.course_name = course_name;
 		this.subject_start_date = subject_start_date;
 		this.subject_end_date = subject_end_date;
+		this.course_name = course_name;
 		this.open_course_start_date = open_course_start_date;
 		this.open_course_end_date = open_course_end_date;
 		this.class_room_name = class_room_name;
@@ -277,6 +295,15 @@ public class OpenSubject {
     }
 	
 	public String print2() {
+	      String result = "";
+	      result = String.format("%s / %s / %s ~ %s / %s / %s / %s / %s ~ %s / %s", 
+	            this.getOpen_subject_id(), this.getSubject_name(), this.getSubject_start_date(), this.getSubject_end_date()
+	            , this.getSubjectbook_name(), this.getInstructor_name(), this.getCourse_name(), 
+	            this.getOpen_course_start_date(), this.getOpen_course_end_date(), this.getClass_room_name());
+	      return result;
+	}
+	
+	public String print3() {
 		String result = "";
 		result = String.format("%s / %s / %s ~ %s / %s / %s / %s / %s ~ %s / %s / %s", 
 				this.getOpen_subject_id(), this.getSubject_name(), this.getSubject_start_date(), this.getSubject_end_date(),
@@ -288,25 +315,29 @@ public class OpenSubject {
 	
 	public String print4() {
 		String result = "";
-		result = String.format("%s / %s / %s ~ %s / %s / %s",
-							this.getOpen_subject_id(), this.getSubject_name(), 
-							this.getSubject_start_date(), this.getSubject_end_date(),
-							this.getSubjectbook_name(), this.getInstructor_name());
-		return result;
-	}
-
-	public String print8() {
-		String result = "";
-		result = String.format("%s / %s / %s ~ %s", 
-				this.getOpen_subject_id(), this.getSubject_name(), this.getSubject_start_date(),
-				this.getSubject_end_date());
+		result = String.format("%s / %s / %s ~ %s / %s", 
+				this.getOpen_subject_id(), this.getSubject_name(), this.getSubject_start_date(), this.getSubject_end_date(),
+				this.getInstructor_status());
 		return result;
 	}
 	
-	public String print9() {
+	public String print5() {
 		String result = "";
-		result = String.format("%s / %s ~ %s / %s / %s / %s", this.getSubject_name(), this.getSubject_start_date(),
-				this.getSubject_end_date(), this.getCourse_name(), this.getClass_room_name(), this.getInstructor_status());
+		result = String.format("%s / %s / %s ~ %s / %s / %s / %s ~ %s / %s / %d", 
+				this.getOpen_subject_id(), this.getCourse_name(), 
+				this.getOpen_course_start_date(), this.getOpen_course_end_date(), this.getClass_room_name(),
+				this.getSubject_name(), this.getSubject_start_date(), this.getSubject_end_date(),
+				this.getStudent_count());
+		return result;
+	}
+	
+	public String print6() {
+		String result = "";
+		result = String.format("%s / %s / %s ~ %s / %s / %s ~ %s / %s / %s", 
+				this.getOpen_subject_id(), this.getSubject_name(), 
+				this.getSubject_start_date(), this.getSubject_end_date(), 
+				this.getCourse_name(), this.getOpen_course_start_date(), this.getOpen_course_end_date(),
+				this.getClass_room_name(), this.getInstructor_status());
 		return result;
 	}
 }

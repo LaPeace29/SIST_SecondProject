@@ -33,30 +33,20 @@ public class Instructor {
 		this.instructor_new_pw = instructor_new_pw;
 	}
 
-	public Instructor(String instructor_id, String instructor_name, String instructor_phone, Date instructor_regDate) {
+	// 강사 등록시 사용
+	// 강사 삭제시 사용
+	// 강사 검색시 사용
+	// 강사번호 / 강사이름 / 강사휴대폰번호 / 등록일
+	public Instructor(String instructor_id, String instructor_name, String instructor_phone, Date instructor_regDate, String instructor_pw) {
 		this.instructor_id = instructor_id;
-		this.instructor_name = instructor_name;
-		this.instructor_phone = instructor_phone;
-		this.instructor_regDate = instructor_regDate;
-	}
-
-	// 강사 추가시 사용
-	public Instructor(String instructor_name, String instructor_phone, Date instructor_regDate, String instructor_pw) {
 		this.instructor_name = instructor_name;
 		this.instructor_phone = instructor_phone;
 		this.instructor_regDate = instructor_regDate;
 		this.instructor_pw = instructor_pw;
 	}
-	
-	public Instructor(String instructor_id, String instructor_name, String instructor_phone, Date instructor_regDate,
-			String instructor_possible) {
-		this.instructor_id = instructor_id;
-		this.instructor_name = instructor_name;
-		this.instructor_phone = instructor_phone;
-		this.instructor_regDate = instructor_regDate;
-		this.instructor_possible = instructor_possible;
-	}
 
+	// 강사번호 / 강사이름 / 강사휴대폰번호 / 등록일 / 강의가능과목
+	// 강사번호 / 강사이름 / 강사휴대폰번호 / 등록일 / 삭제가능여부
 	public Instructor(String instructor_id, String instructor_name, String instructor_phone, Date instructor_regDate,
 			String instructor_possible, int count_) {
 		this.instructor_id = instructor_id;
@@ -122,25 +112,25 @@ public class Instructor {
 	}	
 	
 	// print method
-	public String print2() {
+	public String print() {
 		String result = "";
 		result = String.format("%s / %s / %s / %s", this.getInstructor_id(), this.getInstructor_name(),
 				this.getInstructor_phone(), this.getInstructor_regDate());
 		return result;
 	}
 	
-	public String print3() {
-		String result = "";
-		result = String.format("%s / %s / %s / %s / %s", this.getInstructor_id(), this.getInstructor_name(),
-				this.getInstructor_phone(), this.getInstructor_regDate(), this.getInstructor_possible());
-		return result;
-	}
-
-	public String print4() {
+	public String print1() {
 		String result = "";
 		result = String.format("%s / %s / %s / %s / %s / %s", this.getInstructor_id(), this.getInstructor_name(),
 				this.getInstructor_phone(), this.getInstructor_regDate(), this.getInstructor_possible(), 
 				(this.getCount_() > 0 ? 'X' : 'O'));
+		return result;
+	}
+	
+	public String print2() {
+		String result = "";
+		result = String.format("%s / %s / %s / %s / %s", this.getInstructor_id(), this.getInstructor_name(),
+				this.getInstructor_phone(), this.getInstructor_regDate(), this.getInstructor_possible());
 		return result;
 	}
 }

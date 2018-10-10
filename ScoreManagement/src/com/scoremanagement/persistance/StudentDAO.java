@@ -13,14 +13,13 @@ import com.scoremanagement.domain.Student;
 import com.scoremanagement.domain.StudentHistory;
 
 public class StudentDAO {
-
-	String student_id = null;
 	
 	// 수강생 로그인 메소드
 	public String login(Student s) {
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		String student_id = null;
 		
 		try {
 			conn = OracleConnection.connect();
@@ -143,13 +142,13 @@ public class StudentDAO {
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				String student_id1 = rs.getString("student_id");
+				String student_id = rs.getString("student_id");
 				String student_name = rs.getString("student_name");
 				String student_phone = rs.getString("student_phone");
 				Date student_regDate = rs.getDate("student_regDate");
 				int count_ = rs.getInt("count_");
 				
-				Student s = new Student(student_id1, student_name, student_phone, student_regDate, count_);
+				Student s = new Student(student_id, student_name, student_phone, student_regDate, count_);
 				list.add(s);
 			}
 		} catch (ClassNotFoundException e) {
@@ -342,7 +341,7 @@ public class StudentDAO {
 				String student_phone = rs.getString("student_phone");
 				Date student_regDate = rs.getDate("student_regDate");
 				
-				Student s = new Student(student_id, student_name, student_phone, student_regDate);
+				Student s = new Student(student_id, student_name, student_phone, student_regDate, null);
 				list.add(s);
 			}
 		} catch (ClassNotFoundException e) {
@@ -564,12 +563,12 @@ public class StudentDAO {
 		try {
 			conn = OracleConnection.connect();
 
-			String sql = "INSERT INTO Student_History (open_course_id, student_id, dropout_date)\r\n"
+			String sql = "INSERT INTO Process_complete (open_course_id, student_id, dropout_date)\r\n"
 					+ "    VALUES (UPPER(?), UPPER(?), ?)";
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, sh.getStudent_id());
-			pstmt.setString(2, sh.getOpen_course_id());
+			pstmt.setString(1, sh.getOpen_course_id());
+			pstmt.setString(2, sh.getStudent_id());
 			pstmt.setDate(3, sh.getDropout_date());
 			result = pstmt.executeUpdate();
 
