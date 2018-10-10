@@ -13,13 +13,13 @@ import com.scoremanagement.domain.Instructor;
 
 public class InstructorDAO {
 
-	String instructor_id = null;
-	
 	// 강사 로그인 메소드
 	public String login(Instructor i) {
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		
+		String instructor_id = null;
 		
 		try {
 			conn = OracleConnection.connect();

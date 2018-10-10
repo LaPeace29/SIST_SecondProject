@@ -13,14 +13,13 @@ import com.scoremanagement.domain.Student;
 import com.scoremanagement.domain.StudentHistory;
 
 public class StudentDAO {
-
-	String student_id = null;
 	
 	// 수강생 로그인 메소드
 	public String login(Student s) {
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		String student_id = null;
 		
 		try {
 			conn = OracleConnection.connect();
