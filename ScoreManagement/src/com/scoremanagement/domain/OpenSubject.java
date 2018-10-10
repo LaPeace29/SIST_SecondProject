@@ -115,11 +115,12 @@ public class OpenSubject {
 		this.count_ = count_;
 	}
 
-	// 개설과목번호 / 개설과정명 / 개설과정기간 / 강의실명 / 개설과목명 / 개설과목기간 / 강사명 / 교재명 / 수강생등록인원
-	public OpenSubject(String open_subject_id, String course_name, Date open_course_start_date, Date open_course_end_date,
+	// 개설과목번호 / 개설과정번호 / 개설과정명 / 개설과정기간 / 강의실명 / 개설과목명 / 개설과목기간 / 강사명 / 교재명 / 수강생등록인원
+	public OpenSubject(String open_subject_id, String open_course_id, String course_name, Date open_course_start_date, Date open_course_end_date,
 			String class_room_name, String subject_name, Date subject_start_date, Date subject_end_date, 
 			String instructor_name, String subjectbook_name, int student_count) {
 		this.open_subject_id = open_subject_id;
+		this.open_course_id = open_course_id;
 		this.course_name = course_name;
 		this.open_course_start_date = open_course_start_date;
 		this.open_course_end_date = open_course_end_date;

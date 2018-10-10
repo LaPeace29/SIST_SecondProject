@@ -7,15 +7,18 @@ public class Subject {
 	private int count_;					// 삭제 가능 여부
 	
 	// Constructor
+	// 기본 생성자
 	public Subject() {
 	
 	}
 
+	// 과목번호 / 과목이름
 	public Subject(String subject_id, String subject_name) {
 		this.subject_id = subject_id;
 		this.subject_name = subject_name;
 	}
 	
+	// 과목번호 / 과목이름 / 삭제가능여부
 	public Subject(String subject_id, String subject_name, int count_) {
 		this.subject_id = subject_id;
 		this.subject_name = subject_name;

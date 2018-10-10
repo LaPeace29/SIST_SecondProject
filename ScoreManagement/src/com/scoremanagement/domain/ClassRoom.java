@@ -8,16 +8,19 @@ public class ClassRoom {
 	private int count_;						// 삭제 가능 여부
 	
 	// Constructor
+	// 기본 생성자
 	public ClassRoom() {
 	
 	}
 
+	// 강의실번호 / 강의실이름 / 최대정원
 	public ClassRoom(String class_room_id, String class_room_name, int max_number) {
 		this.class_room_id = class_room_id;
 		this.class_room_name = class_room_name;
 		this.max_number = max_number;
 	}
 
+	// 강의실번호 / 강의실이름 / 최대정원 / 삭제가능여부
 	public ClassRoom(String class_room_id, String class_room_name, int max_number, int count_) {
 		this.class_room_id = class_room_id;
 		this.class_room_name = class_room_name;

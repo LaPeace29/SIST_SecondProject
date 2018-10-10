@@ -7,15 +7,18 @@ public class Admin {
 	private String admin_new_pw;	// 관리자 새 비밀번호
 
 	// Constructor
+	// 기본 생성자
 	public Admin() {
 
 	}
 
+	// 로그인
 	public Admin(String admin_id, String admin_pw) {
 		this.admin_id = admin_id;
 		this.admin_pw = admin_pw;
 	}
 	
+	// 비밀번호 변경
 	public Admin(String admin_id, String admin_pw, String admin_new_pw) {
 		this.admin_id = admin_id;
 		this.admin_pw = admin_pw;

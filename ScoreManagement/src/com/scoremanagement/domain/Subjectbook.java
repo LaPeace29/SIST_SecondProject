@@ -8,16 +8,19 @@ public class Subjectbook {
 	private int count_;						// 삭제 가능 여부
 	
 	// Constructor
+	// 기본 생성자
 	public Subjectbook() {
 	
 	}
 
+	// 교재번호 / 교재이름 / 교재출판사
 	public Subjectbook(String subjectbook_id, String subjectbook_name, String subjectbook_publisher) {
 		this.subjectbook_id = subjectbook_id;
 		this.subjectbook_name = subjectbook_name;
 		this.subjectbook_publisher = subjectbook_publisher;
 	}
 	
+	// 교재번호 / 교재이름 / 교재출판사 / 삭제가능여부
 	public Subjectbook(String subjectbook_id, String subjectbook_name, String subjectbook_publisher, int count_) {
 		this.subjectbook_id = subjectbook_id;
 		this.subjectbook_name = subjectbook_name;

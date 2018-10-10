@@ -7,15 +7,18 @@ public class Course {
 	private int count_;				// 삭제 가능 여부
 	
 	// Constructor
+	// 기본 생성자
 	public Course() {
 	
 	}
 
+	// 과정번호 / 과정이름
 	public Course(String course_id, String course_name) {
 		this.course_id = course_id;
 		this.course_name = course_name;
 	}
 	
+	// 과정번호 / 과정이름 / 삭제가능여부
 	public Course(String course_id, String course_name, int count_) {
 		this.course_id = course_id;
 		this.course_name = course_name;

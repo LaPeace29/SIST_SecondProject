@@ -356,7 +356,7 @@ public class Exam {
 	
 	public String print3() {
 		String result = "";
-		result = String.format("%s / %d / %d / %d / %s / %s / %d / %s", 
+		result = String.format("%s / %d / %d / %d / %s / %s / %d¸í / %s", 
 				this.getExam_id(), this.getAttendance_point(), this.getWrite_point(), this.getSkill_point(), 
 				this.getExam_date(), this.getExam_file(), this.getClass_count(), this.getScore_status());
 		return result;
