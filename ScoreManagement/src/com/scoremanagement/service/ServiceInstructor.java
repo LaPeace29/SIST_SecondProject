@@ -594,10 +594,11 @@ public class ServiceInstructor {
 		size = list.size();
 		if(size > 0) {
 			for(OpenSubject os : list) {
-				System.out.printf("개설 과목 번호 : %s\n", open_subject_id);
+				System.out.printf("개설 과정 번호 : %s\n", os.getOpen_course_id());
 				System.out.printf("개설 과정명 : %s\n", os.getCourse_name());
 				System.out.printf("개설 과정 기간 : %s ~ %s\n", os.getOpen_course_start_date(), os.getOpen_course_end_date());
 				System.out.printf("강의실 : %s\n", os.getClass_room_name());
+				System.out.printf("개설 과목 번호 : %s\n", open_subject_id);
 				System.out.printf("개설 과목명 : %s\n", os.getSubject_name());
 				System.out.printf("개설 과목 기간 : %s ~ %s\n", os.getSubject_start_date(), os.getSubject_end_date());
 				System.out.printf("교재명 : %s\n", os.getSubjectbook_name());	
